@@ -86,7 +86,7 @@ export default function Hero() {
         <div className="flex items-center gap-3">
           <span className="px-3.5 py-1.5 rounded-full bg-darkText text-white font-mono text-[11px] font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            ARCADE ENGINE 4.0 // ONLINE
+            CORDINIT HQ ENGINE 4.0 // ONLINE
           </span>
           <span className="font-mono text-xs text-slate-500 hidden sm:inline-block">
             LATENCY: 12.4ms • {fps} FPS
@@ -298,7 +298,7 @@ export default function Hero() {
           <div className="relative w-full max-w-6xl aspect-video bg-slate-900 rounded-2xl border border-slate-700 flex flex-col justify-between overflow-hidden shadow-2xl">
             <div className="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between font-mono text-xs text-slate-300">
               <span className="text-white font-bold uppercase tracking-wider">
-                [ ARCADE STUDIOS 2026 GLOBAL SHOWREEL ]
+                [ CORDINIT HQ 2026 GLOBAL SHOWREEL ]
               </span>
               <button
                 type="button"
@@ -323,7 +323,7 @@ export default function Hero() {
                     </span>
                   </span>
                   <h3 className="font-display text-2xl sm:text-4xl font-extrabold uppercase text-white mb-2">
-                    ARCADE ENGINE &amp; SPATIAL COMPUTING
+                    CORDINIT ENGINE &amp; SPATIAL COMPUTING
                   </h3>
                   <p className="font-mono text-xs text-slate-300 uppercase">
                     3840x2160 Ultra HD • Dolby Atmos 7.1 Surround Output

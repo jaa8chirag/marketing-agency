@@ -9,16 +9,12 @@ export default function Header() {
       <div className="max-w-[1600px] mx-auto h-20 px-6 sm:px-10 lg:px-12 flex items-center justify-between">
         {/* Custom Brand Logo & Name */}
         <Link href="#" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-slate-900 overflow-hidden p-1 shadow-md group-hover:scale-105 group-hover:bg-accentBlue transition-all flex items-center justify-center">
-            <img
-              src="/images/arcade-logo.png"
-              alt="ARCADE STUDIOS Logo"
-              className="w-full h-full object-contain brightness-200"
-            />
+          <div className="w-10 h-10 rounded-xl bg-slate-900 group-hover:bg-accentBlue transition-all flex items-center justify-center text-white shadow-md group-hover:scale-105 font-mono font-black text-sm tracking-tighter">
+            <span>C<span className="text-accentBlue group-hover:text-white transition-colors">HQ</span></span>
           </div>
           <div className="flex flex-col">
             <span className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-darkText group-hover:text-accentBlue transition-colors leading-none">
-              ARCADE<span className="text-accentBlue">.</span>
+              CORDINIT<span className="text-accentBlue"> HQ</span>
             </span>
             <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-0.5">
               CREATIVE STUDIO

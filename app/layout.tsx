@@ -23,21 +23,22 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ARCADE STUDIOS — Digital Experience & Spatial Innovation Agency",
+  title: "CORDINIT HQ — Digital Experience & Spatial Innovation Agency",
   description:
     "We design, build, and scale world-class digital platforms, AI products, and spatial computing experiences. Global hubs in New York, Amsterdam, Tokyo, and London.",
   keywords: [
     "creative agency",
     "digital experience studio",
-    "arcade studios",
+    "cordinit hq",
+    "cordinit",
     "design systems",
     "ai platform development",
     "spatial computing",
     "brand strategy",
   ],
-  authors: [{ name: "ARCADE STUDIOS" }],
+  authors: [{ name: "CORDINIT HQ" }],
   openGraph: {
-    title: "ARCADE STUDIOS — Digital Experience & Innovation Agency",
+    title: "CORDINIT HQ — Digital Experience & Innovation Agency",
     description: "Designing, building & scaling digital experiences for pioneering brands.",
     type: "website",
   },

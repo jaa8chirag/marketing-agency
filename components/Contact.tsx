@@ -8,7 +8,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("direct@arcade-studios.com");
+    navigator.clipboard.writeText("direct@cordinithq.com");
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
@@ -50,7 +50,7 @@ export default function Contact() {
               onClick={handleCopy}
               className="inline-flex items-center gap-3 font-mono text-xl sm:text-3xl font-extrabold text-darkText hover:text-accentBlue transition-colors text-left group"
             >
-              <span>DIRECT@ARCADE-STUDIOS.COM</span>
+              <span>DIRECT@CORDINITHQ.COM</span>
               <span className="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">
                 content_copy
               </span>
