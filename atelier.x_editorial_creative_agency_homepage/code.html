@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Syne:wght@700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #0B0B0B;
+        color: #EDEDED;
+      }
+      body { overscroll-behavior: none; }
+      ::-webkit-scrollbar { display: none; }
+    }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            midnight: "#0B0B0B",
+            surface: "#101010",
+            elevated: "#151515",
+            primary: "#EDEDED",
+            secondary: "#888888",
+            muted: "#4A4A4A",
+            borderLine: "rgba(255, 255, 255, 0.12)"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Syne", "sans-serif"],
+            mono: ["'Space Mono'", "monospace"]
+          },
+          letterSpacing: {
+            brutal: "-0.045em",
+            editorial: "-0.03em"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#0B0B0B] font-sans text-primary antialiased selection:bg-white selection:text-black">
+<!-- HEADER -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#0B0B0B]/85 backdrop-blur-md border-b border-white/10">
+<div class="max-w-[1720px] mx-auto h-20 px-6 sm:px-10 lg:px-16 flex items-center justify-between">
+<a class="flex items-center gap-3 group" href="#">
+<img alt="Atelier.X Agency Logo" class="h-6 w-auto object-contain brightness-110" src="https://lh3.googleusercontent.com/aida/AEtjO1UNyELS1iPMXa1NUnoSOF6O3R9pxdSpQALuslbbP94eCCHJNG2786yu-2f21eAqBRR8kirEeqhcsHsDx4JT9boACy6l0TGnVrAUoyibNfAg6WAM8l2nESqSYla-qEA7VS5ZjAHZi0ACOZ6d1BHya1R1idzFrRq_pM7CgoeBk_d4XkCIsmRB5fL2TDKihNoPSxaoMOoSadzQoVAlLPV68dm8kWgmwGJ4SkIoN5-EajeQY2ZretxIX2dZ7w"/>
+</a>
+<nav class="hidden md:flex items-center space-x-10 font-mono text-[11px] uppercase tracking-[0.2em]">
+<a class="text-white hover:text-white/70 transition-colors" href="#work">Work</a>
+<a class="text-secondary hover:text-white transition-colors" href="#capabilities">Capabilities</a>
+<a class="text-secondary hover:text-white transition-colors" href="#impact">Performance</a>
+<a class="text-secondary hover:text-white transition-colors" href="#contact">Studio</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="hidden xl:flex items-center gap-2 py-1 px-3.5 border border-white/10 bg-white/[0.02]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="font-mono text-[10px] uppercase text-secondary tracking-widest" id="studio-clocks">NYC 14:42 / TYO 03:42 / PAR 20:42</span>
+</div>
+<a class="hidden sm:inline-flex items-center justify-center px-5 py-2 border border-white/20 hover:border-white hover:bg-white hover:text-black font-mono text-[11px] uppercase tracking-widest transition-all duration-200" href="#contact">
+          Get in Touch
+        </a>
+</div>
+</div>
+</header>
+<!-- MAIN WRAPPER -->
+<main class="w-full pt-20">
+<!-- HERO SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 pt-16 md:pt-24 pb-24 md:pb-36 border-b border-white/10">
+<!-- Monospace Metadata Badges -->
+<div class="flex flex-wrap items-center justify-between gap-y-3 font-mono text-[11px] uppercase tracking-widest text-secondary border-b border-white/10 pb-6 mb-12 md:mb-16">
+<div class="flex items-center gap-4">
+<span class="text-white font-medium">GLOBAL CREATIVE PRODUCTION</span>
+<span class="text-white/20">/</span>
+<span>EST. 2026</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="inline-flex items-center gap-2 text-white">
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+            COMMISSIONS OPEN Q3/Q4
+          </span>
+<span class="hidden sm:inline text-white/20">/</span>
+<span class="hidden sm:inline">PARIS • NEW YORK • TOKYO</span>
+</div>
+</div>
+<!-- Monumental Headline -->
+<div class="mb-14 md:mb-20">
+<h1 class="font-display text-[48px] sm:text-[72px] md:text-[92px] lg:text-[108px] font-black uppercase tracking-brutal leading-[0.92] text-white max-w-[1600px]">
+          DESIGNING DIGITAL EXPERIENCES AT THE INTERSECTION OF CULTURE &amp; TECHNOLOGY.
+        </h1>
+</div>
+<!-- Cinematic Media Frame -->
+<div class="relative w-full aspect-[16/9] lg:aspect-[21/9] bg-[#0E0E0E] overflow-hidden border border-white/10 group">
+<img alt="Showreel installation preview" class="w-full h-full object-cover grayscale contrast-125 brightness-90 group-hover:scale-105 transition-transform duration-1000 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1U8G-RGpGPiE43DRQJHfkktgEzlxDfA7Jz77KE5_ZbifmAcfDx0xePhJKpJSe8UWLGQ37YwOwj-q6N2rJsZABfHtfGZADAsn-sowKgCf8x0T-YDEeA0UNKnbTkDPv6L96LAs6xidd0fzVML7pFfCniscen9BPLAZxSBvWCPNX0xqR1liIrEsHzJlnnrHYZPbhZDwpb5Sjf7XHrJwO8_XtGx7KlJxjMwdw__64udGi3A3mE0D_vgNUXUHkU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0B0B0B]/90 via-transparent to-black/30 pointer-events-none"></div>
+<!-- Frame HUD Overlays -->
+<div class="absolute top-6 left-6 right-6 flex items-center justify-between pointer-events-none">
+<span class="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 bg-black/70 backdrop-blur-md border border-white/10 text-white">
+            [ SHOWREEL 2026 // 00:48 ]
+          </span>
+<button aria-label="Toggle Sound" class="pointer-events-auto w-10 h-10 flex items-center justify-center bg-black/70 backdrop-blur-md border border-white/10 hover:border-white text-white transition-colors" onclick="const icon = this.querySelector('span'); icon.textContent = icon.textContent === 'volume_off' ? 'volume_up' : 'volume_off';">
+<span class="material-symbols-outlined text-[18px]">volume_off</span>
+</button>
+</div>
+<div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+<div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary block mb-1">SELECTED CASE STUDY</span>
+<p class="font-display text-xl sm:text-2xl font-bold uppercase tracking-tight text-white">FLUIDITY — THE CHROME EXPEDITION</p>
+</div>
+<div class="hidden sm:flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-secondary">
+<span class="w-8 h-[1px] bg-white/40"></span>
+            SCROLL TO EXPLORE
+          </div>
+</div>
+</div>
+</section>
+<!-- PORTFOLIO SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-24 md:py-36 border-b border-white/10" id="work">
+<!-- Section Title & Category Filter -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-white/10 mb-16 md:mb-24">
+<div>
+<span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary block mb-3">01 // PORTFOLIO</span>
+<h2 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black tracking-brutal uppercase text-white">
+            SELECTED WORK
+          </h2>
+</div>
+<div class="flex flex-wrap items-center gap-2" id="portfolio-filters">
+<button class="px-4 py-1.5 border border-white bg-white text-black font-mono text-[11px] uppercase tracking-widest transition-all" data-filter="all">ALL</button>
+<button class="px-4 py-1.5 border border-white/15 hover:border-white text-secondary hover:text-white font-mono text-[11px] uppercase tracking-widest transition-all" data-filter="digital">DIGITAL</button>
+<button class="px-4 py-1.5 border border-white/15 hover:border-white text-secondary hover:text-white font-mono text-[11px] uppercase tracking-widest transition-all" data-filter="brand">BRAND</button>
+<button class="px-4 py-1.5 border border-white/15 hover:border-white text-secondary hover:text-white font-mono text-[11px] uppercase tracking-widest transition-all" data-filter="spatial">SPATIAL</button>
+</div>
+</div>
+<!-- Project 01: Hero Panoramic Feature -->
+<article class="w-full mb-24 md:mb-32 group cursor-pointer" data-category="spatial digital">
+<div class="relative w-full aspect-[16/9] lg:aspect-[21/9] bg-[#121212] overflow-hidden border border-white/10 mb-6">
+<img alt="Fluidity Chrome Installation" class="w-full h-full object-cover grayscale contrast-125 brightness-95 group-hover:scale-[1.02] transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1U8G-RGpGPiE43DRQJHfkktgEzlxDfA7Jz77KE5_ZbifmAcfDx0xePhJKpJSe8UWLGQ37YwOwj-q6N2rJsZABfHtfGZADAsn-sowKgCf8x0T-YDEeA0UNKnbTkDPv6L96LAs6xidd0fzVML7pFfCniscen9BPLAZxSBvWCPNX0xqR1liIrEsHzJlnnrHYZPbhZDwpb5Sjf7XHrJwO8_XtGx7KlJxjMwdw__64udGi3A3mE0D_vgNUXUHkU"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<span class="px-6 py-3 border border-white bg-white text-black font-mono text-[11px] uppercase tracking-widest font-bold">
+              [ VIEW CASE STUDY ]
+            </span>
+</div>
+</div>
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 pb-6 border-b border-white/10">
+<div class="flex flex-col md:flex-row md:items-baseline gap-x-8 gap-y-2">
+<span class="font-mono text-sm text-secondary">01 //</span>
+<h3 class="font-display text-2xl md:text-3xl font-bold uppercase tracking-tight text-white group-hover:text-neutral-300 transition-colors">
+              FLUIDITY — THE CHROME EXPEDITION
+            </h3>
+<span class="font-mono text-xs uppercase text-secondary">CLIENT: ARTE+CHROME</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary border border-white/15 px-3 py-1">
+              INTERACTIVE INSTALLATION / WEBGL
+            </span>
+<span class="font-mono text-xs text-white">2026</span>
+</div>
+</div>
+</article>
+<!-- Projects 02 & 03: Asymmetric Staggered Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-24 items-start">
+<!-- Project 02: Span 7 Col -->
+<article class="lg:col-span-7 group cursor-pointer" data-category="brand digital">
+<div class="relative w-full aspect-[4/5] bg-[#121212] overflow-hidden border border-white/10 mb-6">
+<img alt="Symbiote X Editorial Visual" class="w-full h-full object-cover grayscale contrast-125 brightness-95 group-hover:scale-[1.02] transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1Wgk1Xr1A5mcZW0WVF9sR_rkNhiiPILYq0tIMexm5tpMVZfsWFY7aArPWODEpl6enG27mYmdRfyXRQjYzhtl-gooUbZ7YJfi0WyCZOvEnDcE5djqUWe7T8LdSacnj9Axzk1m-A_c-bQOj_uPPwUMlElrHxP7tGOtmzhKJvot9EmWwXG9Zm7zcIf5ZEk5IAZxX1xQv9Nn5fTyRyQBamoF80B9XpOgg03WIGM4PPkkx7Egx_WsJq8R5Mgz1Y"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<span class="px-6 py-3 border border-white bg-white text-black font-mono text-[11px] uppercase tracking-widest font-bold">
+                [ VIEW CASE STUDY ]
+              </span>
+</div>
+</div>
+<div class="pb-6 border-b border-white/10">
+<div class="flex items-baseline justify-between mb-2">
+<span class="font-mono text-sm text-secondary">02 //</span>
+<span class="font-mono text-xs text-white">2025</span>
+</div>
+<h3 class="font-display text-2xl md:text-3xl font-bold uppercase tracking-tight text-white mb-3 group-hover:text-neutral-300 transition-colors">
+              SYMBIOTE X — DIGITAL ANOMALY
+            </h3>
+<div class="flex flex-wrap items-center justify-between gap-2 text-secondary font-mono text-xs">
+<span class="uppercase">CLIENT: KINETIC COUTURE</span>
+<span class="border border-white/15 px-3 py-1 text-[10px] uppercase tracking-widest text-secondary">
+                CAMPAIGN &amp; E-COMMERCE
+              </span>
+</div>
+</div>
+</article>
+<!-- Project 03: Span 5 Col (Sculptural Offset Downwards) -->
+<article class="lg:col-span-5 lg:mt-32 group cursor-pointer" data-category="spatial">
+<div class="relative w-full aspect-square bg-[#121212] overflow-hidden border border-white/10 mb-6">
+<img alt="Axon 1 Tactile Acoustics Industrial Design" class="w-full h-full object-cover grayscale contrast-125 brightness-95 group-hover:scale-[1.02] transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1VxpoAG_vOsFzELZr-SMl-JHMiRZ4us6uRbhrLWoYU3Rnq-AqUGjUav8N6MFfiWJ_RmyuFQAiIlZF7rfTTca4owuH1HBn_UHwq5x1ELqHfe7UQp9Uivwc559bdn9xzFVuMMJmcYcjjNQcihCyWi5v2dULHewRne5NoPiaUCLnUaps5ezaAiZu8T64NbeUiPL3G8bZseggx0NJaLc5fg2Q6Zes41dCba6SpkojuIn5jOR6FDVh6vpFF949Q"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<span class="px-6 py-3 border border-white bg-white text-black font-mono text-[11px] uppercase tracking-widest font-bold">
+                [ VIEW CASE STUDY ]
+              </span>
+</div>
+</div>
+<div class="pb-6 border-b border-white/10">
+<div class="flex items-baseline justify-between mb-2">
+<span class="font-mono text-sm text-secondary">03 //</span>
+<span class="font-mono text-xs text-white">2026</span>
+</div>
+<h3 class="font-display text-2xl md:text-3xl font-bold uppercase tracking-tight text-white mb-3 group-hover:text-neutral-300 transition-colors">
+              AXON_1 — TACTILE ACOUSTICS
+            </h3>
+<div class="flex flex-wrap items-center justify-between gap-2 text-secondary font-mono text-xs">
+<span class="uppercase">CLIENT: NEURAL SOUND LABS</span>
+<span class="border border-white/15 px-3 py-1 text-[10px] uppercase tracking-widest text-secondary">
+                HARDWARE INDUSTRIAL DESIGN
+              </span>
+</div>
+</div>
+</article>
+</div>
+<!-- Project 04: Strip Row Item -->
+<article class="p-6 md:p-8 border border-white/10 hover:border-white/30 bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-200 group cursor-pointer" data-category="digital">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-6">
+<span class="font-mono text-sm text-secondary">04 //</span>
+<h3 class="font-display text-xl md:text-2xl font-bold uppercase tracking-tight text-white group-hover:translate-x-2 transition-transform duration-200">
+              MONOLITH OS — SPATIAL COMPUTING INTERFACE
+            </h3>
+</div>
+<div class="flex flex-wrap items-center gap-6 font-mono text-xs">
+<span class="text-secondary uppercase">CLIENT: NEBULA</span>
+<span class="border border-white/15 px-3 py-1 text-[10px] uppercase tracking-widest text-secondary">DESIGN SYSTEM / RUNTIME</span>
+<span class="text-white">2025</span>
+<span class="text-white group-hover:translate-x-2 transition-transform duration-200">-&gt;</span>
+</div>
+</div>
+</article>
+</section>
+<!-- CAPABILITIES / SERVICES SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-24 md:py-36 border-b border-white/10" id="capabilities">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-white/10 mb-16 md:mb-20">
+<div>
+<span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary block mb-3">02 // EXPERTISE</span>
+<h2 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black tracking-brutal uppercase text-white">
+            CORE CAPABILITIES
+          </h2>
+</div>
+<p class="font-sans text-secondary text-base max-w-md leading-relaxed">
+          Engineered for pioneering brands operating at the bleeding edge of culture, digital craft, and spatial computing.
+        </p>
+</div>
+<!-- Architectural 3-Column Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 border-t border-l border-white/10 mb-12">
+<!-- 01 Strategy -->
+<div class="p-8 lg:p-12 border-r border-b border-white/10 flex flex-col justify-between min-h-[420px] bg-white/[0.01]">
+<div>
+<span class="font-mono text-xs text-secondary block mb-6">01 // PHASE</span>
+<h3 class="font-display text-2xl lg:text-3xl font-bold uppercase tracking-tight text-white mb-6">
+              STRATEGY &amp; VISION
+            </h3>
+<ul class="space-y-3 font-mono text-xs uppercase text-secondary">
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Brand Architecture</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Cultural Foresight</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Digital Transformation</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Creative Direction</li>
+</ul>
+</div>
+<div class="pt-6 border-t border-white/10 font-mono text-[10px] uppercase text-secondary tracking-widest">
+            DELIVERABLE: STRATEGIC BLUEPRINT
+          </div>
+</div>
+<!-- 02 Product Design -->
+<div class="p-8 lg:p-12 border-r border-b border-white/10 flex flex-col justify-between min-h-[420px] bg-white/[0.01]">
+<div>
+<span class="font-mono text-xs text-secondary block mb-6">02 // PHASE</span>
+<h3 class="font-display text-2xl lg:text-3xl font-bold uppercase tracking-tight text-white mb-6">
+              DIGITAL PRODUCT DESIGN
+            </h3>
+<ul class="space-y-3 font-mono text-xs uppercase text-secondary">
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Spatial UI / UX</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Design Systems &amp; Tokens</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>High-Fidelity Prototyping</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Motion Choreography</li>
+</ul>
+</div>
+<div class="pt-6 border-t border-white/10 font-mono text-[10px] uppercase text-secondary tracking-widest">
+            DELIVERABLE: DESIGN RUNTIME
+          </div>
+</div>
+<!-- 03 Creative Tech -->
+<div class="p-8 lg:p-12 border-r border-b border-white/10 flex flex-col justify-between min-h-[420px] bg-white/[0.01]">
+<div>
+<span class="font-mono text-xs text-secondary block mb-6">03 // PHASE</span>
+<h3 class="font-display text-2xl lg:text-3xl font-bold uppercase tracking-tight text-white mb-6">
+              CREATIVE TECHNOLOGY
+            </h3>
+<ul class="space-y-3 font-mono text-xs uppercase text-secondary">
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Generative AI Engineering</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>WebGL / WebGPU Pipelines</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Hardware Integration</li>
+<li class="flex items-center gap-3"><span class="w-1 h-1 bg-white"></span>Interactive Installations</li>
+</ul>
+</div>
+<div class="pt-6 border-t border-white/10 font-mono text-[10px] uppercase text-secondary tracking-widest">
+            DELIVERABLE: DEPLOYABLE CODEBASE
+          </div>
+</div>
+</div>
+<!-- Protocols Dropdown -->
+<details class="border border-white/10 group bg-white/[0.01]">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+<div class="flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-white">
+<span class="text-secondary">++</span>
+<span>ENGINEERING STACK &amp; PROTOCOLS</span>
+</div>
+<span class="material-symbols-outlined text-secondary group-open:rotate-180 transition-transform duration-200">expand_more</span>
+</summary>
+<div class="p-6 pt-2 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 font-mono">
+<div>
+<span class="text-[10px] uppercase tracking-widest text-secondary block mb-1">GRAPHICS &amp; COMPUTE</span>
+<p class="text-xs text-white">WebGPU / Three.js / GLSL / Metal</p>
+</div>
+<div>
+<span class="text-[10px] uppercase tracking-widest text-secondary block mb-1">INTELLIGENCE</span>
+<p class="text-xs text-white">Fine-Tuning / ComfyUI / PyTorch</p>
+</div>
+<div>
+<span class="text-[10px] uppercase tracking-widest text-secondary block mb-1">FRONTEND ARCHITECTURE</span>
+<p class="text-xs text-white">Next.js / Rust / WASM / Tailwind</p>
+</div>
+<div>
+<span class="text-[10px] uppercase tracking-widest text-secondary block mb-1">PHYSICAL / SENSORY</span>
+<p class="text-xs text-white">TouchDesigner / Arduino / OSC</p>
+</div>
+</div>
+</details>
+</section>
+<!-- IMPACT & METRICS SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-24 md:py-36 border-b border-white/10" id="impact">
+<div class="mb-16">
+<span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary block mb-3">03 // PERFORMANCE</span>
+<h2 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black tracking-brutal uppercase text-white">
+          IMPACT QUANTIFIED
+        </h2>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-white/10">
+<div class="p-8 lg:p-10 border-r border-b border-white/10 flex flex-col justify-between min-h-[220px]">
+<span class="font-display text-6xl lg:text-7xl font-extrabold tracking-tight text-white">120+</span>
+<div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary block mb-1">HONORS</span>
+<p class="font-sans text-xs text-secondary">Cannes Lions, D&amp;AD Pencils &amp; FWA of the Year</p>
+</div>
+</div>
+<div class="p-8 lg:p-10 border-r border-b border-white/10 flex flex-col justify-between min-h-[220px]">
+<span class="font-display text-6xl lg:text-7xl font-extrabold tracking-tight text-white">24</span>
+<div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary block mb-1">NODES</span>
+<p class="font-sans text-xs text-secondary">Production studios spanning Americas, EMEA, and APAC</p>
+</div>
+</div>
+<div class="p-8 lg:p-10 border-r border-b border-white/10 flex flex-col justify-between min-h-[220px]">
+<span class="font-display text-6xl lg:text-7xl font-extrabold tracking-tight text-white">98M</span>
+<div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary block mb-1">REACH</span>
+<p class="font-sans text-xs text-secondary">Monthly unique consumer touchpoints deployed</p>
+</div>
+</div>
+<div class="p-8 lg:p-10 border-r border-b border-white/10 flex flex-col justify-between min-h-[220px]">
+<span class="font-display text-6xl lg:text-7xl font-extrabold tracking-tight text-white">$1.4B</span>
+<div>
+<span class="font-mono text-[10px] uppercase tracking-widest text-secondary block mb-1">SCALE</span>
+<p class="font-sans text-xs text-secondary">Cumulative enterprise value unlocked post-launch</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CLIENT ROSTER SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-20 border-b border-white/10">
+<div class="flex items-center justify-between mb-8 font-mono text-[11px] uppercase tracking-widest text-secondary">
+<span>04 // PARTNERS</span>
+<span>SELECT CLIENTS 2022—2026</span>
+</div>
+<!-- Minimalist Monogram Marquee Grid -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-t border-l border-white/10">
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors">
+<span class="font-display text-lg lg:text-xl font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors">BALENCIAGA</span>
+</div>
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors">
+<span class="font-display text-lg lg:text-xl font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors">APPLE</span>
+</div>
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors">
+<span class="font-display text-lg lg:text-xl font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors">SONY</span>
+</div>
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors text-center">
+<span class="font-mono text-xs font-bold uppercase tracking-tighter text-white/80 hover:text-white transition-colors">TEENAGE ENGINEERING</span>
+</div>
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors">
+<span class="font-display text-lg lg:text-xl font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors">POLESTAR</span>
+</div>
+<div class="h-32 border-r border-b border-white/10 flex items-center justify-center p-6 hover:bg-white/[0.02] transition-colors">
+<span class="font-display text-lg lg:text-xl font-bold uppercase tracking-widest text-white/80 hover:text-white transition-colors">RIMOWA</span>
+</div>
+</div>
+</section>
+<!-- INITIATION / CONTACT SECTION -->
+<section class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-28 md:py-40" id="contact">
+<div class="flex flex-col gap-10">
+<span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary">05 // INITIATION</span>
+<!-- Big Bold Statement -->
+<h2 class="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[104px] font-black uppercase tracking-brutal leading-[0.9] text-white max-w-5xl">
+          LET’S BUILD SOMETHING BOLD.
+        </h2>
+<!-- Direct Email Interaction -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-6">
+<button class="inline-flex items-center gap-3 font-mono text-2xl sm:text-4xl lg:text-5xl font-bold text-white hover:text-neutral-400 transition-colors text-left" onclick="navigator.clipboard.writeText('direct@atelier-x.studio'); const badge = document.getElementById('copy-msg'); badge.classList.remove('opacity-0'); setTimeout(() =&gt; badge.classList.add('opacity-0'), 2200);">
+<span>DIRECT@ATELIER-X.STUDIO</span>
+<span class="material-symbols-outlined text-[24px]">content_copy</span>
+</button>
+<span class="opacity-0 transition-opacity duration-200 px-3 py-1 font-mono text-[10px] uppercase tracking-widest bg-white text-black font-bold" id="copy-msg">
+            [ COPIED TO CLIPBOARD ]
+          </span>
+</div>
+<!-- Studio Directory 4-Column Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 pt-20 border-t border-white/10 mt-12">
+<div class="font-mono text-xs">
+<span class="text-white uppercase font-bold block mb-2">TOKYO ATELIER</span>
+<p class="text-secondary mb-1">Minato-ku, Minamiaoyama 5-7-22</p>
+<span class="text-white/60">TYO +81 3 5922 8100</span>
+</div>
+<div class="font-mono text-xs">
+<span class="text-white uppercase font-bold block mb-2">NEW YORK STUDIOS</span>
+<p class="text-secondary mb-1">520 W 28th St, Chelsea, NY 10001</p>
+<span class="text-white/60">NYC +1 212 904 3310</span>
+</div>
+<div class="font-mono text-xs">
+<span class="text-white uppercase font-bold block mb-2">PARIS ARCHIVE</span>
+<p class="text-secondary mb-1">14 Rue de Turenne, 75004 Paris</p>
+<span class="text-white/60">PAR +33 1 42 68 00 12</span>
+</div>
+<div class="font-mono text-xs">
+<span class="text-white uppercase font-bold block mb-2">THE DISPATCH</span>
+<p class="text-secondary mb-3 font-sans">Quarterly monologues on computation and design.</p>
+<form class="flex items-center border border-white/20 focus-within:border-white" onsubmit="event.preventDefault(); alert('Subscribed to dispatch.');">
+<input class="w-full bg-transparent px-3 py-2 text-white font-mono text-[11px] uppercase placeholder:text-muted focus:outline-none border-none" placeholder="ENTER EMAIL" required="" type="email"/>
+<button class="bg-white text-black px-4 py-2 font-mono text-xs font-bold hover:bg-neutral-200 transition-colors" type="submit">
+                -&gt;
+              </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="w-full border-t border-white/10 bg-[#0B0B0B] py-12">
+<div class="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 font-mono text-xs text-secondary uppercase tracking-widest">
+<div class="flex items-center gap-4">
+<span class="font-display font-black text-white text-base">ATELIER.X</span>
+<span class="text-white/20">|</span>
+<span>© 2026 ATELIER.X ALL RIGHTS RESERVED.</span>
+</div>
+<div class="flex flex-wrap items-center gap-8">
+<a class="hover:text-white transition-colors" href="#work">PORTFOLIO</a>
+<a class="hover:text-white transition-colors" href="#capabilities">CAPABILITIES</a>
+<a class="hover:text-white transition-colors" href="https://instagram.com" rel="noreferrer" target="_blank">INSTAGRAM</a>
+<a class="hover:text-white transition-colors" href="https://twitter.com" rel="noreferrer" target="_blank">X.COM</a>
+<a class="hover:text-white transition-colors" href="https://github.com" rel="noreferrer" target="_blank">GITHUB</a>
+</div>
+</div>
+</footer>
+<!-- FILTER JAVASCRIPT -->
+<script>
+    (function() {
+      const filterBtns = document.querySelectorAll('#portfolio-filters button');
+      const projectNodes = document.querySelectorAll('#work [data-category]');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-white', 'text-black', 'border-white');
+            b.classList.add('border-white/15', 'text-secondary');
+          });
+
+          btn.classList.add('bg-white', 'text-black', 'border-white');
+          btn.classList.remove('border-white/15', 'text-secondary');
+
+          projectNodes.forEach(item => {
+            const cats = item.getAttribute('data-category').split(' ');
+            if (filter === 'all' || cats.includes(filter)) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</body></html>
