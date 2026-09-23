@@ -9,7 +9,7 @@ export default function Marquee({ items }: { items: string[] }) {
 
   return (
     <div
-      className="relative overflow-hidden border-y border-line bg-paperMuted py-6"
+      className="relative overflow-hidden border-y border-edge bg-surfaceMuted py-6"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -19,7 +19,7 @@ export default function Marquee({ items }: { items: string[] }) {
       >
         {doubled.map((item, idx) => (
           <div key={idx} className="flex items-center gap-10 shrink-0">
-            <span className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-ink/25 hover:text-ink transition-colors whitespace-nowrap uppercase cursor-default">
+            <span className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-fg/25 hover:text-fg transition-colors whitespace-nowrap uppercase cursor-default">
               {item}
             </span>
             <GenerativeArt
@@ -27,7 +27,7 @@ export default function Marquee({ items }: { items: string[] }) {
               interactive={false}
               width={120}
               height={120}
-              className="w-14 h-14 shrink-0 border border-line hover:scale-110 transition-transform duration-300"
+              className="w-14 h-14 shrink-0 border border-edge hover:scale-110 transition-transform duration-300"
             />
           </div>
         ))}

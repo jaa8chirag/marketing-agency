@@ -10,18 +10,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#0A0A08",
-        ink2: "#151410",
+        ink: "#141414",
+        ink2: "#1C1C1C",
         paper: "#F7F4EC",
         paperMuted: "#EFEAD9",
         paperDim: "#E5DFCB",
         line: "#DBD6C2",
-        lineOnInk: "#33312A",
-        signal: "#FF3B1F",
-        signalDim: "#FFD9CF",
-        lime: "#DBFF4C",
+        lineOnInk: "#2B2B2B",
+        signal: "#26D62E",
+        signalDim: "#CFF7CE",
+        lime: "#2BEE34",
         muted: "#6B6A5D",
-        mutedOnInk: "#9A988A",
+        mutedOnInk: "#9A9A9A",
+
+        // Theme-aware tokens: swap under the .dark class (see globals.css).
+        // Used for normal content sections that should flip light<->dark.
+        // The static tokens above (ink/paper/etc.) stay fixed and are used
+        // for sections that are deliberately dark in both themes
+        // (hero, footer, CTA banners, mega menu).
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        surfaceMuted: "rgb(var(--color-surface-muted) / <alpha-value>)",
+        surfaceDim: "rgb(var(--color-surface-dim) / <alpha-value>)",
+        fg: "rgb(var(--color-fg) / <alpha-value>)",
+        fgMuted: "rgb(var(--color-fg-muted) / <alpha-value>)",
+        edge: "rgb(var(--color-edge) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "sans-serif"],

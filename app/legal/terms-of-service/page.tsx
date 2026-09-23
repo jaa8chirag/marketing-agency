@@ -34,7 +34,7 @@ const sections = [
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -47,9 +47,9 @@ export default function TermsOfServicePage() {
           <Container className="max-w-3xl">
             <div className="flex flex-col gap-10">
               {sections.map((s) => (
-                <div key={s.title} className="border-b border-line pb-10">
+                <div key={s.title} className="border-b border-edge pb-10">
                   <h2 className="font-display text-2xl font-semibold tracking-tight mb-4">{s.title}</h2>
-                  <p className="text-lg text-muted leading-relaxed">{s.body}</p>
+                  <p className="text-lg text-fgMuted leading-relaxed">{s.body}</p>
                 </div>
               ))}
             </div>

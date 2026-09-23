@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function EcosystemPage() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -25,14 +25,14 @@ export default function EcosystemPage() {
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Ecosystem" }]}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="flex flex-col">
               <Reveal>
-                <div className="border border-line p-8 md:p-10 mb-[-1px]">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Parent ecosystem</span>
+                <div className="border border-edge p-8 md:p-10 mb-[-1px]">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">Parent ecosystem</span>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mt-4 mb-4">Cordinit</h2>
-                  <p className="text-lg text-muted leading-relaxed max-w-2xl">
+                  <p className="text-lg text-fgMuted leading-relaxed max-w-2xl">
                     The group that brings capital, technology infrastructure and operating
                     discipline to every business inside it &mdash; so specialist businesses can
                     focus entirely on their craft.
@@ -42,10 +42,10 @@ export default function EcosystemPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <Reveal delay={60}>
-                  <div className="border border-line p-8 md:p-10 h-full">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Sibling business</span>
+                  <div className="border border-edge p-8 md:p-10 h-full">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">Sibling business</span>
                     <h3 className="font-display text-2xl font-bold tracking-tight mt-4 mb-4">Cordinit Technology</h3>
-                    <p className="text-muted leading-relaxed">
+                    <p className="text-fgMuted leading-relaxed">
                       Technology, transformation and engineering &mdash; the infrastructure
                       partner powering platforms across the ecosystem, including the
                       technical foundation behind Cordinit Media&apos;s own digital work.
@@ -54,7 +54,7 @@ export default function EcosystemPage() {
                 </Reveal>
 
                 <Reveal delay={100}>
-                  <div className="border border-line border-t-0 md:border-t md:border-l-0 p-8 md:p-10 h-full bg-ink text-paper">
+                  <div className="border border-edge border-t-0 md:border-t md:border-l-0 p-8 md:p-10 h-full bg-ink text-paper">
                     <span className="font-mono text-[11px] uppercase tracking-wider text-signal">You are here</span>
                     <h3 className="font-display text-2xl font-bold tracking-tight mt-4 mb-4">Cordinit Media</h3>
                     <p className="text-mutedOnInk leading-relaxed">
@@ -66,12 +66,12 @@ export default function EcosystemPage() {
               </div>
 
               <Reveal delay={140}>
-                <div className="border border-line border-t-0 p-8 md:p-10 border-dashed">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Future</span>
+                <div className="border border-edge border-t-0 p-8 md:p-10 border-dashed">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">Future</span>
                   <h3 className="font-display text-2xl font-bold tracking-tight mt-4 mb-4">
                     Future specialist &amp; acquired businesses
                   </h3>
-                  <p className="text-muted leading-relaxed max-w-2xl">
+                  <p className="text-fgMuted leading-relaxed max-w-2xl">
                     The ecosystem is designed to welcome new specialist or acquired businesses
                     over time &mdash; each retaining its own brand equity while gaining access
                     to Cordinit&apos;s technology, infrastructure, clients and talent. No such
@@ -83,7 +83,7 @@ export default function EcosystemPage() {
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="01">What Cordinit Media brings</Eyebrow>
@@ -93,7 +93,7 @@ export default function EcosystemPage() {
             </Reveal>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line">
               {capabilities.map((cap) => (
-                <div key={cap.slug} className="bg-paperMuted p-6 min-h-[140px] flex flex-col justify-between">
+                <div key={cap.slug} className="bg-surfaceMuted p-6 min-h-[140px] flex flex-col justify-between">
                   <span className="font-mono text-xs font-bold text-signal">{cap.num}</span>
                   <h3 className="font-display text-lg font-semibold tracking-tight">{cap.name}</h3>
                 </div>

@@ -28,12 +28,12 @@ export default function InsightsGrid({
     <div>
       <div className="flex flex-col gap-6 mb-14">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-muted mr-2">Type</span>
+          <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mr-2">Type</span>
           <button
             type="button"
             onClick={() => setTypeFilter(null)}
             className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
-              !typeFilter ? "bg-ink text-paper border-ink" : "border-line text-muted hover:text-ink"
+              !typeFilter ? "bg-ink text-paper border-ink" : "border-edge text-fgMuted hover:text-fg"
             }`}
           >
             All
@@ -44,7 +44,7 @@ export default function InsightsGrid({
               type="button"
               onClick={() => setTypeFilter(t === typeFilter ? null : t)}
               className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
-                typeFilter === t ? "bg-signal text-paper border-signal" : "border-line text-muted hover:text-ink"
+                typeFilter === t ? "bg-signal text-paper border-signal" : "border-edge text-fgMuted hover:text-fg"
               }`}
             >
               {t}
@@ -53,12 +53,12 @@ export default function InsightsGrid({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-muted mr-2">Capability</span>
+          <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mr-2">Capability</span>
           <button
             type="button"
             onClick={() => setCapFilter(null)}
             className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
-              !capFilter ? "bg-ink text-paper border-ink" : "border-line text-muted hover:text-ink"
+              !capFilter ? "bg-ink text-paper border-ink" : "border-edge text-fgMuted hover:text-fg"
             }`}
           >
             All
@@ -69,7 +69,7 @@ export default function InsightsGrid({
               type="button"
               onClick={() => setCapFilter(cap.slug === capFilter ? null : cap.slug)}
               className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
-                capFilter === cap.slug ? "bg-signal text-paper border-signal" : "border-line text-muted hover:text-ink"
+                capFilter === cap.slug ? "bg-signal text-paper border-signal" : "border-edge text-fgMuted hover:text-fg"
               }`}
             >
               {cap.shortName}
@@ -79,7 +79,7 @@ export default function InsightsGrid({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="font-mono text-sm text-muted py-16 text-center border border-line">
+        <p className="font-mono text-sm text-fgMuted py-16 text-center border border-edge">
           No insights match these filters yet.
         </p>
       ) : (

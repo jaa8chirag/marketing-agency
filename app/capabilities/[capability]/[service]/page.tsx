@@ -41,7 +41,7 @@ export default function ServicePage({
   const work = relatedCaseStudies({ capability: capability.slug });
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -58,14 +58,14 @@ export default function ServicePage({
           visualIndex={capability.num}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-14">
               <Reveal>
                 <Eyebrow index="A">Right for you if</Eyebrow>
                 <ul className="flex flex-col gap-4">
                   {service.forWhen.map((f) => (
-                    <li key={f} className="flex gap-4 text-lg leading-relaxed border-b border-line pb-4">
+                    <li key={f} className="flex gap-4 text-lg leading-relaxed border-b border-edge pb-4">
                       <span className="material-symbols-outlined text-signal shrink-0">priority_high</span>
                       {f}
                     </li>
@@ -76,8 +76,8 @@ export default function ServicePage({
                   <Eyebrow index="B">Outcomes</Eyebrow>
                   <ul className="flex flex-col gap-4">
                     {service.outcomes.map((o) => (
-                      <li key={o} className="flex gap-4 text-lg leading-relaxed border-b border-line pb-4">
-                        <span className="material-symbols-outlined text-ink shrink-0">trending_up</span>
+                      <li key={o} className="flex gap-4 text-lg leading-relaxed border-b border-edge pb-4">
+                        <span className="material-symbols-outlined text-fg shrink-0">trending_up</span>
                         {o}
                       </li>
                     ))}
@@ -89,11 +89,11 @@ export default function ServicePage({
                 <Eyebrow index="C">Our approach</Eyebrow>
                 <div className="flex flex-col">
                   {service.approach.map((step, idx) => (
-                    <div key={step.title} className="flex gap-6 py-6 border-b border-line">
+                    <div key={step.title} className="flex gap-6 py-6 border-b border-edge">
                       <span className="font-mono text-sm font-bold text-signal shrink-0">0{idx + 1}</span>
                       <div>
                         <h3 className="font-display text-xl font-semibold tracking-tight mb-2">{step.title}</h3>
-                        <p className="text-muted leading-relaxed">{step.description}</p>
+                        <p className="text-fgMuted leading-relaxed">{step.description}</p>
                       </div>
                     </div>
                   ))}
@@ -103,13 +103,13 @@ export default function ServicePage({
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="D">Deliverables</Eyebrow>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line mt-10">
                 {service.deliverables.map((d) => (
-                  <div key={d} className="bg-paperMuted p-6 min-h-[100px] flex items-center font-display text-lg font-medium">
+                  <div key={d} className="bg-surfaceMuted p-6 min-h-[100px] flex items-center font-display text-lg font-medium">
                     {d}
                   </div>
                 ))}
@@ -119,7 +119,7 @@ export default function ServicePage({
         </section>
 
         {work.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line">
+          <section className="py-20 md:py-28 border-b border-edge">
             <Container>
               <Reveal>
                 <Eyebrow index="E">Related work</Eyebrow>
@@ -138,7 +138,7 @@ export default function ServicePage({
           </section>
         )}
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="F">More from {capability.shortName}</Eyebrow>
@@ -147,7 +147,7 @@ export default function ServicePage({
                   <Link
                     key={s.slug}
                     href={`/capabilities/${capability.slug}/${s.slug}`}
-                    className="px-5 py-3 border border-line font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors"
+                    className="px-5 py-3 border border-edge font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors"
                   >
                     {s.name}
                   </Link>

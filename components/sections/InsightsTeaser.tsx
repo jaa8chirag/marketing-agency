@@ -9,7 +9,7 @@ export default function InsightsTeaser() {
   const featured = insights.slice(0, 3);
 
   return (
-    <section className="py-24 md:py-32 border-b border-line bg-paperMuted">
+    <section className="py-24 md:py-32 border-b border-edge bg-surfaceMuted">
       <Container>
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">

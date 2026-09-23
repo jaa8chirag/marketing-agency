@@ -21,7 +21,7 @@ const openRoles = [
 
 export default function CareersPage() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -31,25 +31,25 @@ export default function CareersPage() {
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Careers" }]}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <Reveal>
               <Eyebrow index="01">Open roles</Eyebrow>
             </Reveal>
-            <div className="grid grid-cols-1 border-t border-line mt-8">
+            <div className="grid grid-cols-1 border-t border-edge mt-8">
               {openRoles.map((role, idx) => (
                 <Reveal key={role.title} delay={idx * 40}>
-                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] items-center gap-4 py-7 border-b border-line">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] items-center gap-4 py-7 border-b border-edge">
                     <h3 className="font-display text-xl font-semibold tracking-tight">{role.title}</h3>
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-muted">{role.team}</span>
-                    <span className="font-mono text-[11px] uppercase tracking-wider px-3 py-1.5 border border-line text-muted w-fit">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">{role.team}</span>
+                    <span className="font-mono text-[11px] uppercase tracking-wider px-3 py-1.5 border border-edge text-fgMuted w-fit">
                       {role.location}
                     </span>
                   </div>
                 </Reveal>
               ))}
             </div>
-            <p className="mt-10 font-mono text-xs text-muted uppercase tracking-wider">
+            <p className="mt-10 font-mono text-xs text-fgMuted uppercase tracking-wider">
               Don&apos;t see the right role? Send a general enquiry via the contact page and tell us where you&apos;d fit.
             </p>
           </Container>

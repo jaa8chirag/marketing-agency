@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function CapabilitiesPage() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero

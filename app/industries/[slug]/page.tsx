@@ -31,7 +31,7 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
   const insightItems = relatedInsights({ industry: industry.slug });
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -46,13 +46,13 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
           visualSeed={industry.slug}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <Reveal>
               <Eyebrow index="A">Industry-specific challenges</Eyebrow>
               <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 {industry.challenges.map((c) => (
-                  <li key={c} className="border border-line p-6 text-lg leading-relaxed">
+                  <li key={c} className="border border-edge p-6 text-lg leading-relaxed">
                     {c}
                   </li>
                 ))}
@@ -61,7 +61,7 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="B">Relevant capabilities</Eyebrow>
@@ -70,7 +70,7 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
                   <Link
                     key={cap.slug}
                     href={`/capabilities/${cap.slug}`}
-                    className="group block border border-line p-6 min-h-[160px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors"
+                    className="group block border border-edge p-6 min-h-[160px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors"
                   >
                     <span className="font-mono text-xs font-bold text-signal">{cap.num}</span>
                     <h3 className="font-display text-lg font-semibold tracking-tight">{cap.name}</h3>
@@ -82,7 +82,7 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
         </section>
 
         {work.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line">
+          <section className="py-20 md:py-28 border-b border-edge">
             <Container>
               <Reveal>
                 <Eyebrow index="C">Relevant case studies</Eyebrow>
@@ -102,7 +102,7 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
         )}
 
         {insightItems.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+          <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
             <Container>
               <Reveal>
                 <Eyebrow index="D">Relevant insights</Eyebrow>

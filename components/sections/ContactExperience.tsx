@@ -24,7 +24,7 @@ function nextBusinessDays(count: number) {
 }
 
 const fieldClasses =
-  "w-full bg-transparent border-b border-line py-3.5 text-ink placeholder:text-muted focus:outline-none focus:border-ink transition-colors";
+  "w-full bg-transparent border-b border-edge py-3.5 text-fg placeholder:text-fgMuted focus:outline-none focus:border-signal transition-colors";
 
 export default function ContactExperience() {
   const searchParams = useSearchParams();
@@ -85,12 +85,12 @@ export default function ContactExperience() {
 
   return (
     <div>
-      <div className="flex border border-line mb-14 max-w-md">
+      <div className="flex border border-edge mb-14 max-w-md">
         <button
           type="button"
           onClick={() => switchMode("book-a-call")}
           className={`flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors ${
-            mode === "book-a-call" ? "bg-ink text-paper" : "text-muted hover:text-ink"
+            mode === "book-a-call" ? "bg-ink text-paper" : "text-fgMuted hover:text-fg"
           }`}
         >
           Book a Call
@@ -98,8 +98,8 @@ export default function ContactExperience() {
         <button
           type="button"
           onClick={() => switchMode("enquiry")}
-          className={`flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors border-l border-line ${
-            mode === "enquiry" ? "bg-ink text-paper" : "text-muted hover:text-ink"
+          className={`flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors border-l border-edge ${
+            mode === "enquiry" ? "bg-ink text-paper" : "text-fgMuted hover:text-fg"
           }`}
         >
           General Enquiry
@@ -109,20 +109,20 @@ export default function ContactExperience() {
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16">
         <div>
           {step === "success" ? (
-            <div className="border border-line p-10 md:p-14">
+            <div className="border border-edge p-10 md:p-14">
               {mode === "book-a-call" && chosenDate && selectedTime ? (
                 <>
                   <span className="material-symbols-outlined text-signal text-4xl mb-6 block">event_available</span>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">You&apos;re booked.</h2>
-                  <p className="text-lg text-muted leading-relaxed mb-8">
+                  <p className="text-lg text-fgMuted leading-relaxed mb-8">
                     {chosenDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} at {selectedTime}. A calendar
                     invitation and confirmation email are on their way to {form.email || "your inbox"}.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Link href="/work" className="px-6 py-3.5 border border-ink font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors">
+                    <Link href="/work" className="px-6 py-3.5 border border-fg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
                       Explore Solutions
                     </Link>
-                    <Link href="/insights" className="px-6 py-3.5 border border-line font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
+                    <Link href="/insights" className="px-6 py-3.5 border border-edge font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
                       View Insights
                     </Link>
                   </div>
@@ -131,14 +131,14 @@ export default function ContactExperience() {
                 <>
                   <span className="material-symbols-outlined text-signal text-4xl mb-6 block">mark_email_read</span>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">Thank you.</h2>
-                  <p className="text-lg text-muted leading-relaxed mb-8">
+                  <p className="text-lg text-fgMuted leading-relaxed mb-8">
                     We have received your enquiry. We will be in touch soon.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Link href="/work" className="px-6 py-3.5 border border-ink font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors">
+                    <Link href="/work" className="px-6 py-3.5 border border-fg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
                       Explore Solutions
                     </Link>
-                    <Link href="/insights" className="px-6 py-3.5 border border-line font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
+                    <Link href="/insights" className="px-6 py-3.5 border border-edge font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
                       View Insights
                     </Link>
                   </div>
@@ -150,7 +150,7 @@ export default function ContactExperience() {
               <button
                 type="button"
                 onClick={() => setStep("form")}
-                className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted hover:text-ink mb-8 transition-colors"
+                className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-fgMuted hover:text-fg mb-8 transition-colors"
               >
                 <span className="material-symbols-outlined text-[16px]">arrow_back</span>
                 Back to details
@@ -163,7 +163,7 @@ export default function ContactExperience() {
                     type="button"
                     onClick={() => setSelectedDay(idx)}
                     className={`p-3 border text-center transition-colors ${
-                      selectedDay === idx ? "bg-ink text-paper border-ink" : "border-line hover:border-ink"
+                      selectedDay === idx ? "bg-ink text-paper border-ink" : "border-edge hover:border-ink"
                     }`}
                   >
                     <span className="block font-mono text-[10px] uppercase">{day.toLocaleDateString(undefined, { weekday: "short" })}</span>
@@ -179,7 +179,7 @@ export default function ContactExperience() {
                       type="button"
                       onClick={() => setSelectedTime(slot)}
                       className={`px-4 py-3 border font-mono text-xs uppercase tracking-wider transition-colors ${
-                        selectedTime === slot ? "bg-signal text-paper border-signal" : "border-line hover:border-ink"
+                        selectedTime === slot ? "bg-signal text-paper border-signal" : "border-edge hover:border-ink"
                       }`}
                     >
                       {slot}
@@ -200,33 +200,33 @@ export default function ContactExperience() {
             <form onSubmit={handleSubmitDetails} className="flex flex-col gap-7">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                 <div>
-                  <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">First Name *</label>
+                  <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">First Name *</label>
                   <input required value={form.firstName} onChange={(e) => updateField("firstName", e.target.value)} className={fieldClasses} placeholder="Jordan" />
                 </div>
                 <div>
-                  <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">Last Name *</label>
+                  <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">Last Name *</label>
                   <input required value={form.lastName} onChange={(e) => updateField("lastName", e.target.value)} className={fieldClasses} placeholder="Rivera" />
                 </div>
               </div>
 
               <div>
-                <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">Work Email *</label>
+                <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">Work Email *</label>
                 <input required type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={fieldClasses} placeholder="jordan@company.com" />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                 <div>
-                  <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">Company *</label>
+                  <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">Company *</label>
                   <input required value={form.company} onChange={(e) => updateField("company", e.target.value)} className={fieldClasses} placeholder="Company name" />
                 </div>
                 <div>
-                  <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">Job Title</label>
+                  <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">Job Title</label>
                   <input value={form.jobTitle} onChange={(e) => updateField("jobTitle", e.target.value)} className={fieldClasses} placeholder="Marketing Director" />
                 </div>
               </div>
 
               <div>
-                <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">Area of Interest *</label>
+                <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">Area of Interest *</label>
                 <select
                   required
                   value={form.interest}
@@ -240,7 +240,7 @@ export default function ContactExperience() {
               </div>
 
               <div>
-                <label className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-2">
+                <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">
                   What would you like help with? *
                 </label>
                 <textarea
@@ -261,9 +261,9 @@ export default function ContactExperience() {
                   onChange={(e) => updateField("consent", e.target.checked)}
                   className="mt-1 accent-ink"
                 />
-                <span className="text-sm text-muted leading-relaxed">
+                <span className="text-sm text-fgMuted leading-relaxed">
                   I agree to be contacted by Cordinit Media about my enquiry, in line with the{" "}
-                  <Link href="/legal/privacy-policy" className="text-ink underline hover:text-signal">Privacy Policy</Link>. *
+                  <Link href="/legal/privacy-policy" className="text-fg underline hover:text-signal">Privacy Policy</Link>. *
                 </span>
               </label>
 
@@ -278,8 +278,8 @@ export default function ContactExperience() {
           )}
         </div>
 
-        <div className="border border-line p-8 md:p-10 h-fit">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-muted block mb-6">What happens next</span>
+        <div className="border border-edge p-8 md:p-10 h-fit">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-6">What happens next</span>
           <ol className="flex flex-col gap-6">
             {(mode === "book-a-call"
               ? [
@@ -296,7 +296,7 @@ export default function ContactExperience() {
             ).map((text, idx) => (
               <li key={text} className="flex gap-4">
                 <span className="font-mono text-xs font-bold text-signal shrink-0">0{idx + 1}</span>
-                <span className="text-muted leading-relaxed">{text}</span>
+                <span className="text-fgMuted leading-relaxed">{text}</span>
               </li>
             ))}
           </ol>

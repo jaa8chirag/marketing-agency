@@ -3,21 +3,42 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-surface: 247 244 236;
+    --color-surface-muted: 239 234 217;
+    --color-surface-dim: 229 223 203;
+    --color-fg: 20 20 20;
+    --color-fg-muted: 107 106 93;
+    --color-edge: 219 214 194;
+  }
+
+  .dark {
+    --color-surface: 16 16 16;
+    --color-surface-muted: 28 28 28;
+    --color-surface-dim: 10 10 10;
+    --color-fg: 247 244 236;
+    --color-fg-muted: 154 154 154;
+    --color-edge: 43 43 43;
+  }
+
   html, body {
     margin: 0;
     padding: 0;
-    background-color: #F7F4EC;
-    color: #0A0A08;
-    scroll-behavior: smooth;
+    background-color: rgb(var(--color-surface));
+    color: rgb(var(--color-fg));
+    /* No scroll-behavior: smooth here — it fights GSAP ScrollTrigger's
+       scrub animations (native smooth-scroll easing vs. GSAP reading
+       real-time scroll position causes stutter/lag on the hero). */
   }
 
   body {
     overscroll-behavior: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
-    background-color: #FF3B1F;
-    color: #F7F4EC;
+    background-color: #26D62E;
+    color: #141414;
   }
 
   ::-webkit-scrollbar {
@@ -25,15 +46,15 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #F7F4EC;
+    background: rgb(var(--color-surface));
   }
   ::-webkit-scrollbar-thumb {
-    background: #0A0A08;
+    background: rgb(var(--color-fg));
     border-radius: 0px;
-    border: 2px solid #F7F4EC;
+    border: 2px solid rgb(var(--color-surface));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #FF3B1F;
+    background: #26D62E;
   }
 }
 
@@ -76,6 +97,14 @@
 }
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+@keyframes reel-scrub {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+.animate-reel-scrub {
+  animation: reel-scrub 8s linear infinite;
 }
 
 @keyframes ticker-blink {

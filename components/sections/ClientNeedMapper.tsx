@@ -37,7 +37,7 @@ export default function ClientNeedMapper() {
   }
 
   return (
-    <section className="py-24 md:py-32 border-b border-line bg-paperMuted">
+    <section className="py-24 md:py-32 border-b border-edge bg-surfaceMuted">
       <Container>
         <Reveal>
           <Eyebrow index="00">Where do you start?</Eyebrow>
@@ -62,7 +62,7 @@ export default function ClientNeedMapper() {
                     onMouseEnter={() => setActive(idx)}
                     onClick={() => setActive(idx)}
                     className={`w-full flex items-center justify-between gap-4 py-5 text-left transition-colors group ${
-                      active === idx ? "text-signal" : "text-ink hover:text-signal"
+                      active === idx ? "text-signal" : "text-fg hover:text-signal"
                     }`}
                   >
                     <span className="font-display text-xl sm:text-2xl font-semibold tracking-tight">

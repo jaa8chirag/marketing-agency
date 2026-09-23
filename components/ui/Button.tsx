@@ -5,14 +5,18 @@ import Magnetic from "./Magnetic";
 type Variant = "primary" | "inverse" | "outline" | "ghost";
 
 const variants: Record<Variant, string> = {
+  // primary/inverse are deliberate fixed-contrast chips (used to pop against
+  // a specific dark or light section) — they stay static across both themes.
   primary:
     "bg-ink text-paper hover:bg-signal hover:text-paper border border-ink hover:border-signal",
   inverse:
     "bg-paper text-ink hover:bg-signal hover:text-paper border border-paper hover:border-signal",
+  // outline/ghost follow the page's own theme, with a signal-green hover
+  // that reads correctly in both light and dark mode.
   outline:
-    "bg-transparent text-ink border border-ink hover:bg-ink hover:text-paper",
+    "bg-transparent text-fg border border-fg hover:bg-signal hover:text-ink hover:border-signal",
   ghost:
-    "bg-transparent text-ink border border-transparent hover:border-ink",
+    "bg-transparent text-fg border border-transparent hover:border-fg",
 };
 
 export default function Button({

@@ -29,13 +29,13 @@ export default function PageHero({
           {breadcrumbs.map((crumb, idx) => (
             <span key={idx} className="flex items-center gap-2">
               {crumb.href ? (
-                <Link href={crumb.href} className={`${isInk ? "text-mutedOnInk hover:text-paper" : "text-muted hover:text-ink"} transition-colors`}>
+                <Link href={crumb.href} className={`${isInk ? "text-mutedOnInk hover:text-paper" : "text-fgMuted hover:text-fg"} transition-colors`}>
                   {crumb.label}
                 </Link>
               ) : (
-                <span className={isInk ? "text-paper" : "text-ink"}>{crumb.label}</span>
+                <span className={isInk ? "text-paper" : "text-fg"}>{crumb.label}</span>
               )}
-              {idx < breadcrumbs.length - 1 && <span className={isInk ? "text-mutedOnInk" : "text-muted"}>/</span>}
+              {idx < breadcrumbs.length - 1 && <span className={isInk ? "text-mutedOnInk" : "text-fgMuted"}>/</span>}
             </span>
           ))}
         </nav>
@@ -45,7 +45,7 @@ export default function PageHero({
         {title}
       </h1>
       {description && (
-        <p className={`mt-8 max-w-xl text-lg leading-relaxed ${isInk ? "text-mutedOnInk" : "text-muted"}`}>
+        <p className={`mt-8 max-w-xl text-lg leading-relaxed ${isInk ? "text-mutedOnInk" : "text-fgMuted"}`}>
           {description}
         </p>
       )}
@@ -53,7 +53,7 @@ export default function PageHero({
   );
 
   return (
-    <section className={`${isInk ? "bg-ink text-paper" : "bg-paper text-ink"} pt-40 pb-16 md:pt-48 md:pb-20 border-b ${isInk ? "border-lineOnInk" : "border-line"}`}>
+    <section className={`${isInk ? "bg-ink text-paper" : "bg-surface text-fg"} pt-40 pb-16 md:pt-48 md:pb-20 border-b ${isInk ? "border-lineOnInk" : "border-edge"}`}>
       <Container>
         {visualSeed ? (
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-end">

@@ -28,11 +28,11 @@ export default function CaseStudyGallery({ slug, client }: { slug: string; clien
   }, [openIdx]);
 
   return (
-    <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+    <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
       <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14">
         <Reveal>
           <Eyebrow index="G">Gallery</Eyebrow>
-          <p className="font-mono text-[11px] uppercase tracking-wider text-muted mb-8">
+          <p className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mb-8">
             Drag the slider to compare concept vs. final &middot; click a frame to expand
           </p>
         </Reveal>

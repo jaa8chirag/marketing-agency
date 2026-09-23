@@ -8,7 +8,7 @@ export default function Eyebrow({
   tone?: "ink" | "paper" | "signal";
 }) {
   const toneClass =
-    tone === "paper" ? "text-paperMuted" : tone === "signal" ? "text-signal" : "text-muted";
+    tone === "paper" ? "text-paperMuted" : tone === "signal" ? "text-signal" : "text-fgMuted";
 
   return (
     <div className="flex items-center gap-3 mb-5">

@@ -1,142 +1,116 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Container from "@/components/ui/Container";
-import Button from "@/components/ui/Button";
-import GenerativeArt from "@/components/ui/GenerativeArt";
-import { caseStudies } from "@/lib/content";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedReel from "@/components/ui/AnimatedReel";
 
-const words = ["CARE.", "WORK.", "GROW."];
-const verbs = ["Make people", "Make experiences", "Make growth"];
-
-const reel = caseStudies.slice(0, 4);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function HomeHero() {
-  const [idx, setIdx] = useState(0);
-  const [reelIdx, setReelIdx] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
+  const scrollCueRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((p) => (p + 1) % words.length), 2600);
-    return () => clearInterval(t);
+    const ctx = gsap.context(() => {
+      // Video panel starts fully below the viewport — completely hidden —
+      // so the opening screen is clean, big text only.
+      gsap.set(videoRef.current, { yPercent: 100 });
+      gsap.set(endRef.current, { opacity: 0 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=200%",
+          scrub: 0.6,
+          pin: pinRef.current,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.to(textRef.current, { opacity: 0, scale: 0.9, ease: "power2.inOut" }, 0)
+        .to(scrollCueRef.current, { opacity: 0, ease: "power1.out" }, 0)
+        .to(videoRef.current, { yPercent: 0, ease: "power2.inOut" }, 0.12)
+        .to(endRef.current, { opacity: 1, ease: "power1.out" }, 0.78);
+    }, sectionRef);
+
+    function handleLoad() {
+      ScrollTrigger.refresh();
+    }
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+      ctx.revert();
+    };
   }, []);
 
-  useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setReelIdx((p) => (p + 1) % reel.length), 5000);
-    return () => clearInterval(t);
-  }, [paused]);
-
-  const current = reel[reelIdx];
-
   return (
-    <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 border-b border-line overflow-hidden">
-      <div className="absolute inset-0 content-grid opacity-[0.5] pointer-events-none" />
-      <Container className="relative">
-        <div className="flex items-center gap-3 mb-8">
-          <span className="w-2 h-2 rounded-full bg-signal animate-ticker-blink" />
-          <span className="font-mono text-[11px] font-bold uppercase tracking-superwide text-muted">
-            Cordinit Media &middot; Creative, Media &amp; Growth Company
+    <section ref={sectionRef} className="relative h-[300vh] bg-ink">
+      <div ref={pinRef} className="relative h-screen w-full overflow-hidden bg-ink flex items-center justify-center">
+        <div className="absolute inset-0 content-grid opacity-[0.06] pointer-events-none" />
+
+        <div ref={videoRef} className="absolute inset-0 z-10" style={{ willChange: "transform" }}>
+          <AnimatedReel />
+        </div>
+
+        <div ref={textRef} className="relative z-0 text-center px-6 pointer-events-none">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-superwide text-mutedOnInk mb-6 block">
+            Cordinit Media
           </span>
-        </div>
-
-        <h1 className="font-display text-[15vw] sm:text-[9vw] md:text-[7.2vw] lg:text-[104px] font-bold tracking-tightest leading-[0.92] text-ink text-balance">
-          CREATIVE.
-          <br />
-          MEDIA.
-          <br />
-          <span className="text-signal">TECHNOLOGY.</span>
-          <br />
-          GROWTH.
-        </h1>
-
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-end">
-          <p className="max-w-xl text-lg sm:text-xl text-muted leading-relaxed">
-            Cordinit Media connects creative, production, digital, media and performance to
-            help ambitious brands build, launch and grow. We&apos;re not a 360&deg; agency of
-            disconnected departments &mdash; we&apos;re one system built around a single outcome.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button href="/contact?intent=book-a-call">Book a Call</Button>
-            <Button href="/work" variant="outline">See the Work</Button>
-          </div>
-        </div>
-
-        <div className="mt-16 pt-8 border-t border-line flex items-baseline gap-4 font-display text-2xl sm:text-4xl font-semibold tracking-tight">
-          <span>{verbs[idx]}</span>
-          <span key={idx} className="text-signal inline-block">{words[idx]}</span>
+          <h1 className="font-display font-bold tracking-tightest text-[13vw] sm:text-[8.5vw] lg:text-[6.4vw] leading-[0.98] text-paper">
+            MAKE PEOPLE <span className="text-signal">CARE.</span>
+            <br />
+            MAKE IT <span className="text-signal">WORK.</span>
+            <br />
+            MAKE IT <span className="text-signal">GROW.</span>
+          </h1>
         </div>
 
         <div
-          className="mt-10 relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] border border-line group"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          ref={endRef}
+          className="absolute inset-0 z-20 flex flex-col justify-end p-8 sm:p-14 pointer-events-none"
         >
-          <GenerativeArt seed={current.slug} interactive width={1400} height={700} className="w-full h-full" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent pointer-events-none" />
-
-          <div className="absolute top-6 left-6 right-6 flex items-center justify-between">
-            <span className="px-3.5 py-1.5 bg-paper/90 backdrop-blur-md text-ink font-mono text-[11px] font-bold uppercase tracking-wider flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-signal animate-ticker-blink" />
-              Selected Work &middot; {reelIdx + 1}/{reel.length}
-            </span>
-            <span className="hidden sm:inline px-3.5 py-1.5 bg-ink/60 backdrop-blur-md text-paper font-mono text-[11px] uppercase tracking-wider">
-              {current.year}
-            </span>
-          </div>
-
-          <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pointer-events-auto">
             <div>
               <span className="font-mono text-[11px] uppercase tracking-wider text-signal block mb-2">
-                {current.client}
+                Showreel &middot; 2026
               </span>
-              <p className="font-display text-xl sm:text-3xl font-bold text-paper max-w-xl leading-tight text-balance">
-                {current.title}
-              </p>
+              <h2 className="font-display text-2xl sm:text-4xl font-bold text-paper max-w-lg leading-tight">
+                Creative, media and growth &mdash; made real.
+              </h2>
             </div>
             <Link
-              href={`/work/${current.slug}`}
-              className="shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink font-mono text-[11px] font-bold uppercase tracking-wider hover:bg-signal hover:text-paper transition-colors"
+              href="/contact?intent=book-a-call"
+              className="group shrink-0 inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full bg-paper text-ink font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-signal transition-colors"
             >
-              View Case Study
-              <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
+              Let&apos;s Connect
+              <span className="w-9 h-9 rounded-full bg-ink text-paper flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                <span className="material-symbols-outlined text-[18px]">arrow_outward</span>
+              </span>
             </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-          {reel.map((cs, i) => (
-            <button
-              key={cs.slug}
-              type="button"
-              onClick={() => setReelIdx(i)}
-              className={`relative h-16 overflow-hidden border transition-colors ${
-                reelIdx === i ? "border-ink" : "border-line hover:border-ink/40"
-              }`}
-            >
-              <GenerativeArt seed={cs.slug} interactive={false} width={320} height={160} className="absolute inset-0 w-full h-full" />
-              <span className="absolute inset-0 bg-ink/40 flex items-center justify-center font-mono text-[10px] uppercase tracking-wider text-paper px-2 text-center">
-                {cs.client}
-              </span>
-            </button>
-          ))}
+        <div
+          ref={scrollCueRef}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-0 flex flex-col items-center gap-2"
+        >
+          <span className="w-10 h-10 rounded-full border border-paper/40 flex items-center justify-center animate-float">
+            <span className="material-symbols-outlined text-paper/70 text-[16px]">arrow_downward</span>
+          </span>
+          <span className="font-mono text-[9px] uppercase tracking-widest text-paper/50">Scroll</span>
         </div>
-
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-line">
-          {[
-            { value: "08", label: "Connected capabilities" },
-            { value: "31", label: "Specialist services" },
-            { value: "100%", label: "CMS-editable platform" },
-            { value: "1", label: "System, not silos" },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <span className="font-display text-3xl sm:text-5xl font-bold text-ink block">{stat.value}</span>
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted mt-2 block">{stat.label}</span>
-            </div>
-          ))}
-        </div>
-      </Container>
+      </div>
     </section>
   );
 }

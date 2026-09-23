@@ -28,17 +28,17 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
   const related = relatedInsights({ capability: insight.capability, exclude: insight.slug });
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
-        <section className="pt-40 pb-16 md:pt-48 md:pb-20 border-b border-line">
+        <section className="pt-40 pb-16 md:pt-48 md:pb-20 border-b border-edge">
           <Container>
-            <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-muted">
-              <Link href="/" className="hover:text-ink transition-colors">Home</Link>
+            <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-fgMuted">
+              <Link href="/" className="hover:text-fg transition-colors">Home</Link>
               <span>/</span>
-              <Link href="/insights" className="hover:text-ink transition-colors">Insights</Link>
+              <Link href="/insights" className="hover:text-fg transition-colors">Insights</Link>
               <span>/</span>
-              <span className="text-ink">{insight.type}</span>
+              <span className="text-fg">{insight.type}</span>
             </nav>
 
             <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-signal text-signal inline-block mb-6">
@@ -47,7 +47,7 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
             <h1 className="font-display text-[34px] sm:text-[50px] md:text-[60px] font-bold tracking-tightest leading-[1.02] max-w-4xl text-balance mb-8">
               {insight.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-muted">
+            <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-fgMuted">
               <span>{insight.author}</span>
               <span>&middot;</span>
               <span>{insight.date}</span>
@@ -65,14 +65,14 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
           </Container>
         </section>
 
-        <section className="py-16 md:py-24 border-b border-line">
+        <section className="py-16 md:py-24 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-14">
               <Reveal className="max-w-2xl">
-                <p className="text-xl leading-relaxed text-ink mb-10 font-medium">{insight.summary}</p>
+                <p className="text-xl leading-relaxed text-fg mb-10 font-medium">{insight.summary}</p>
                 <div className="flex flex-col gap-6">
                   {insight.body.map((para, idx) => (
-                    <p key={idx} className="text-lg leading-relaxed text-muted">
+                    <p key={idx} className="text-lg leading-relaxed text-fgMuted">
                       {para}
                     </p>
                   ))}
@@ -80,13 +80,13 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
               </Reveal>
 
               <div className="hidden lg:flex flex-col gap-6 sticky top-32 h-fit">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Share</span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">Share</span>
                 <div className="flex flex-col gap-3">
                   <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=https://cordinitmedia.com/insights/${insight.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-3 border border-line font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors text-center"
+                    className="px-4 py-3 border border-edge font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors text-center"
                   >
                     LinkedIn
                   </a>
@@ -94,7 +94,7 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
                     href={`https://twitter.com/intent/tweet?url=https://cordinitmedia.com/insights/${insight.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-3 border border-line font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors text-center"
+                    className="px-4 py-3 border border-edge font-mono text-[11px] uppercase tracking-widest font-bold hover:bg-ink hover:text-paper hover:border-ink transition-colors text-center"
                   >
                     X / Twitter
                   </a>
@@ -105,7 +105,7 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
         </section>
 
         {related.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+          <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
             <Container>
               <Reveal>
                 <Eyebrow index="R">Related insights</Eyebrow>

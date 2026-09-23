@@ -29,7 +29,7 @@ const team = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -39,12 +39,12 @@ export default function AboutPage() {
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
               <Reveal>
                 <Eyebrow index="01">Our story</Eyebrow>
-                <div className="flex flex-col gap-5 text-lg leading-relaxed text-muted">
+                <div className="flex flex-col gap-5 text-lg leading-relaxed text-fgMuted">
                   <p>
                     Cordinit Media was built inside the wider Cordinit ecosystem to close a gap
                     we kept seeing across the industry: creative agencies that couldn&apos;t
@@ -68,9 +68,9 @@ export default function AboutPage() {
                 <Eyebrow index="02">Operating philosophy</Eyebrow>
                 <div className="flex flex-col">
                   {values.map((v) => (
-                    <div key={v.title} className="py-6 border-b border-line">
+                    <div key={v.title} className="py-6 border-b border-edge">
                       <h3 className="font-display text-xl font-semibold tracking-tight mb-2">{v.title}</h3>
-                      <p className="text-muted leading-relaxed">{v.desc}</p>
+                      <p className="text-fgMuted leading-relaxed">{v.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -79,7 +79,7 @@ export default function AboutPage() {
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="03">Leadership</Eyebrow>
@@ -90,9 +90,9 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {team.map((member, idx) => (
                 <Reveal key={member.name} delay={idx * 50}>
-                  <div className="border border-line p-6 min-h-[160px] flex flex-col justify-end bg-paper">
+                  <div className="border border-edge p-6 min-h-[160px] flex flex-col justify-end bg-surface">
                     <h3 className="font-display text-lg font-semibold tracking-tight">{member.name}</h3>
-                    <p className="font-mono text-[11px] uppercase tracking-wider text-muted mt-2">{member.role}</p>
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mt-2">{member.role}</p>
                   </div>
                 </Reveal>
               ))}
@@ -100,10 +100,10 @@ export default function AboutPage() {
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <Reveal>
-              <div className="border border-line p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <div className="border border-edge p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div>
                   <Eyebrow index="04">Part of Cordinit</Eyebrow>
                   <h2 className="font-display text-2xl sm:text-4xl font-bold tracking-tight max-w-xl text-balance">

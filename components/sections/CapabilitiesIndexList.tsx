@@ -32,28 +32,28 @@ export default function CapabilitiesIndexList({ capabilities }: { capabilities: 
       ref={listRef}
       onMouseMove={handleMove}
       onMouseLeave={() => setActiveSlug(null)}
-      className="relative grid grid-cols-1 border-t border-line"
+      className="relative grid grid-cols-1 border-t border-edge"
     >
       {capabilities.map((cap, idx) => (
         <Reveal key={cap.slug} delay={idx * 30}>
           <Link
             href={`/capabilities/${cap.slug}`}
             onMouseEnter={() => setActiveSlug(cap.slug)}
-            className="group grid grid-cols-1 lg:grid-cols-[100px_1fr_1fr_auto] gap-6 lg:gap-10 items-start lg:items-center py-10 border-b border-line hover:bg-paperMuted transition-colors px-2"
+            className="group grid grid-cols-1 lg:grid-cols-[100px_1fr_1fr_auto] gap-6 lg:gap-10 items-start lg:items-center py-10 border-b border-edge hover:bg-surfaceMuted transition-colors px-2"
           >
             <span className="font-mono text-sm font-bold text-signal">{cap.num}</span>
             <div>
               <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-2">{cap.name}</h2>
-              <p className="text-muted text-sm max-w-md leading-relaxed">{cap.tagline}</p>
+              <p className="text-fgMuted text-sm max-w-md leading-relaxed">{cap.tagline}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {cap.services.map((s) => (
-                <span key={s.slug} className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-line text-muted">
+                <span key={s.slug} className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-edge text-fgMuted">
                   {s.name}
                 </span>
               ))}
             </div>
-            <span className="material-symbols-outlined text-muted group-hover:text-signal group-hover:translate-x-1 transition-all justify-self-end">
+            <span className="material-symbols-outlined text-fgMuted group-hover:text-signal group-hover:translate-x-1 transition-all justify-self-end">
               arrow_forward
             </span>
           </Link>
@@ -74,7 +74,7 @@ export default function CapabilitiesIndexList({ capabilities }: { capabilities: 
             interactive={false}
             width={480}
             height={320}
-            className="w-full h-full border border-line shadow-2xl"
+            className="w-full h-full border border-edge shadow-2xl"
           />
         )}
       </div>

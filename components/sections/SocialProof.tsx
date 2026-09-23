@@ -6,7 +6,7 @@ import { testimonials, clientLogos } from "@/lib/content";
 
 export default function SocialProof() {
   return (
-    <section className="border-b border-line">
+    <section className="border-b border-edge">
       <Marquee items={clientLogos} />
       <Container className="py-24 md:py-32">
         <Reveal>
@@ -15,12 +15,12 @@ export default function SocialProof() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
           {testimonials.map((t, idx) => (
             <Reveal key={t.person} delay={idx * 60}>
-              <div className="border border-line p-7 h-full flex flex-col justify-between min-h-[240px]">
+              <div className="border border-edge p-7 h-full flex flex-col justify-between min-h-[240px]">
                 <span className="material-symbols-outlined text-signal text-[32px] mb-4">format_quote</span>
-                <p className="font-display text-lg leading-snug text-ink mb-6 text-balance">
+                <p className="font-display text-lg leading-snug text-fg mb-6 text-balance">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="font-mono text-[11px] uppercase tracking-wider text-muted pt-4 border-t border-line">
+                <div className="font-mono text-[11px] uppercase tracking-wider text-fgMuted pt-4 border-t border-edge">
                   {t.person} &middot; {t.company}
                 </div>
               </div>

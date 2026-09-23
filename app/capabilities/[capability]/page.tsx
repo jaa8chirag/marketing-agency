@@ -42,7 +42,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
   const insightItems = relatedInsights({ capability: capability.slug });
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <PageHero
@@ -58,14 +58,14 @@ export default function CapabilityPage({ params }: { params: { capability: strin
           visualIndex={capability.num}
         />
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
               <Reveal>
                 <Eyebrow index="A">Business problems we solve</Eyebrow>
                 <ul className="flex flex-col gap-4">
                   {capability.problems.map((p) => (
-                    <li key={p} className="flex gap-4 text-lg text-ink leading-relaxed border-b border-line pb-4">
+                    <li key={p} className="flex gap-4 text-lg text-fg leading-relaxed border-b border-edge pb-4">
                       <span className="material-symbols-outlined text-signal shrink-0">priority_high</span>
                       {p}
                     </li>
@@ -76,7 +76,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
                 <Eyebrow index="B">What you get</Eyebrow>
                 <ul className="flex flex-col gap-4">
                   {capability.deliverables.map((d) => (
-                    <li key={d} className="flex gap-4 text-lg text-ink leading-relaxed border-b border-line pb-4">
+                    <li key={d} className="flex gap-4 text-lg text-fg leading-relaxed border-b border-edge pb-4">
                       <span className="material-symbols-outlined text-signal shrink-0">check_circle</span>
                       {d}
                     </li>
@@ -87,7 +87,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <Reveal>
               <Eyebrow index="C">Services</Eyebrow>
@@ -95,20 +95,20 @@ export default function CapabilityPage({ params }: { params: { capability: strin
                 Specialist services inside {capability.shortName}.
               </h2>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-line">
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-edge">
               {capability.services.map((s, idx) => (
                 <Reveal key={s.slug} delay={idx * 40}>
                   <Link
                     href={`/capabilities/${capability.slug}/${s.slug}`}
-                    className="group h-full border-r border-b border-line p-7 min-h-[180px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors duration-300"
+                    className="group h-full border-r border-b border-edge p-7 min-h-[180px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors duration-300"
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="font-display text-xl font-semibold tracking-tight">{s.name}</h3>
-                      <span className="material-symbols-outlined text-muted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="material-symbols-outlined text-fgMuted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
                         arrow_outward
                       </span>
                     </div>
-                    <p className="text-sm text-muted group-hover:text-mutedOnInk leading-relaxed mt-4">{s.hook}</p>
+                    <p className="text-sm text-fgMuted group-hover:text-mutedOnInk leading-relaxed mt-4">{s.hook}</p>
                   </Link>
                 </Reveal>
               ))}
@@ -117,7 +117,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
         </section>
 
         {work.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line">
+          <section className="py-20 md:py-28 border-b border-edge">
             <Container>
               <Reveal>
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
@@ -141,7 +141,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
           </section>
         )}
 
-        <section className="py-20 md:py-28 border-b border-line bg-paperMuted">
+        <section className="py-20 md:py-28 border-b border-edge bg-surfaceMuted">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
               <Reveal>
@@ -151,10 +151,10 @@ export default function CapabilityPage({ params }: { params: { capability: strin
                     <li key={ind.slug}>
                       <Link
                         href={`/industries/${ind.slug}`}
-                        className="flex items-center justify-between py-4 border-b border-line group hover:text-signal transition-colors"
+                        className="flex items-center justify-between py-4 border-b border-edge group hover:text-signal transition-colors"
                       >
                         <span className="font-display text-lg font-semibold">{ind.name}</span>
-                        <span className="material-symbols-outlined text-muted group-hover:text-signal group-hover:translate-x-1 transition-all">
+                        <span className="material-symbols-outlined text-fgMuted group-hover:text-signal group-hover:translate-x-1 transition-all">
                           arrow_forward
                         </span>
                       </Link>
@@ -169,10 +169,10 @@ export default function CapabilityPage({ params }: { params: { capability: strin
                     <li key={cap.slug}>
                       <Link
                         href={`/capabilities/${cap.slug}`}
-                        className="flex items-center justify-between py-4 border-b border-line group hover:text-signal transition-colors"
+                        className="flex items-center justify-between py-4 border-b border-edge group hover:text-signal transition-colors"
                       >
                         <span className="font-display text-lg font-semibold">{cap.name}</span>
-                        <span className="material-symbols-outlined text-muted group-hover:text-signal group-hover:translate-x-1 transition-all">
+                        <span className="material-symbols-outlined text-fgMuted group-hover:text-signal group-hover:translate-x-1 transition-all">
                           arrow_forward
                         </span>
                       </Link>
@@ -185,7 +185,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
         </section>
 
         {insightItems.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line">
+          <section className="py-20 md:py-28 border-b border-edge">
             <Container>
               <Reveal>
                 <Eyebrow index="G">Related insights</Eyebrow>

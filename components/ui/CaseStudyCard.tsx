@@ -14,7 +14,7 @@ export default function CaseStudyCard({
     <TiltCard max={5}>
       <Link
         href={`/work/${caseStudy.slug}`}
-        className="group block border border-line bg-paper hover:border-ink transition-colors duration-300"
+        className="group block border border-edge bg-surface hover:border-ink transition-colors duration-300"
       >
         <GenerativeArt
           seed={caseStudy.slug}
@@ -29,7 +29,7 @@ export default function CaseStudyCard({
             {capabilityNames.slice(0, 2).map((name) => (
               <span
                 key={name}
-                className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-line group-hover:border-lineOnInk text-muted group-hover:text-mutedOnInk"
+                className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-edge group-hover:border-lineOnInk text-fgMuted group-hover:text-mutedOnInk"
               >
                 {name}
               </span>
@@ -41,11 +41,11 @@ export default function CaseStudyCard({
           <h3 className="font-display text-xl sm:text-2xl font-semibold tracking-tight leading-snug mb-5">
             {caseStudy.title}
           </h3>
-          <div className="flex gap-6 pt-4 border-t border-line group-hover:border-lineOnInk">
+          <div className="flex gap-6 pt-4 border-t border-edge group-hover:border-lineOnInk">
             {caseStudy.results.slice(0, 2).map((r) => (
               <div key={r.label}>
                 <span className="font-display text-xl font-bold block">{r.metric}</span>
-                <span className="text-[11px] text-muted group-hover:text-mutedOnInk">{r.label}</span>
+                <span className="text-[11px] text-fgMuted group-hover:text-mutedOnInk">{r.label}</span>
               </div>
             ))}
           </div>

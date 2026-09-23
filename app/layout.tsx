@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Instrument_Serif, Space_Mono } from "next/font/google";
 import CustomCursor from "@/components/ui/CustomCursor";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 import "./globals.css";
 
 const inter = Inter({
@@ -66,14 +67,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${grotesk.variable} ${instrument.variable} ${spaceMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${grotesk.variable} ${instrument.variable} ${spaceMono.variable}`}
+    >
       <head>
+        <script
+          // Runs before paint so the correct theme class is set before
+          // React hydrates — prevents a light/dark flash on load.
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
         />
       </head>
-      <body className="bg-paper font-sans text-ink antialiased selection:bg-signal selection:text-paper">
+      <body className="bg-surface font-sans text-fg antialiased selection:bg-signal selection:text-ink transition-colors duration-300" suppressHydrationWarning>
+        <SmoothScroll />
         <CustomCursor />
         {children}
       </body>

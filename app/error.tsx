@@ -7,7 +7,7 @@ import Container from "@/components/ui/Container";
 
 export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full flex-1 flex items-center pt-32">
         <Container className="py-24 text-center">
@@ -17,7 +17,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
           <h1 className="font-display text-[18vw] sm:text-[160px] font-bold tracking-tightest leading-none mb-8">
             500
           </h1>
-          <p className="text-lg text-muted max-w-md mx-auto leading-relaxed mb-10">
+          <p className="text-lg text-fgMuted max-w-md mx-auto leading-relaxed mb-10">
             Something went wrong on our end. Try again, or head back to the homepage.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

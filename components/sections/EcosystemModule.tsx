@@ -11,7 +11,7 @@ const nodes = [
 
 export default function EcosystemModule() {
   return (
-    <section className="py-24 md:py-32 border-b border-line">
+    <section className="py-24 md:py-32 border-b border-edge">
       <Container>
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
@@ -21,26 +21,26 @@ export default function EcosystemModule() {
                 Independent brand. Shared infrastructure.
               </h2>
             </div>
-            <p className="max-w-sm text-muted leading-relaxed">
+            <p className="max-w-sm text-fgMuted leading-relaxed">
               Cordinit Media is a distinct brand within Cordinit &mdash; built to gain access to
               technology, talent and infrastructure without losing its own identity.
             </p>
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-line">
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-edge">
           {nodes.map((node, idx) => (
             <Reveal key={node.name} delay={idx * 60}>
               <div
-                className={`border-r border-b border-line p-8 min-h-[240px] flex flex-col justify-between ${
+                className={`border-r border-b border-edge p-8 min-h-[240px] flex flex-col justify-between ${
                   node.name === "Cordinit Media" ? "bg-ink text-paper" : ""
                 }`}
               >
-                <span className={`font-mono text-[11px] uppercase tracking-wider ${node.name === "Cordinit Media" ? "text-signal" : "text-muted"}`}>
+                <span className={`font-mono text-[11px] uppercase tracking-wider ${node.name === "Cordinit Media" ? "text-signal" : "text-fgMuted"}`}>
                   {node.role}
                 </span>
                 <h3 className="font-display text-2xl font-bold tracking-tight mt-6">{node.name}</h3>
-                <p className={`text-sm leading-relaxed mt-3 ${node.name === "Cordinit Media" ? "text-mutedOnInk" : "text-muted"}`}>
+                <p className={`text-sm leading-relaxed mt-3 ${node.name === "Cordinit Media" ? "text-mutedOnInk" : "text-fgMuted"}`}>
                   {node.desc}
                 </p>
               </div>

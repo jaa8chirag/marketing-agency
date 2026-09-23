@@ -5,7 +5,7 @@ import Container from "@/components/ui/Container";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full flex-1 flex items-center pt-32">
         <Container className="py-24 text-center">
@@ -15,7 +15,7 @@ export default function NotFound() {
           <h1 className="font-display text-[18vw] sm:text-[160px] font-bold tracking-tightest leading-none mb-8">
             404
           </h1>
-          <p className="text-lg text-muted max-w-md mx-auto leading-relaxed mb-10">
+          <p className="text-lg text-fgMuted max-w-md mx-auto leading-relaxed mb-10">
             This page doesn&apos;t exist &mdash; or the brief changed since we built it. Let&apos;s
             get you back to something useful.
           </p>

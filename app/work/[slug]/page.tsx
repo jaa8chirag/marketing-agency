@@ -40,7 +40,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const related = relatedCaseStudies({ capability: cs.capabilities[0], exclude: cs.slug });
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col">
+    <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
       <main className="w-full">
         <section className="bg-ink text-paper pt-40 pb-20 md:pt-48 md:pb-24 border-b border-lineOnInk">
@@ -83,24 +83,24 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </Container>
         </section>
 
-        <section className="py-20 md:py-28 border-b border-line">
+        <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-12">
               <div className="hidden lg:block">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-muted sticky top-32 block">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted sticky top-32 block">
                   The story
                 </span>
               </div>
               <div className="flex flex-col">
                 {narrative(cs).map((section) => (
                   <Reveal key={section.label}>
-                    <div className="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 py-10 border-b border-line">
+                    <div className="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 py-10 border-b border-edge">
                       <span className="font-mono text-xs font-bold text-signal">{section.index}</span>
                       <div>
                         <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-4">
                           {section.label}
                         </h2>
-                        <p className="text-lg text-muted leading-relaxed max-w-2xl">{section.text}</p>
+                        <p className="text-lg text-fgMuted leading-relaxed max-w-2xl">{section.text}</p>
                       </div>
                     </div>
                   </Reveal>
@@ -113,7 +113,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         <CaseStudyGallery slug={cs.slug} client={cs.client} />
 
         {related.length > 0 && (
-          <section className="py-20 md:py-28 border-b border-line">
+          <section className="py-20 md:py-28 border-b border-edge">
             <Container>
               <Reveal>
                 <Eyebrow index="H">Related case studies</Eyebrow>

@@ -5,7 +5,7 @@ import { operatingModel } from "@/lib/content";
 
 export default function OperatingModel() {
   return (
-    <section className="py-24 md:py-32 border-b border-line bg-ink text-paper relative overflow-hidden">
+    <section className="py-24 md:py-32 border-b border-edge bg-ink text-paper relative overflow-hidden">
       <div className="absolute inset-0 content-grid opacity-[0.06] pointer-events-none" />
       <Container className="relative">
         <Reveal>
