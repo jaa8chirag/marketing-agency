@@ -6,8 +6,8 @@
   html, body {
     margin: 0;
     padding: 0;
-    background-color: #FFFFFF;
-    color: #0F172A;
+    background-color: #F7F4EC;
+    color: #0A0A08;
     scroll-behavior: smooth;
   }
 
@@ -15,29 +15,84 @@
     overscroll-behavior: none;
   }
 
-  /* Custom sleek scrollbar for Light Mode */
+  ::selection {
+    background-color: #FF3B1F;
+    color: #F7F4EC;
+  }
+
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #F8FAFC;
+    background: #F7F4EC;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 4px;
+    background: #0A0A08;
+    border-radius: 0px;
+    border: 2px solid #F7F4EC;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+    background: #FF3B1F;
   }
 }
 
-/* Subtle animation utilities */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+@layer utilities {
+  .grain-overlay {
+    position: relative;
+  }
+  .grain-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--tw-bg-grain, none);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .content-grid {
+    background-image:
+      linear-gradient(to right, rgba(10,10,8,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,10,8,0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+@keyframes ticker-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+.animate-ticker-blink {
+  animation: ticker-blink 1.6s ease-in-out infinite;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
 }

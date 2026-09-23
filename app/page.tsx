@@ -1,25 +1,31 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import ClientTicker from "@/components/ClientTicker";
-import Portfolio from "@/components/Portfolio";
-import Capabilities from "@/components/Capabilities";
-import Culture from "@/components/Culture";
-import Impact from "@/components/Impact";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import HomeHero from "@/components/sections/HomeHero";
+import ClientNeedMapper from "@/components/sections/ClientNeedMapper";
+import CapabilitiesShowcase from "@/components/sections/CapabilitiesShowcase";
+import OperatingModel from "@/components/sections/OperatingModel";
+import FeaturedWork from "@/components/sections/FeaturedWork";
+import IndustriesTeaser from "@/components/sections/IndustriesTeaser";
+import SocialProof from "@/components/sections/SocialProof";
+import EcosystemModule from "@/components/sections/EcosystemModule";
+import InsightsTeaser from "@/components/sections/InsightsTeaser";
+import CTASection from "@/components/ui/CTASection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-darkText flex flex-col justify-between selection:bg-accentBlue selection:text-white">
+    <div className="min-h-screen bg-paper text-ink flex flex-col">
       <Header />
-      <main className="w-full pt-20">
-        <Hero />
-        <ClientTicker />
-        <Portfolio />
-        <Capabilities />
-        <Culture />
-        <Impact />
-        <Contact />
+      <main className="w-full">
+        <HomeHero />
+        <ClientNeedMapper />
+        <CapabilitiesShowcase />
+        <OperatingModel />
+        <FeaturedWork />
+        <IndustriesTeaser />
+        <SocialProof />
+        <EcosystemModule />
+        <InsightsTeaser />
+        <CTASection />
       </main>
       <Footer />
     </div>
