@@ -23,10 +23,22 @@ export function seedToHue(seed: string, salt = 0): number {
   return HUES[h % HUES.length];
 }
 
-// Deterministic photographic placeholder: same seed always resolves to the
-// same image (no hydration mismatch), distinct seeds resolve to distinct
-// images. Swap this for real client photography by pointing it at the CMS
-// asset URL once real assets exist.
+// Curated high-resolution editorial and category photography from Unsplash.
+// Highly reliable, cached on global CDNs, zero DNS/CORS failures on Vercel.
+const CURATED_SEED_IMAGES = [
+  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+];
+
 export function seedToImageUrl(seed: string, width = 640, height = 480): string {
-  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`;
+  const hash = hashString(seed);
+  return CURATED_SEED_IMAGES[hash % CURATED_SEED_IMAGES.length];
 }
