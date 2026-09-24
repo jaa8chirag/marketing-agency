@@ -110,6 +110,7 @@ export default function FeaturedWork() {
                             <img
                               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80"
                               alt="UGC Creator 1"
+                              referrerPolicy="no-referrer"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
@@ -133,6 +134,7 @@ export default function FeaturedWork() {
                             <img
                               src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80"
                               alt="UGC Creator 3"
+                              referrerPolicy="no-referrer"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
@@ -156,6 +158,7 @@ export default function FeaturedWork() {
                             <img
                               src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&auto=format&fit=crop&q=80"
                               alt="UGC Creator Center"
+                              referrerPolicy="no-referrer"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/40" />
@@ -186,6 +189,7 @@ export default function FeaturedWork() {
                         <motion.img
                           src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?w=800&auto=format&fit=crop&q=80"
                           alt="RaceTrac Car Stunt"
+                          referrerPolicy="no-referrer"
                           animate={
                             isHovered
                               ? { scale: 1.12, x: -6 }

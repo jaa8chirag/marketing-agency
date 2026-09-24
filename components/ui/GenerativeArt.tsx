@@ -28,19 +28,23 @@ export default function GenerativeArt({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
-        alt=""
+        alt={label || seed || "visual"}
         loading="lazy"
         decoding="async"
+        referrerPolicy="no-referrer"
+        crossOrigin="anonymous"
         className={`absolute inset-0 w-full h-full object-cover ${
           interactive ? "transition-transform duration-700 ease-out hover:scale-110" : ""
         }`}
       />
+      {/* Subtle brand tinting that preserves the vivid clarity of the photograph */}
       <div
-        className="absolute inset-0 pointer-events-none mix-blend-color"
-        style={{ backgroundColor: `hsl(${hue} 70% 35%)`, opacity: 0.4 }}
+        className="absolute inset-0 pointer-events-none mix-blend-color opacity-20"
+        style={{ backgroundColor: `hsl(${hue} 70% 35%)` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-ink/25 pointer-events-none" />
-      <div className="absolute inset-0 bg-grain opacity-20 mix-blend-overlay pointer-events-none" />
+      {/* Clean cinematic vignette for readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-grain opacity-10 mix-blend-overlay pointer-events-none" />
 
       {(label || index) && (
         <div className="absolute inset-0 flex flex-col justify-between p-5 pointer-events-none">

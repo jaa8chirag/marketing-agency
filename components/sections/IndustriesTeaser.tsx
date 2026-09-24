@@ -102,6 +102,7 @@ export default function IndustriesTeaser() {
                           alt={ind.name}
                           loading="lazy"
                           decoding="async"
+                          referrerPolicy="no-referrer"
                           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                         {/* Ambient gradient vignette */}
