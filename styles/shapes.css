@@ -1,0 +1,56 @@
+/* Card shape presets — clip-path as the universal base (works everywhere),
+   with the native CSS `corner-shape` property layered on as a progressive
+   enhancement where a matching Houdini keyword exists (notch, bevel).
+   Every shape leaves at least 24px clear on the cut side, which is smaller
+   than the smallest card padding (p-6 = 24px) already in use, so no card
+   content is ever clipped. */
+
+/* Capabilities family — single notch, top-right. 20px, safely inside the
+   28px (p-7) padding used by every card that gets this shape. */
+.shape-notch {
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+}
+@supports (corner-shape: notch) {
+  .shape-notch {
+    clip-path: none;
+    border-radius: 0 20px 0 0;
+    corner-shape: round notch round round;
+  }
+}
+
+/* Operating model — diagonal cut, bottom-right. 18px, safely inside the
+   24px (p-6) padding used by these cards. */
+.shape-diagonal {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+}
+
+/* Industries family — all four corners beveled */
+.shape-bevel {
+  clip-path: polygon(
+    18px 0, calc(100% - 18px) 0, 100% 18px,
+    100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%,
+    0 calc(100% - 18px), 0 18px
+  );
+}
+@supports (corner-shape: bevel) {
+  .shape-bevel {
+    clip-path: none;
+    border-radius: 18px;
+    corner-shape: bevel;
+  }
+}
+
+/* Ecosystem nodes — true hexagon. 22px, safely inside the 32px (p-8)
+   padding used by these cards. */
+.shape-hexagon {
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 0 50%);
+}
+
+/* Insights — asymmetric radius, dog-eared editorial corner. 24px, safely
+   inside the 28px (p-7) padding of the content area below the image. */
+.shape-asymmetric {
+  border-radius: 0 40px 0 24px;
+}
+
+/* Remaining presets (pill, ticket, arch, blob) are added when their
+   sections are scoped in a later checkpoint — not needed yet. */

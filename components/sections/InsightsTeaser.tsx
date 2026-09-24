@@ -25,9 +25,7 @@ export default function InsightsTeaser() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {featured.map((insight, idx) => (
-            <Reveal key={insight.slug} delay={idx * 60}>
-              <InsightCard insight={insight} />
-            </Reveal>
+            <InsightCard key={insight.slug} insight={insight} index={idx} />
           ))}
         </div>
       </Container>

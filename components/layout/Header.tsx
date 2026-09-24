@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { navCapabilities, relatedCaseStudies, capabilities } from "@/lib/content";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import CyclingWord from "@/components/fx/CyclingWord";
 
 const navLinks = [
   { label: "Industries", href: "/industries" },
@@ -95,7 +96,8 @@ export default function Header() {
           </div>
           <div className="flex flex-col leading-none">
             <span className={`font-display text-lg font-bold tracking-tight transition-colors ${textTone}`}>
-              CORDINIT <span className="text-signal">MEDIA</span>
+              CORDINIT<span className="text-signal">.</span>{" "}
+              <CyclingWord className="text-signal" />
             </span>
             <span className={`font-mono text-[9px] uppercase tracking-superwide mt-1 transition-colors ${mutedTone}`}>
               Creative &middot; Media &middot; Growth

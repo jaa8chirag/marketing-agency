@@ -112,9 +112,7 @@ export default function InsightPage({ params }: { params: { slug: string } }) {
               </Reveal>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 {related.map((i, idx) => (
-                  <Reveal key={i.slug} delay={idx * 60}>
-                    <InsightCard insight={i} />
-                  </Reveal>
+                  <InsightCard key={i.slug} insight={i} index={idx} />
                 ))}
               </div>
             </Container>

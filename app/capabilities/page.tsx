@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import CTASection from "@/components/ui/CTASection";
-import CapabilitiesIndexList from "@/components/sections/CapabilitiesIndexList";
+import CapabilitiesAccordion from "@/components/sections/CapabilitiesAccordion";
 import { capabilities } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -21,13 +21,13 @@ export default function CapabilitiesPage() {
         <PageHero
           eyebrow="Capabilities"
           title="Eight capabilities, working as one system."
-          description="Every engagement starts with the problem, not the department. These are the capabilities we bring together to solve it — individually or fully integrated. Hover a row for a preview."
+          description="Every engagement starts with the problem, not the department. These are the capabilities we bring together to solve it — individually or fully integrated. Open a row to preview it."
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Capabilities" }]}
         />
 
         <section className="py-20 md:py-28">
           <Container>
-            <CapabilitiesIndexList capabilities={capabilities} />
+            <CapabilitiesAccordion capabilities={capabilities} />
           </Container>
         </section>
 

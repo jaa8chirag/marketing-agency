@@ -2,6 +2,8 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
+import RevealOnScroll from "@/components/fx/RevealOnScroll";
+import Magnetic from "@/components/ui/Magnetic";
 
 const nodes = [
   { name: "Cordinit", role: "Parent ecosystem", desc: "The group that brings technology, capital and operating infrastructure to every business inside it." },
@@ -28,23 +30,25 @@ export default function EcosystemModule() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-edge">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {nodes.map((node, idx) => (
-            <Reveal key={node.name} delay={idx * 60}>
-              <div
-                className={`border-r border-b border-edge p-8 min-h-[240px] flex flex-col justify-between ${
-                  node.name === "Cordinit Media" ? "bg-ink text-paper" : ""
-                }`}
-              >
-                <span className={`font-mono text-[11px] uppercase tracking-wider ${node.name === "Cordinit Media" ? "text-signal" : "text-fgMuted"}`}>
-                  {node.role}
-                </span>
-                <h3 className="font-display text-2xl font-bold tracking-tight mt-6">{node.name}</h3>
-                <p className={`text-sm leading-relaxed mt-3 ${node.name === "Cordinit Media" ? "text-mutedOnInk" : "text-fgMuted"}`}>
-                  {node.desc}
-                </p>
-              </div>
-            </Reveal>
+            <RevealOnScroll key={node.name} variant="scaleIn" index={idx} staggerDelay={0.12}>
+              <Magnetic strength={0.12} className="block h-full">
+                <div
+                  className={`shape-hexagon border border-edge p-8 min-h-[240px] flex flex-col justify-between ${
+                    node.name === "Cordinit Media" ? "bg-ink text-paper border-lineOnInk" : ""
+                  }`}
+                >
+                  <span className={`font-mono text-[11px] uppercase tracking-wider ${node.name === "Cordinit Media" ? "text-signal" : "text-fgMuted"}`}>
+                    {node.role}
+                  </span>
+                  <h3 className="font-display text-2xl font-bold tracking-tight mt-6">{node.name}</h3>
+                  <p className={`text-sm leading-relaxed mt-3 ${node.name === "Cordinit Media" ? "text-mutedOnInk" : "text-fgMuted"}`}>
+                    {node.desc}
+                  </p>
+                </div>
+              </Magnetic>
+            </RevealOnScroll>
           ))}
         </div>
 

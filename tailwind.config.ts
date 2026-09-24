@@ -36,9 +36,8 @@ const config: Config = {
         edge: "rgb(var(--color-edge) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "sans-serif"],
-        display: ["var(--font-grotesk)", "'Space Grotesk'", "sans-serif"],
-        serif: ["var(--font-instrument)", "'Instrument Serif'", "serif"],
+        sans: ["var(--font-sora)", "Sora", "sans-serif"],
+        display: ["var(--font-sora)", "Sora", "sans-serif"],
         mono: ["var(--font-space-mono)", "'Space Mono'", "monospace"],
       },
       letterSpacing: {

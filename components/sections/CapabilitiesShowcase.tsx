@@ -3,9 +3,15 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
-import TiltCard from "@/components/ui/TiltCard";
 import GenerativeArt from "@/components/ui/GenerativeArt";
+import RevealOnScroll from "@/components/fx/RevealOnScroll";
+import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
 import { capabilities } from "@/lib/content";
+
+// Surface reset: the spectrumui default is a plain white/neutral rounded
+// card — stripped here so only our own shape-notch + overlays are visible,
+// with the real depth-tilt/glare mechanics from the component underneath.
+const TILT_SURFACE = "h-full rounded-none border-0 bg-transparent shadow-none p-0 dark:border-0 dark:bg-transparent dark:shadow-none";
 
 export default function CapabilitiesShowcase() {
   return (
@@ -28,36 +34,53 @@ export default function CapabilitiesShowcase() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-edge">
           {capabilities.map((cap, idx) => (
-            <Reveal key={cap.slug} delay={idx * 40}>
-              <TiltCard max={6} className="h-full">
+            <RevealOnScroll key={cap.slug} variant="cascadeGrid" index={idx}>
+              <TiltCard
+                maxTilt={10}
+                scale={1.015}
+                glareColor="rgba(38, 214, 46, 0.35)"
+                containerClassName="h-full"
+                className={TILT_SURFACE}
+              >
                 <Link
                   href={`/capabilities/${cap.slug}`}
-                  className="group relative block h-full border-r border-b border-edge min-h-[280px] overflow-hidden"
+                  className="group relative block h-full shape-notch border-r border-b border-edge min-h-[280px] overflow-hidden"
                 >
                   <div className="absolute inset-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
                     <GenerativeArt seed={cap.slug} interactive={false} width={480} height={360} className="w-full h-full" />
                   </div>
                   <div className="absolute inset-0 bg-surface/50 group-hover:bg-ink/55 transition-colors duration-500" />
 
-                  <div className="relative z-10 p-7 h-full flex flex-col justify-between">
+                  <div
+                    className="relative z-10 p-7 h-full flex flex-col justify-between"
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs font-bold text-signal group-hover:text-lime">{cap.num}</span>
-                      <span className="material-symbols-outlined text-fgMuted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
-                        arrow_outward
-                      </span>
+                      <TiltCardItem depth={22}>
+                        <span className="font-mono text-xs font-bold text-signal group-hover:text-lime">{cap.num}</span>
+                      </TiltCardItem>
+                      <TiltCardItem depth={28}>
+                        <span className="material-symbols-outlined text-fgMuted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
+                          arrow_outward
+                        </span>
+                      </TiltCardItem>
                     </div>
                     <div>
-                      <h3 className="font-display text-xl font-semibold tracking-tight mt-8 mb-3 leading-tight text-fg group-hover:text-paper transition-colors">
-                        {cap.name}
-                      </h3>
-                      <p className="text-sm text-fgMuted group-hover:text-paper/85 leading-relaxed transition-colors">
-                        {cap.tagline}
-                      </p>
+                      <TiltCardItem depth={42}>
+                        <h3 className="font-display text-xl font-semibold tracking-tight mt-8 mb-3 leading-tight text-fg group-hover:text-paper transition-colors">
+                          {cap.name}
+                        </h3>
+                      </TiltCardItem>
+                      <TiltCardItem depth={26}>
+                        <p className="text-sm text-fgMuted group-hover:text-paper/85 leading-relaxed transition-colors">
+                          {cap.tagline}
+                        </p>
+                      </TiltCardItem>
                     </div>
                   </div>
                 </Link>
               </TiltCard>
-            </Reveal>
+            </RevealOnScroll>
           ))}
         </div>
 

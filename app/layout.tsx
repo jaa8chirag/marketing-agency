@@ -1,27 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, Instrument_Serif, Space_Mono } from "next/font/google";
+import { Sora, Space_Mono } from "next/font/google";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import "./globals.css";
+import "@/styles/shapes.css";
 
-const inter = Inter({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const grotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-grotesk",
-  display: "swap",
-});
-
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -70,7 +57,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${grotesk.variable} ${instrument.variable} ${spaceMono.variable}`}
+      className={`${sora.variable} ${spaceMono.variable}`}
     >
       <head>
         <script
