@@ -133,3 +133,46 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Animated Glassmorphism Brand Text */
+@keyframes glassShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-glass-shine {
+  animation: glassShimmer 5.5s linear infinite;
+}
+
+.animate-glass-shine:hover {
+  animation-duration: 2.2s;
+}
+
+.glass-brand-text {
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.95) 20%,
+    rgba(38, 214, 46, 0.95) 35%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(168, 255, 175, 0.9) 60%,
+    rgba(255, 255, 255, 0.95) 80%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 15px 35px rgba(38, 214, 46, 0.35)) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.5));
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.glass-brand-text:hover {
+  filter: drop-shadow(0 25px 60px rgba(38, 214, 46, 0.7)) drop-shadow(0 0 35px rgba(255, 255, 255, 0.9));
+  transform: scale(1.02);
+}
+

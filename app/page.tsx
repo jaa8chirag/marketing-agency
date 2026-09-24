@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main className="relative z-20 w-full bg-surface shadow-[0_50px_100px_rgba(0,0,0,0.9)]">
         <HomeHero />
         <ClientNeedMapper />
         <CapabilitiesShowcase />
@@ -23,8 +23,8 @@ export default function Home() {
         <FeaturedWork />
         <IndustriesTeaser />
         <SocialProof />
-        <EcosystemModule />
         <InsightsTeaser />
+        <EcosystemModule />
         <CTASection />
       </main>
       <Footer />

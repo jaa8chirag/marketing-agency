@@ -45,23 +45,24 @@ export interface TiltCardItemProps {
   /** Lift toward the viewer in pixels while the card is hovered. Default 0 */
   depth?: number
   className?: string
+  style?: React.CSSProperties
 }
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-/** Spring used while the pointer is tracking across the card */
+/** Lightning-fast responsive spring for instantaneous tilt on hover */
 const TRACK_SPRING = {
   type: "spring",
-  stiffness: 260,
-  damping: 22,
-  mass: 0.6,
+  stiffness: 1400,
+  damping: 42,
+  mass: 0.08,
 } as const
-/** Softer spring so the card settles gently back to rest on pointer leave */
+/** Snappy reset spring so the card smoothly resets without drag */
 const RESET_SPRING = {
   type: "spring",
-  stiffness: 140,
-  damping: 18,
-  mass: 1,
+  stiffness: 320,
+  damping: 24,
+  mass: 0.5,
 } as const
 /** Normalized pointer position at rest (card center) */
 const REST_POINT = 0.5
@@ -74,12 +75,12 @@ const TiltCardContext = createContext<{ hovered: boolean }>({ hovered: false })
 
 export function TiltCard({
   children,
-  maxTilt = 12,
+  maxTilt = 14,
   tiltReverse = false,
-  scale = 1.02,
+  scale = 1.03,
   perspective = 1000,
   glare = true,
-  glareColor = "rgba(255, 255, 255, 0.35)",
+  glareColor = "rgba(255, 255, 255, 0.2)",
   containerClassName,
   className,
 }: TiltCardProps) {
@@ -105,7 +106,7 @@ export function TiltCard({
   )
   const glarePosX = useTransform(tiltX, (value) => value * 100)
   const glarePosY = useTransform(tiltY, (value) => value * 100)
-  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glarePosX}% ${glarePosY}%, ${glareColor}, transparent 65%)`
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glarePosX}% ${glarePosY}%, ${glareColor}, transparent 60%)`
 
   // Stop any in-flight tilt animations if the card unmounts mid-gesture
   useEffect(
@@ -126,13 +127,19 @@ export function TiltCard({
     [tiltX, tiltY, shouldReduceMotion],
   )
 
+  // Immediately animate to pointer position on enter — no lag or wait
   const handlePointerEnter = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       if (event.pointerType !== "mouse" || shouldReduceMotion) return
       setHovered(true)
       cardScale.set(scale)
+      const rect = event.currentTarget.getBoundingClientRect()
+      const initialX = (event.clientX - rect.left) / rect.width
+      const initialY = (event.clientY - rect.top) / rect.height
+      animate(tiltX, initialX, TRACK_SPRING)
+      animate(tiltY, initialY, TRACK_SPRING)
     },
-    [cardScale, scale, shouldReduceMotion],
+    [cardScale, scale, shouldReduceMotion, tiltX, tiltY],
   )
 
   const handlePointerLeave = useCallback(() => {
@@ -186,8 +193,8 @@ export function TiltCard({
             className="pointer-events-none absolute inset-0 rounded-[inherit]"
             style={{ background: glareBackground, transform: "translateZ(1px)" }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            animate={{ opacity: hovered ? 0.7 : 0 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
           />
         )}
       </motion.div>
@@ -199,6 +206,7 @@ export function TiltCardItem({
   children,
   depth = 0,
   className,
+  style,
 }: TiltCardItemProps) {
   const shouldReduceMotion = useReducedMotion()
   const { hovered } = useContext(TiltCardContext)
@@ -207,12 +215,13 @@ export function TiltCardItem({
   return (
     <div
       className={cn(
-        "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none",
+        "transition-transform duration-75 ease-out will-change-transform motion-reduce:transition-none",
         className,
       )}
       style={{
         transform: lifted ? `translateZ(${depth}px)` : "translateZ(0px)",
         transformStyle: "preserve-3d",
+        ...style,
       }}
     >
       {children}

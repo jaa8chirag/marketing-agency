@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -8,14 +10,9 @@ import RevealOnScroll from "@/components/fx/RevealOnScroll";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
 import { capabilities } from "@/lib/content";
 
-// Surface reset: the spectrumui default is a plain white/neutral rounded
-// card — stripped here so only our own shape-notch + overlays are visible,
-// with the real depth-tilt/glare mechanics from the component underneath.
-const TILT_SURFACE = "h-full rounded-none border-0 bg-transparent shadow-none p-0 dark:border-0 dark:bg-transparent dark:shadow-none";
-
 export default function CapabilitiesShowcase() {
   return (
-    <section className="py-24 md:py-32 border-b border-edge" id="capabilities">
+    <section className="py-24 md:py-32 border-b border-edge bg-surface" id="capabilities">
       <Container>
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
@@ -32,60 +29,97 @@ export default function CapabilitiesShowcase() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-edge">
+        {/* 3D SpectrumUI Tilt Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {capabilities.map((cap, idx) => (
             <RevealOnScroll key={cap.slug} variant="cascadeGrid" index={idx}>
               <TiltCard
-                maxTilt={10}
-                scale={1.015}
-                glareColor="rgba(38, 214, 46, 0.35)"
+                maxTilt={16}
+                scale={1.035}
+                perspective={1000}
+                glare={true}
+                glareColor="rgba(38, 214, 46, 0.12)"
                 containerClassName="h-full"
-                className={TILT_SURFACE}
+                className="h-full rounded-2xl border border-lineOnInk/70 bg-ink text-paper overflow-hidden shadow-xl hover:shadow-[0_24px_50px_rgba(0,0,0,0.55)] hover:border-signal/35 transition-[border-color,box-shadow] duration-200 p-5 flex flex-col justify-between group"
               >
                 <Link
                   href={`/capabilities/${cap.slug}`}
-                  className="group relative block h-full shape-notch border-r border-b border-edge min-h-[280px] overflow-hidden"
+                  className="block h-full flex flex-col justify-between"
+                  style={{ transformStyle: "preserve-3d" }}
                 >
-                  <div className="absolute inset-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-                    <GenerativeArt seed={cap.slug} interactive={false} width={480} height={360} className="w-full h-full" />
-                  </div>
-                  <div className="absolute inset-0 bg-surface/50 group-hover:bg-ink/55 transition-colors duration-500" />
+                  <div>
+                    {/* 3D Floating Visual Header with Generative Art Photography */}
+                    <TiltCardItem depth={24} className="relative h-44 w-full overflow-hidden rounded-xl border border-lineOnInk/60 mb-5">
+                      <GenerativeArt
+                        seed={cap.slug}
+                        interactive={false}
+                        width={480}
+                        height={360}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent pointer-events-none" />
 
-                  <div
-                    className="relative z-10 p-7 h-full flex flex-col justify-between"
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <TiltCardItem depth={22}>
-                        <span className="font-mono text-xs font-bold text-signal group-hover:text-lime">{cap.num}</span>
-                      </TiltCardItem>
-                      <TiltCardItem depth={28}>
-                        <span className="material-symbols-outlined text-fgMuted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
-                          arrow_outward
-                        </span>
-                      </TiltCardItem>
-                    </div>
-                    <div>
-                      <TiltCardItem depth={42}>
-                        <h3 className="font-display text-xl font-semibold tracking-tight mt-8 mb-3 leading-tight text-fg group-hover:text-paper transition-colors">
-                          {cap.name}
-                        </h3>
-                      </TiltCardItem>
-                      <TiltCardItem depth={26}>
-                        <p className="text-sm text-fgMuted group-hover:text-paper/85 leading-relaxed transition-colors">
-                          {cap.tagline}
-                        </p>
-                      </TiltCardItem>
-                    </div>
+                      {/* Floating HUD Badges inside image */}
+                      <div className="absolute inset-0 p-3.5 flex items-start justify-between pointer-events-none">
+                        <TiltCardItem depth={45}>
+                          <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-signal bg-ink/85 border border-lineOnInk/80 px-2.5 py-1 rounded-md shadow-md backdrop-blur-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-signal animate-pulse" />
+                            {cap.num}
+                          </span>
+                        </TiltCardItem>
+
+                        <TiltCardItem depth={50}>
+                          <span className="w-8 h-8 rounded-full bg-signal text-ink flex items-center justify-center font-bold shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:bg-lime">
+                            <span className="material-symbols-outlined text-[18px]">arrow_outward</span>
+                          </span>
+                        </TiltCardItem>
+                      </div>
+                    </TiltCardItem>
+
+                    {/* Card Typography & Details floating at distinctive 3D depths */}
+                    <TiltCardItem depth={38}>
+                      <h3 className="font-display text-xl font-bold tracking-tight leading-snug text-paper group-hover:text-signal transition-colors mb-2">
+                        {cap.name}
+                      </h3>
+                    </TiltCardItem>
+
+                    <TiltCardItem depth={28}>
+                      <p className="font-mono text-xs text-lime/90 mb-3 line-clamp-1">
+                        &ldquo;{cap.tagline}&rdquo;
+                      </p>
+                    </TiltCardItem>
+
+                    <TiltCardItem depth={20}>
+                      <p className="text-xs text-mutedOnInk line-clamp-2 leading-relaxed mb-4">
+                        {cap.summary}
+                      </p>
+                    </TiltCardItem>
                   </div>
+
+                  {/* Services Deliverables Chips floating on bottom layer */}
+                  <TiltCardItem depth={32} className="pt-3 border-t border-lineOnInk/60 mt-2">
+                    <div className="flex flex-wrap gap-1.5">
+                      {cap.services.slice(0, 2).map((s) => (
+                        <span
+                          key={s.slug}
+                          className="inline-flex items-center gap-1 text-[11px] font-mono text-paper/75 bg-surfaceDim/25 border border-lineOnInk/60 rounded px-2 py-0.5"
+                        >
+                          <span className="w-1 h-1 rounded-full bg-signal" />
+                          <span className="truncate max-w-[110px]">{s.name}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </TiltCardItem>
                 </Link>
               </TiltCard>
             </RevealOnScroll>
           ))}
         </div>
 
-        <Reveal className="mt-10 flex justify-center">
-          <Button href="/capabilities" variant="outline">View all capabilities</Button>
+        <Reveal className="mt-12 flex justify-center">
+          <Button href="/capabilities" variant="outline">
+            View all capabilities
+          </Button>
         </Reveal>
       </Container>
     </section>
