@@ -36,6 +36,15 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* CSS filter (not backdrop-filter) so it also catches GSAP's
+     position:fixed pinned hero — backdrop-filter can't sample content
+     that a scroll library re-parents to fixed positioning at runtime. */
+  body.mega-menu-open main {
+    filter: blur(18px) brightness(0.55);
+    transition: filter 0.3s ease;
+    pointer-events: none;
+  }
+
   ::selection {
     background-color: #26D62E;
     color: #141414;

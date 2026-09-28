@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
-import { navCapabilities, relatedCaseStudies, capabilities } from "@/lib/content";
+import { navCapabilities } from "@/lib/content";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import CyclingWord from "@/components/fx/CyclingWord";
+import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
 
 const navLinks = [
   { label: "Industries", href: "/industries" },
@@ -25,13 +26,21 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [announceOpen, setAnnounceOpen] = useState(true);
   const [megaOpen, setMegaOpen] = useState(false);
-  const [activeCap, setActiveCap] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileCapOpen, setMobileCapOpen] = useState(false);
+  const megaCloseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const active = navCapabilities[activeCap];
-  const activeFull = capabilities[activeCap];
-  const featured = relatedCaseStudies({ capability: activeFull.slug })[0];
+  function openMega() {
+    if (megaCloseTimeout.current) clearTimeout(megaCloseTimeout.current);
+    setMegaOpen(true);
+  }
+  function scheduleCloseMega() {
+    megaCloseTimeout.current = setTimeout(() => setMegaOpen(false), 150);
+  }
+  function closeMega() {
+    if (megaCloseTimeout.current) clearTimeout(megaCloseTimeout.current);
+    setMegaOpen(false);
+  }
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -57,6 +66,11 @@ export default function Header() {
       ease: "power3.out",
     });
   }, [hidden]);
+
+  useEffect(() => {
+    document.body.classList.toggle("mega-menu-open", megaOpen);
+    return () => document.body.classList.remove("mega-menu-open");
+  }, [megaOpen]);
 
   const transparent = isHome && !scrolled && !megaOpen && !mobileOpen;
   const textTone = transparent ? "text-paper" : "text-fg";
@@ -106,11 +120,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1 font-mono text-[11px] uppercase tracking-widest font-bold">
-          <div
-            className="relative"
-            onMouseEnter={() => setMegaOpen(true)}
-            onMouseLeave={() => setMegaOpen(false)}
-          >
+          <div onMouseEnter={openMega} onMouseLeave={scheduleCloseMega}>
             <button
               type="button"
               className={`px-4 py-2.5 flex items-center gap-1.5 transition-colors ${
@@ -120,75 +130,6 @@ export default function Header() {
               Capabilities
               <span className="material-symbols-outlined text-[16px]">expand_more</span>
             </button>
-
-            {megaOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[900px]">
-                <div className="bg-ink text-paper border border-lineOnInk shadow-2xl grid grid-cols-[260px_1fr_280px]">
-                  <div className="border-r border-lineOnInk py-3">
-                    {navCapabilities.map((cap, idx) => (
-                      <button
-                        key={cap.slug}
-                        type="button"
-                        onMouseEnter={() => setActiveCap(idx)}
-                        className={`w-full text-left px-6 py-2.5 flex items-center gap-3 transition-colors ${
-                          activeCap === idx ? "bg-signal text-ink" : "text-mutedOnInk hover:text-paper"
-                        }`}
-                      >
-                        <span className="text-[10px] font-bold">{cap.num}</span>
-                        <span className="normal-case font-sans text-[13px] font-semibold tracking-normal">
-                          {cap.name}
-                        </span>
-                      </button>
-                    ))}
-                    <Link
-                      href="/capabilities"
-                      className="block px-6 pt-4 mt-2 border-t border-lineOnInk text-lime normal-case font-sans text-[13px] font-semibold tracking-normal hover:text-paper transition-colors"
-                    >
-                      View all capabilities &rarr;
-                    </Link>
-                  </div>
-                  <div className="p-6 border-r border-lineOnInk">
-                    <span className="text-[10px] text-mutedOnInk block mb-4">Services</span>
-                    <ul className="grid grid-cols-1 gap-1">
-                      {active.services.map((s) => (
-                        <li key={s.slug}>
-                          <Link
-                            href={`/capabilities/${active.slug}/${s.slug}`}
-                            className="normal-case font-sans text-[14px] font-medium text-paper/90 hover:text-lime transition-colors flex items-center justify-between group py-1.5"
-                          >
-                            {s.name}
-                            <span className="material-symbols-outlined text-[15px] opacity-0 group-hover:opacity-100 transition-opacity">
-                              arrow_outward
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href={`/capabilities/${active.slug}`}
-                      className="inline-block mt-5 pt-4 border-t border-lineOnInk normal-case font-sans text-[13px] font-semibold text-signal hover:text-lime transition-colors"
-                    >
-                      Explore {active.name} &rarr;
-                    </Link>
-                  </div>
-                  {featured && (
-                    <Link href={`/work/${featured.slug}`} className="group block p-5">
-                      <span className="text-[10px] text-mutedOnInk block mb-3">Featured Work</span>
-                      <GenerativeArt
-                        seed={featured.slug}
-                        label={featured.client}
-                        width={480}
-                        height={320}
-                        className="w-full aspect-[4/3] mb-3 border border-lineOnInk"
-                      />
-                      <p className="normal-case font-sans text-[13px] font-semibold text-paper/90 group-hover:text-lime transition-colors leading-snug">
-                        {featured.title}
-                      </p>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
 
           {navLinks.map((link) => (
@@ -246,6 +187,99 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {megaOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-ink/30"
+            aria-hidden="true"
+            onMouseEnter={openMega}
+            onMouseLeave={scheduleCloseMega}
+            onClick={closeMega}
+          />
+          <div
+            className="hidden lg:block absolute top-full left-0 w-full z-50"
+            onMouseEnter={openMega}
+            onMouseLeave={scheduleCloseMega}
+          >
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={closeMega}
+              className="absolute top-6 right-6 sm:right-10 lg:right-14 z-10 w-10 h-10 rounded-full border border-paper/30 flex items-center justify-center text-paper hover:border-signal hover:text-signal transition-colors"
+            >
+              <span className="material-symbols-outlined text-[20px]">close</span>
+            </button>
+            <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 py-10 grid grid-cols-[300px_1fr] gap-12">
+              <div className="flex flex-col justify-between border-r border-paper/15 pr-10">
+                <div>
+                  <span className="font-mono text-[10px] uppercase tracking-superwide text-paper/60 block mb-4">
+                    Capabilities
+                  </span>
+                  <h3 className="normal-case font-display text-3xl font-bold leading-tight tracking-tight text-paper mb-4">
+                    Ideas that create. Technology that connects. Growth that performs.
+                  </h3>
+                  <p className="normal-case font-sans text-sm text-paper/70 leading-relaxed">
+                    Eight connected capabilities working from a single brief.
+                  </p>
+                </div>
+                <Link
+                  href="/capabilities"
+                  onClick={() => setMegaOpen(false)}
+                  className="mt-8 inline-flex items-center justify-center border border-paper/30 rounded-full px-5 py-3 font-mono text-[11px] uppercase tracking-widest font-bold text-paper hover:border-signal hover:text-signal transition-colors"
+                >
+                  Explore all capabilities
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-3 gap-5">
+                {navCapabilities.map((cap) => (
+                  <TiltCard
+                    key={cap.slug}
+                    maxTilt={10}
+                    scale={1.03}
+                    perspective={900}
+                    glare
+                    glareColor="rgba(255, 255, 255, 0.15)"
+                    containerClassName="h-[150px]"
+                    className="group h-full rounded-2xl bg-ink border border-lineOnInk/70 overflow-hidden shadow-xl hover:border-signal/40 hover:shadow-[0_20px_45px_rgba(0,0,0,0.55)] transition-[border-color,box-shadow] duration-200"
+                  >
+                    <Link
+                      href={`/capabilities/${cap.slug}`}
+                      onClick={() => setMegaOpen(false)}
+                      className="relative flex h-full w-full flex-col justify-between p-5"
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      <div className="absolute inset-y-0 right-0 w-[58%]">
+                        <GenerativeArt
+                          seed={cap.slug}
+                          interactive={false}
+                          width={320}
+                          height={300}
+                          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/10 to-transparent" />
+                      </div>
+
+                      <TiltCardItem depth={30} className="relative z-10 max-w-[55%]">
+                        <h4 className="normal-case font-display text-lg font-bold leading-snug text-paper">
+                          {cap.name}
+                        </h4>
+                      </TiltCardItem>
+                      <TiltCardItem depth={22} className="relative z-10">
+                        <span className="inline-flex items-center gap-1 normal-case font-sans text-[13px] font-semibold text-paper/80 group-hover:text-lime transition-colors">
+                          Explore
+                          <span className="material-symbols-outlined text-[15px]">arrow_outward</span>
+                        </span>
+                      </TiltCardItem>
+                    </Link>
+                  </TiltCard>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 top-20 bg-surface z-40 overflow-y-auto border-t border-edge">
