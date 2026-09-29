@@ -4,23 +4,37 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
-import type { NavCapability } from "@/lib/queries";
+import type { NavCapability, SiteSettings } from "@/lib/queries";
 import { trackEvent } from "@/lib/analytics";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import CyclingWord from "@/components/fx/CyclingWord";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
 
-const navLinks = [
+// Fallback used only when no siteSettings prop is passed (e.g. app/error.tsx,
+// which renders HeaderClient directly without hitting the database).
+const FALLBACK_NAV_LINKS = [
   { label: "Industries", href: "/industries" },
   { label: "Work", href: "/work" },
   { label: "Insights", href: "/insights" },
   { label: "About", href: "/about" },
 ];
 
-export default function HeaderClient({ navCapabilities }: { navCapabilities: NavCapability[] }) {
+export default function HeaderClient({
+  navCapabilities,
+  siteSettings,
+}: {
+  navCapabilities: NavCapability[];
+  siteSettings?: SiteSettings;
+}) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  const navLinks = siteSettings?.primaryNavLinks.length ? siteSettings.primaryNavLinks : FALLBACK_NAV_LINKS;
+  const ctaLabel = siteSettings?.primaryCtaLabel ?? "Book a Call";
+  const ctaHref = siteSettings?.primaryCtaHref ?? "/contact?intent=book-a-call";
+  const announcementText = siteSettings?.announcementText ?? null;
+  const announcementHref = siteSettings?.announcementHref ?? ctaHref;
 
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -91,16 +105,16 @@ export default function HeaderClient({ navCapabilities }: { navCapabilities: Nav
           transparent ? "bg-transparent" : "bg-surface/95 backdrop-blur-md border-b border-edge"
         }`}
       >
-      {announceOpen && (
+      {announceOpen && announcementText && (
         <div className={`w-full ${transparent ? "bg-black/30 backdrop-blur-sm" : "bg-ink"} text-paper`}>
           <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 h-9 flex items-center justify-between font-mono text-[11px]">
             <Link
-              href="/contact?intent=book-a-call"
-              onClick={() => trackEvent("book_call_click", { href: "/contact?intent=book-a-call", location: "announcement-bar" })}
+              href={announcementHref}
+              onClick={() => trackEvent("book_call_click", { href: announcementHref, location: "announcement-bar" })}
               className="flex items-center gap-2 hover:text-signal transition-colors"
             >
               <span className="text-signal">&#9679;</span>
-              Now booking Q1 2027 &mdash; Book a Call
+              {announcementText}
               <span className="material-symbols-outlined text-[14px]">arrow_outward</span>
             </Link>
             <button
@@ -172,11 +186,11 @@ export default function HeaderClient({ navCapabilities }: { navCapabilities: Nav
             Careers
           </Link>
           <Link
-            href="/contact?intent=book-a-call"
-            onClick={() => trackEvent("book_call_click", { href: "/contact?intent=book-a-call", location: "nav-primary" })}
+            href={ctaHref}
+            onClick={() => trackEvent("book_call_click", { href: ctaHref, location: "nav-primary" })}
             className="inline-flex items-center gap-2 px-5 py-3 bg-signal text-ink font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-lime transition-colors"
           >
-            Book a Call
+            {ctaLabel}
           </Link>
         </div>
 
@@ -344,14 +358,14 @@ export default function HeaderClient({ navCapabilities }: { navCapabilities: Nav
               Careers
             </Link>
             <Link
-              href="/contact?intent=book-a-call"
+              href={ctaHref}
               onClick={() => {
-                trackEvent("book_call_click", { href: "/contact?intent=book-a-call", location: "mobile-nav" });
+                trackEvent("book_call_click", { href: ctaHref, location: "mobile-nav" });
                 setMobileOpen(false);
               }}
               className="mt-6 text-center px-5 py-4 bg-signal text-ink"
             >
-              Book a Call
+              {ctaLabel}
             </Link>
           </div>
         </div>

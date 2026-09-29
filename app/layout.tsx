@@ -3,6 +3,7 @@ import { Sora, Space_Mono } from "next/font/google";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import { getSiteSettings } from "@/lib/queries";
 import "./globals.css";
 import "@/styles/shapes.css";
 
@@ -57,21 +58,28 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Cordinit Media",
-  url: "https://cordinitmedia.com",
-  description:
-    "Cordinit Media connects creative, production, digital, media and performance to help ambitious brands build, launch and grow.",
-  sameAs: ["https://linkedin.com", "https://instagram.com", "https://youtube.com", "https://x.com"],
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSiteSettings();
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Cordinit Media",
+    url: "https://cordinitmedia.com",
+    description:
+      "Cordinit Media connects creative, production, digital, media and performance to help ambitious brands build, launch and grow.",
+    sameAs: [
+      siteSettings.socialLinkedin,
+      siteSettings.socialInstagram,
+      siteSettings.socialYoutube,
+      siteSettings.socialX,
+    ].filter((url): url is string => Boolean(url)),
+  };
+
   return (
     <html
       lang="en"
@@ -96,7 +104,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface font-sans text-fg antialiased selection:bg-signal selection:text-ink transition-colors duration-300" suppressHydrationWarning>
-        <GoogleAnalytics />
+        <GoogleAnalytics measurementId={siteSettings.gaMeasurementId} />
         <SmoothScroll />
         <CustomCursor />
         {children}

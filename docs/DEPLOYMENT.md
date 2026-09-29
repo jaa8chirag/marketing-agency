@@ -39,6 +39,13 @@ The database connection is already handled (step 2). Project → Settings → En
 | `ADMIN_EMAIL` | The real admin login email |
 | `ADMIN_PASSWORD` | A strong password — only used by the one-time seed script to create the admin user, see step 5 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Your GA4 measurement ID, if you have one (optional — analytics script only loads when this is set) |
+| `NEXT_PUBLIC_CAL_LINK` | Your Cal.com event link, e.g. `your-username/book-a-call` (optional — the Book a Call flow shows a "not configured" message instead of a calendar until this is set) |
+| `CAL_WEBHOOK_SECRET` | The webhook secret from that same Cal.com event type's settings (required for `/api/cal-webhook` to accept anything — it fails closed without it) |
+| `RESEND_API_KEY` | From resend.com, free tier (optional — email sending is skipped with a log warning, not an error, until this is set) |
+| `RESEND_FROM_EMAIL` | e.g. `Cordinit Media <hello@yourdomain.com>` — needs a domain verified in Resend. Falls back to Resend's shared `onboarding@resend.dev` if unset |
+| `NOTIFICATION_EMAIL` | Where "new lead" internal alerts go. Falls back to `ADMIN_EMAIL` if unset |
+
+See `docs/CLIENT_HANDOFF.md` for what exactly to get from the client for the Cal.com/Resend accounts — as of this write-up these were set up with the developer's own accounts as temporary placeholders.
 
 ## 4. Deploy 🧑
 

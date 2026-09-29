@@ -10,9 +10,23 @@ Legend: 🔵 = waiting on a later phase (planned) · 🟡 = waiting on a decisio
 
 You decided to build the backend immediately rather than wait for the admin phase, and to go further than the brief's own suggestion: instead of a third-party headless CMS (Sanity/Strapi/Payload, as brief §5/§11 recommends), we built a **custom PostgreSQL + Prisma backend with our own admin panel** (login + CRUD UI), covering capabilities/services/industries/case studies/insights/testimonials/client logos, plus real Lead and Newsletter capture tables and API routes. This is now **fully built and verified**, not just in progress — see `REQUIREMENTS_TRACKER.md`'s "Backend build" and "Admin panel" sections for the complete rundown (Prisma schema, seed from `lib/content.ts`, every page rewired off static data, admin auth + all 8 entities' CRUD, `/api/contact` and `/api/newsletter` with validation/spam protection, all routes verified 200).
 
-**Still genuinely open from this area** (not resolved, tracked properly below): real Calendly/Cal.com booking integration, the newsletter signup UI component itself (backend's ready, no form on any page yet), GA4/analytics events, and a couple of smaller CMS content types (Team Member, CTA, Site Settings) that stayed hardcoded.
+**Still genuinely open from this area** (not resolved, tracked properly below): two smaller CMS content types (Team Member, CTA) that stayed hardcoded. (Real Calendly/Cal.com booking, the newsletter signup UI, GA4/analytics events, and Site Settings/Header/Footer have since all been resolved — see their own entries below/in `REQUIREMENTS_TRACKER.md`.)
 
 The two entries below are kept for historical context (why they were *originally* deferred) but are no longer waiting.
+
+---
+
+## ✅ DONE (2026-09-29): Site Settings (Header/Footer CMS-driven)
+
+**Where:** `prisma/schema.prisma` (`SiteSettings` model), `lib/queries.ts` (`getSiteSettings()`), `app/admin/(dashboard)/settings/` (admin page + `actions.ts`), `components/admin/SiteSettingsForm.tsx`, `components/layout/Header.tsx`/`HeaderClient.tsx`, `components/layout/Footer.tsx`/`FooterClient.tsx` (new, split off from the old single-file `Footer.tsx`), `app/layout.tsx`, `components/analytics/GoogleAnalytics.tsx`.
+
+**What was built:** a singleton `SiteSettings` row (`id: "singleton"`, upserted, never a second row) holding primary/footer nav links, the primary CTA label/href, the announcement bar text/link, LinkedIn/Instagram/YouTube/X, contact email/phone, footer copyright lines, and a GA4 measurement ID override. Nav-link fields are stored as `"Label | /href"` per line (same textarea convention already used for `problems`/`deliverables` elsewhere) and parsed by `parseNavLinks()` in `lib/queries.ts`. Header and Footer were split into async Server Component wrappers (`Header.tsx`, `Footer.tsx`) that fetch settings + hand off to client components (`HeaderClient.tsx`, `FooterClient.tsx`) — same pattern Header already used for `navCapabilities`. `app/error.tsx` (a required Client Component) renders `HeaderClient`/`FooterClient` directly with no `siteSettings` prop, which falls back to the same hardcoded defaults that used to live in the components — a crash screen doesn't need to hit the DB. `app/layout.tsx`'s Organization JSON-LD `sameAs` and the GA4 script now also read from this row.
+
+**Why now:** you audited the brief's §11 CMS Content Model table yourself and flagged that Header/Footer/nav/social/copyright were still hardcoded, not CMS-driven like the brief's content model implies — this was the piece you picked to fix first (of Site Settings / per-entity SEO / Team Member / Testimonial display / CTA blocks / image uploads / missing tracking events, all flagged in the same audit).
+
+**Seed status:** local Docker Postgres seeded and verified live via the dev server (Header/Footer render identically to the old hardcoded values — zero visual regression, confirmed by curl-diffing the rendered HTML). **Production (Neon) has the `SiteSettings` table migrated but has NOT been seeded with this row yet** — until it is, production will fall back to `getSiteSettings()`'s hardcoded defaults, which happen to match, so there's no visible breakage, but the `/admin/settings` form will show an empty form (no `initial` row) until someone saves it once in production (submitting the form there creates the row via `upsert`, so this can also just be fixed by using the admin UI once after the next deploy — no manual seed run required).
+
+**Still open from the same audit, not yet prioritized:** per-entity SEO fields, Team Member entity, Testimonial display on the live site (data exists, never rendered), CTA reusable block entity, real image uploads, and the missing `insight_read`/`solution_explore`/`industry_explore` tracking events.
 
 ---
 
@@ -31,12 +45,15 @@ The two entries below are kept for historical context (why they were *originally
 **Why deferred:** you said routes/UI first, CMS/admin later. `lib/content.ts` was already written with a header comment noting it's shaped to swap in later without touching page templates, so this is a real "later," not a blocker right now.
 **Revisit:** after the routes/UI sweep — the "admin" phase you named.
 
-## ✅ (historical) Contact form backend + real booking
+## ✅ (historical) Contact form backend + real booking — now fully resolved
 
-**Where:** `components/sections/ContactExperience.tsx` — form fakes success via `setTimeout`, no `/api/contact`, no email, no DB, no CRM webhook; "Book a Call" is a custom fake date/time picker, not Calendly/Cal.com as the brief prefers.
-**What was skipped:** any real submission pipeline.
-**Why deferred:** same routes/UI-first call, but this one also needs a decision from you before it can be built — which email/notification service (Resend? something else?), and whether Book a Call becomes a real Calendly/Cal.com embed or a custom scheduler backed by a real calendar API.
-**Revisit:** admin phase. Needs your input on service choice before work starts.
+**Where:** `components/sections/ContactExperience.tsx` — form used to fake success via `setTimeout`, no `/api/contact`, no email, no DB, no CRM webhook; "Book a Call" was a custom fake date/time picker.
+**Status:** the submission pipeline itself was resolved earlier (real `/api/contact` + Postgres). The two things that were *specifically* still fake — real scheduling and real emails — are now also resolved (2026-09-29), once you picked Cal.com + Resend:
+- **Cal.com** replaces the fake picker entirely (`components/ui/CalEmbed.tsx`), prefilled from the qualification form, backed by a signature-verified webhook (`app/api/cal-webhook/route.ts`) as a server-side reliability backstop.
+- **Resend** sends real confirmation + internal notification emails (`lib/email.ts`), wired into `/api/contact` for both the enquiry and booking paths.
+- Both fail gracefully (not silently, logged) when not configured, so nothing breaks before real credentials exist.
+**What's still needed:** real Cal.com/Resend accounts under the client's own name, not yours — tracked in the new `docs/CLIENT_HANDOFF.md`, which is exactly the file to check before this goes fully live.
+**Revisit:** whenever the client's own Cal.com/Resend accounts are ready — see `docs/CLIENT_HANDOFF.md`.
 
 ## ✅ (historical) Analytics & tracking events
 

@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import HeaderClient from "@/components/layout/HeaderClient";
-import Footer from "@/components/layout/Footer";
+import FooterClient from "@/components/layout/FooterClient";
 import Container from "@/components/ui/Container";
 
 // error.tsx must be a Client Component (Next.js requirement for error
-// boundaries) — it can't import the DB-backed Header (a Server Component)
-// without dragging Prisma/pg into the client bundle. Uses HeaderClient
-// directly with an empty capability list instead: fine for a crash screen.
+// boundaries) — it can't import the DB-backed Header/Footer (Server
+// Components) without dragging Prisma/pg into the client bundle. Uses
+// HeaderClient/FooterClient directly with no siteSettings (falls back to
+// hardcoded defaults) instead: fine for a crash screen.
 export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
@@ -38,7 +39,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
           </div>
         </Container>
       </main>
-      <Footer />
+      <FooterClient />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { inputClass, labelClass, buttonClass, arrayToLines } from "@/components/admin/fields";
+import { inputClass, labelClass, buttonClass, arrayToLines, optionStyle } from "@/components/admin/fields";
 import type { Insight, Capability } from "@/lib/generated/prisma/client";
 
 const INSIGHT_TYPES = ["Article", "Guide", "Report", "Perspective", "Video", "Whitepaper"];
@@ -26,7 +26,7 @@ export default function InsightForm({
         <label className={labelClass}>Type</label>
         <select name="type" defaultValue={initial?.type ?? "Article"} className={inputClass}>
           {INSIGHT_TYPES.map((t) => (
-            <option key={t} value={t}>
+            <option key={t} value={t} style={optionStyle}>
               {t}
             </option>
           ))}
@@ -62,9 +62,9 @@ export default function InsightForm({
       <div>
         <label className={labelClass}>Related capability (optional)</label>
         <select name="capabilityId" defaultValue={initial?.capabilityId ?? ""} className={inputClass}>
-          <option value="">— None —</option>
+          <option value="" style={optionStyle}>— None —</option>
           {capabilities.map((c) => (
-            <option key={c.id} value={c.id}>
+            <option key={c.id} value={c.id} style={optionStyle}>
               {c.name}
             </option>
           ))}

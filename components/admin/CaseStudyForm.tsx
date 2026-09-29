@@ -1,4 +1,4 @@
-import { inputClass, labelClass, buttonClass } from "@/components/admin/fields";
+import { inputClass, labelClass, buttonClass, optionStyle } from "@/components/admin/fields";
 import type { Capability, Industry } from "@/lib/generated/prisma/client";
 
 type InitialCaseStudy = {
@@ -80,11 +80,11 @@ export default function CaseStudyForm({
       <div>
         <label className={labelClass}>Industry</label>
         <select name="industryId" required defaultValue={initial?.industryId} className={inputClass}>
-          <option value="" disabled>
+          <option value="" disabled style={optionStyle}>
             Select an industry
           </option>
           {industries.map((ind) => (
-            <option key={ind.id} value={ind.id}>
+            <option key={ind.id} value={ind.id} style={optionStyle}>
               {ind.name}
             </option>
           ))}

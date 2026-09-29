@@ -252,6 +252,38 @@ async function seedAdminUser() {
   console.log(`Seeded admin user ${email}.`);
 }
 
+async function seedSiteSettings() {
+  // Matches exactly what was previously hardcoded in HeaderClient.tsx /
+  // Footer.tsx — seeding these values means nothing visually changes until
+  // an admin actually edits Settings in /admin.
+  await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    create: {
+      id: "singleton",
+      primaryNavLinks: ["Industries | /industries", "Work | /work", "Insights | /insights", "About | /about"],
+      footerNavLinks: [
+        "About | /about",
+        "Contact | /contact",
+        "Case Studies | /work",
+        "Blog | /insights",
+        "Privacy | /legal/privacy-policy",
+      ],
+      primaryCtaLabel: "Book a Call",
+      primaryCtaHref: "/contact?intent=book-a-call",
+      announcementText: "Now booking Q1 2027 — Book a Call",
+      announcementHref: "/contact?intent=book-a-call",
+      socialLinkedin: "https://linkedin.com",
+      socialInstagram: "https://instagram.com",
+      socialYoutube: "https://youtube.com",
+      socialX: "https://x.com",
+      copyrightLine1: "Proudly created in India.",
+      copyrightLine2: "All Right Reserved, All Wrong Reversed.",
+    },
+    update: {},
+  });
+  console.log("Seeded site settings.");
+}
+
 async function main() {
   await seedCapabilities();
   await seedIndustries();
@@ -260,6 +292,7 @@ async function main() {
   await seedTestimonials();
   await seedClientLogos();
   await seedAdminUser();
+  await seedSiteSettings();
 }
 
 main()

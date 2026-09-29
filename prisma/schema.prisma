@@ -224,6 +224,11 @@ model Lead {
   utmContent  String?
   referrer    String?
 
+  // Set when this lead came from a Cal.com booking — lets the webhook
+  // upsert idempotently instead of creating a duplicate row if Cal.com
+  // retries delivery (it does, on any non-2xx response).
+  calBookingUid String? @unique
+
   createdAt DateTime @default(now())
 }
 
@@ -241,4 +246,41 @@ model AdminUser {
   email        String   @unique
   passwordHash String
   createdAt    DateTime @default(now())
+}
+
+// ── Site Settings (brief §11: "Global navigation, footer, social, contact
+// details, analytics IDs, legal links") ────────────────────────────────────
+// Singleton — always exactly one row, fetched/updated by the fixed id below.
+// Header/Footer read from this instead of hardcoding nav/social/copy, so an
+// admin can change them without touching code.
+
+model SiteSettings {
+  id String @id @default("singleton")
+
+  // "Label | /href" per line — same convention used elsewhere in the admin
+  // for array fields, avoids needing a repeating-group form widget.
+  primaryNavLinks String[]
+  footerNavLinks  String[]
+
+  primaryCtaLabel  String
+  primaryCtaHref   String
+  announcementText String?
+  announcementHref String?
+
+  socialLinkedin  String?
+  socialInstagram String?
+  socialYoutube   String?
+  socialX         String?
+
+  contactEmail String?
+  contactPhone String?
+
+  copyrightLine1 String?
+  copyrightLine2 String?
+
+  // Overrides NEXT_PUBLIC_GA_MEASUREMENT_ID when set — lets an admin turn
+  // analytics on/off without a redeploy.
+  gaMeasurementId String?
+
+  updatedAt DateTime @updatedAt
 }

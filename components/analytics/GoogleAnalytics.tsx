@@ -1,11 +1,13 @@
 import Script from "next/script";
 
-// Only renders when NEXT_PUBLIC_GA_MEASUREMENT_ID is set — local dev and any
+// Only renders when a measurement ID is available — local dev and any
 // environment without a real GA4 property configured stays script-free.
 // trackEvent() (lib/analytics.ts) still safely no-ops without this loaded,
 // since it just pushes onto window.dataLayer either way.
-export default function GoogleAnalytics() {
-  const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+export default function GoogleAnalytics({ measurementId: override }: { measurementId?: string | null } = {}) {
+  // siteSettings.gaMeasurementId (admin-editable) wins over the env var, so
+  // an admin can turn analytics on/off without a redeploy.
+  const measurementId = override || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   if (!measurementId) return null;
 
   return (

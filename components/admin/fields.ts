@@ -9,6 +9,12 @@ export const buttonClass =
 export const dangerButtonClass =
   "px-5 py-2.5 border border-red-500 text-red-500 font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-red-500 hover:text-white transition-colors";
 
+// Browsers render a native <select>'s open dropdown with their own popup
+// chrome (often a plain white background) regardless of the page's dark
+// theme — <option> needs its own explicit colors or light-on-light text
+// becomes unreadable. Spread onto every <option> in admin forms.
+export const optionStyle = { backgroundColor: "#141414", color: "#F7F4EC" };
+
 /** Textarea convention for string[] fields: one value per line. */
 export function linesToArray(value: FormDataEntryValue | null): string[] {
   return String(value ?? "")

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { trackEvent } from "@/lib/analytics";
+import CalEmbed from "@/components/ui/CalEmbed";
 
 const stepVariants = {
   initial: { opacity: 0, x: 16 },
@@ -14,21 +15,6 @@ const stepVariants = {
 
 type Mode = "book-a-call" | "enquiry";
 type Step = "form" | "schedule" | "success";
-
-const timeSlots = ["9:00 AM", "10:30 AM", "1:00 PM", "2:30 PM", "4:00 PM"];
-
-function nextBusinessDays(count: number) {
-  const days: Date[] = [];
-  const cursor = new Date();
-  cursor.setDate(cursor.getDate() + 1);
-  while (days.length < count) {
-    if (cursor.getDay() !== 0 && cursor.getDay() !== 6) {
-      days.push(new Date(cursor));
-    }
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  return days;
-}
 
 const fieldClasses =
   "w-full bg-transparent border-b border-edge py-3.5 text-fg placeholder:text-fgMuted focus:outline-none focus:border-signal transition-colors";
@@ -42,8 +28,7 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
   const [step, setStep] = useState<Step>("form");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [bookedAt, setBookedAt] = useState<string | null>(null);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +41,6 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
     website: "", // honeypot — left empty by real visitors
   });
 
-  const days = nextBusinessDays(5);
   const hasStarted = useRef(false);
 
   useEffect(() => {
@@ -76,8 +60,7 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
   function switchMode(next: Mode) {
     setMode(next);
     setStep("form");
-    setSelectedDay(null);
-    setSelectedTime(null);
+    setBookedAt(null);
   }
 
   function attribution() {
@@ -93,42 +76,47 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
     };
   }
 
-  async function submitLead(extra: { bookingDate?: string; bookingTime?: string }) {
-    setSubmitting(true);
-    setSubmitError(null);
-    trackEvent("contact_form_submit", { mode });
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: mode === "book-a-call" ? "BOOK_A_CALL" : "ENQUIRY",
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          company: form.company,
-          jobTitle: form.jobTitle,
-          interest: form.interest,
-          message: form.message,
-          consent: form.consent,
-          website: form.website,
-          ...extra,
-          ...attribution(),
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok || !json.ok) {
-        throw new Error(json.error || "Something went wrong. Please try again.");
+  const submitLead = useCallback(
+    async (extra: { bookingDate?: string; bookingTime?: string; calBookingUid?: string }) => {
+      setSubmitting(true);
+      setSubmitError(null);
+      trackEvent("contact_form_submit", { mode });
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: mode === "book-a-call" ? "BOOK_A_CALL" : "ENQUIRY",
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            company: form.company,
+            jobTitle: form.jobTitle,
+            interest: form.interest,
+            message: form.message,
+            consent: form.consent,
+            website: form.website,
+            ...extra,
+            ...attribution(),
+          }),
+        });
+        const json = await res.json();
+        if (!res.ok || !json.ok) {
+          throw new Error(json.error || "Something went wrong. Please try again.");
+        }
+        trackEvent("contact_form_success", { mode });
+        setStep("success");
+      } catch (err) {
+        trackEvent("contact_form_error", { mode });
+        setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      } finally {
+        setSubmitting(false);
       }
-      trackEvent("contact_form_success", { mode });
-      setStep("success");
-    } catch (err) {
-      trackEvent("contact_form_error", { mode });
-      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
+      // form/mode/attribution intentionally omitted — this always reads the latest via closure per call, not memoized across renders.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [mode, form]
+  );
 
   function handleSubmitDetails(e: React.FormEvent) {
     e.preventDefault();
@@ -139,15 +127,17 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
     }
   }
 
-  function handleConfirmBooking() {
-    if (selectedDay === null || !selectedTime) return;
-    submitLead({
-      bookingDate: days[selectedDay]?.toISOString(),
-      bookingTime: selectedTime,
-    });
-  }
-
-  const chosenDate = selectedDay !== null ? days[selectedDay] : null;
+  const handleBooked = useCallback(
+    (booking: { uid: string; startTime?: string }) => {
+      setBookedAt(booking.startTime ?? null);
+      submitLead({
+        calBookingUid: booking.uid,
+        bookingDate: booking.startTime,
+        bookingTime: booking.startTime,
+      });
+    },
+    [submitLead]
+  );
 
   return (
     <div>
@@ -186,12 +176,12 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16">
+      <div className={step === "schedule" ? "" : "grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16"}>
         <div>
         <AnimatePresence mode="wait">
           {step === "success" ? (
             <motion.div key="success" variants={stepVariants} initial="initial" animate="animate" exit="exit" className="border-beam p-10 md:p-14">
-              {mode === "book-a-call" && chosenDate && selectedTime ? (
+              {mode === "book-a-call" ? (
                 <>
                   <motion.span
                     initial={{ scale: 0, rotate: -20 }}
@@ -203,8 +193,16 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
                   </motion.span>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">You&apos;re booked.</h2>
                   <p className="text-lg text-fgMuted leading-relaxed mb-8">
-                    {chosenDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} at {selectedTime}. A calendar
-                    invitation and confirmation email are on their way to {form.email || "your inbox"}.
+                    {bookedAt
+                      ? new Date(bookedAt).toLocaleString(undefined, {
+                          weekday: "long",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                        })
+                      : "Your meeting is confirmed."}
+                    . A calendar invitation and confirmation email are on their way to {form.email || "your inbox"}.
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Link href="/work" className="px-6 py-3.5 border border-fg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-ink hover:text-paper hover:border-ink transition-colors">
@@ -244,45 +242,13 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
                 Back to details
               </button>
               <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-8">Pick a date &amp; time</h2>
-              <div className="grid grid-cols-5 gap-2 mb-8">
-                {days.map((day, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setSelectedDay(idx)}
-                    className={`p-3 border text-center transition-colors ${
-                      selectedDay === idx ? "bg-ink text-paper border-ink" : "border-edge hover:border-ink"
-                    }`}
-                  >
-                    <span className="block font-mono text-[10px] uppercase">{day.toLocaleDateString(undefined, { weekday: "short" })}</span>
-                    <span className="block font-display text-lg font-bold">{day.getDate()}</span>
-                  </button>
-                ))}
-              </div>
-              {selectedDay !== null && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-10">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => setSelectedTime(slot)}
-                      className={`px-4 py-3 border font-mono text-xs uppercase tracking-wider transition-colors ${
-                        selectedTime === slot ? "bg-signal text-paper border-signal" : "border-edge hover:border-ink"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <button
-                type="button"
-                disabled={selectedDay === null || !selectedTime || submitting}
-                onClick={handleConfirmBooking}
-                className="px-6 py-3.5 bg-ink text-paper font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-signal transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                {submitting ? "Confirming…" : "Confirm Booking"}
-              </button>
+              <CalEmbed
+                name={`${form.firstName} ${form.lastName}`.trim()}
+                email={form.email}
+                notes={form.message}
+                onBooked={handleBooked}
+              />
+              {submitting && <p className="mt-4 text-sm text-fgMuted">Confirming your booking…</p>}
               {submitError && <p className="mt-4 text-sm text-red-500">{submitError}</p>}
             </motion.div>
           ) : (
@@ -322,8 +288,14 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
                   onChange={(e) => updateField("interest", e.target.value)}
                   className={`${fieldClasses} appearance-none`}
                 >
+                  {/* Browsers render a native <select>'s open dropdown with their own
+                      popup chrome (often a plain white background) regardless of the
+                      page's dark theme — <option> needs its own explicit colors or
+                      light-on-light text becomes unreadable. */}
                   {areasOfInterest.map((area) => (
-                    <option key={area} value={area}>{area}</option>
+                    <option key={area} value={area} style={{ backgroundColor: "#141414", color: "#F7F4EC" }}>
+                      {area}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -381,29 +353,31 @@ export default function ContactExperience({ areasOfInterest }: { areasOfInterest
         </AnimatePresence>
         </div>
 
-        <div className="border border-edge p-8 md:p-10 h-fit">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-6">What happens next</span>
-          <ol className="flex flex-col gap-6">
-            {(mode === "book-a-call"
-              ? [
-                  "Tell us a little about you and the project.",
-                  "Pick a date and time that works for you.",
-                  "We'll send a calendar invite and confirmation instantly.",
-                  "We meet, and come prepared with relevant work and thinking.",
-                ]
-              : [
-                  "Your enquiry reaches our team directly — no ticket queue.",
-                  "We review against the right capability and specialists.",
-                  "We reply with next steps, usually within one business day.",
-                ]
-            ).map((text, idx) => (
-              <li key={text} className="flex gap-4">
-                <span className="font-mono text-xs font-bold text-signal shrink-0">0{idx + 1}</span>
-                <span className="text-fgMuted leading-relaxed">{text}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        {step !== "schedule" && (
+          <div className="border border-edge p-8 md:p-10 h-fit">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-6">What happens next</span>
+            <ol className="flex flex-col gap-6">
+              {(mode === "book-a-call"
+                ? [
+                    "Tell us a little about you and the project.",
+                    "Pick a date and time that works for you.",
+                    "We'll send a calendar invite and confirmation instantly.",
+                    "We meet, and come prepared with relevant work and thinking.",
+                  ]
+                : [
+                    "Your enquiry reaches our team directly — no ticket queue.",
+                    "We review against the right capability and specialists.",
+                    "We reply with next steps, usually within one business day.",
+                  ]
+              ).map((text, idx) => (
+                <li key={text} className="flex gap-4">
+                  <span className="font-mono text-xs font-bold text-signal shrink-0">0{idx + 1}</span>
+                  <span className="text-fgMuted leading-relaxed">{text}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
       </div>
     </div>
   );

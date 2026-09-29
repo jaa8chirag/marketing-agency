@@ -3,6 +3,7 @@
 // Insight — types still imported from lib/content.ts, unchanged), same
 // function names/signatures, just async and backed by Postgres now. Pages
 // import from here; components keep receiving plain props exactly as before.
+import { cache } from "react";
 import { prisma } from "@/lib/db";
 import type { Capability, Service, Industry, CaseStudy, Insight } from "@/lib/content";
 
@@ -262,3 +263,97 @@ export async function getAreasOfInterest(): Promise<string[]> {
   const caps = await getCapabilities();
   return caps.map((c) => c.name).concat("Something else");
 }
+
+// ── Site Settings ────────────────────────────────────────────────────────
+// Header/Footer read nav/social/copy from here instead of hardcoding it, so
+// an admin can edit Settings in /admin without a code change.
+
+export type NavLink = { label: string; href: string };
+
+export type SiteSettings = {
+  primaryNavLinks: NavLink[];
+  footerNavLinks: NavLink[];
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  announcementText: string | null;
+  announcementHref: string | null;
+  socialLinkedin: string | null;
+  socialInstagram: string | null;
+  socialYoutube: string | null;
+  socialX: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  copyrightLine1: string | null;
+  copyrightLine2: string | null;
+  gaMeasurementId: string | null;
+};
+
+// Used if the singleton row is somehow missing (e.g. seed hasn't run against
+// this database yet) — matches what used to be hardcoded in the components.
+const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  primaryNavLinks: [
+    { label: "Industries", href: "/industries" },
+    { label: "Work", href: "/work" },
+    { label: "Insights", href: "/insights" },
+    { label: "About", href: "/about" },
+  ],
+  footerNavLinks: [
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Case Studies", href: "/work" },
+    { label: "Blog", href: "/insights" },
+    { label: "Privacy", href: "/legal/privacy-policy" },
+  ],
+  primaryCtaLabel: "Book a Call",
+  primaryCtaHref: "/contact?intent=book-a-call",
+  announcementText: "Now booking Q1 2027 — Book a Call",
+  announcementHref: "/contact?intent=book-a-call",
+  socialLinkedin: "https://linkedin.com",
+  socialInstagram: "https://instagram.com",
+  socialYoutube: "https://youtube.com",
+  socialX: "https://x.com",
+  contactEmail: null,
+  contactPhone: null,
+  copyrightLine1: "Proudly created in India.",
+  copyrightLine2: "All Right Reserved, All Wrong Reversed.",
+  gaMeasurementId: null,
+};
+
+// Rows are stored as "Label | /href" per line (see admin form) — same
+// convention as other array fields in this project, no repeating-group UI.
+function parseNavLinks(lines: string[]): NavLink[] {
+  return lines
+    .map((line): NavLink | null => {
+      const [label, href] = line.split("|").map((s) => s.trim());
+      return label && href ? { label, href } : null;
+    })
+    .filter((link): link is NavLink => link !== null);
+}
+
+// Wrapped in React's cache() because a single page render calls this from
+// three independent places (root layout, Header, Footer) — without request
+// memoization that's 3x the Postgres queries per page, which is what tipped
+// local Docker Postgres over its connection limit during `next build`'s
+// parallel static generation.
+export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
+  const row = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+  if (!row) return DEFAULT_SITE_SETTINGS;
+
+  return {
+    primaryNavLinks: parseNavLinks(row.primaryNavLinks),
+    footerNavLinks: parseNavLinks(row.footerNavLinks),
+    primaryCtaLabel: row.primaryCtaLabel,
+    primaryCtaHref: row.primaryCtaHref,
+    announcementText: row.announcementText,
+    announcementHref: row.announcementHref,
+    socialLinkedin: row.socialLinkedin,
+    socialInstagram: row.socialInstagram,
+    socialYoutube: row.socialYoutube,
+    socialX: row.socialX,
+    contactEmail: row.contactEmail,
+    contactPhone: row.contactPhone,
+    copyrightLine1: row.copyrightLine1,
+    copyrightLine2: row.copyrightLine2,
+    gaMeasurementId: row.gaMeasurementId,
+  };
+});

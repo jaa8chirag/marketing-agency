@@ -21,7 +21,15 @@ if (!connectionString) {
   );
 }
 
-const adapter = new PrismaPg({ connectionString });
+// `next build`'s static generation runs several worker processes in
+// parallel, each evaluating this module (and opening its own pool) fresh —
+// the singleton guard below only dedupes within one process. A generous
+// default pool size (node-postgres defaults to 10) times several workers
+// was enough to exhaust local Docker Postgres's default 100-connection
+// limit; capping it here keeps total usage bounded regardless of worker
+// count, and is also the right call against Neon's pooled connection in
+// production (many serverless instances each holding their own pool).
+const adapter = new PrismaPg({ connectionString, max: 5 });
 
 export const prisma =
   globalForPrisma.prisma ??
