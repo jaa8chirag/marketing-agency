@@ -234,7 +234,59 @@ export async function relatedInsights(opts: {
 
 export async function getTestimonials() {
   const rows = await prisma.testimonial.findMany({ orderBy: { sortOrder: "asc" } });
-  return rows.map((t) => ({ quote: t.quote, person: t.person, role: t.role ?? undefined, company: t.company }));
+  return rows.map((t) => ({
+    quote: t.quote,
+    person: t.person,
+    role: t.role ?? undefined,
+    company: t.company,
+    photoUrl: t.photoUrl ?? undefined,
+  }));
+}
+
+export type TeamMember = {
+  name: string;
+  role: string;
+  bio: string | null;
+  photoUrl: string | null;
+  linkedinUrl: string | null;
+};
+
+export async function getTeamMembers(): Promise<TeamMember[]> {
+  const rows = await prisma.teamMember.findMany({ orderBy: { sortOrder: "asc" } });
+  return rows.map((m) => ({
+    name: m.name,
+    role: m.role,
+    bio: m.bio,
+    photoUrl: m.photoUrl,
+    linkedinUrl: m.linkedinUrl,
+  }));
+}
+
+export type CtaBlock = {
+  eyebrow: string;
+  title: string;
+  description: string | null;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel: string | null;
+  secondaryHref: string | null;
+};
+
+// Returns null (not a default object) when a key has no row — callers decide
+// their own fallback, since CTASection's hardcoded defaults already vary by
+// call site and shouldn't be duplicated/overridden here.
+export async function getCtaBlock(key: string): Promise<CtaBlock | null> {
+  const row = await prisma.ctaBlock.findUnique({ where: { key } });
+  if (!row) return null;
+  return {
+    eyebrow: row.eyebrow,
+    title: row.title,
+    description: row.description,
+    primaryLabel: row.primaryLabel,
+    primaryHref: row.primaryHref,
+    secondaryLabel: row.secondaryLabel,
+    secondaryHref: row.secondaryHref,
+  };
 }
 
 export async function getClientLogos(): Promise<string[]> {

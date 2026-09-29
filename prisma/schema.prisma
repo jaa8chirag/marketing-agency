@@ -175,6 +175,7 @@ model Testimonial {
   person    String
   role      String?
   company   String
+  photoUrl  String?
   sortOrder Int     @default(0)
 
   createdAt DateTime @default(now())
@@ -187,6 +188,42 @@ model ClientLogo {
   industry  String?
   approved  Boolean @default(true)
   sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Team (brief §11: "Team Member") ─────────────────────────────────────
+
+model TeamMember {
+  id          String  @id @default(cuid())
+  name        String
+  role        String
+  bio         String?
+  photoUrl    String?
+  linkedinUrl String?
+  sortOrder   Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Reusable CTA blocks (brief §11: "CTA — reusable call-to-action block")
+// Most page CTAs interpolate page-specific copy (e.g. a capability's name
+// into the title) and stay code-driven for that reason — this only covers
+// the genuinely reusable/generic ones (looked up by `key`, e.g. "default").
+// CTASection falls back to its existing hardcoded copy if a key has no row.
+
+model CtaBlock {
+  id             String  @id @default(cuid())
+  key            String  @unique
+  eyebrow        String
+  title          String
+  description    String?
+  primaryLabel   String
+  primaryHref    String
+  secondaryLabel String?
+  secondaryHref  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

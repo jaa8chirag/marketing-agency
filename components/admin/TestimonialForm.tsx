@@ -27,6 +27,10 @@ export default function TestimonialForm({
         <input name="company" required defaultValue={initial?.company} className={inputClass} />
       </div>
       <div>
+        <label className={labelClass}>Photo URL (optional)</label>
+        <input name="photoUrl" defaultValue={initial?.photoUrl ?? ""} className={inputClass} placeholder="https://..." />
+      </div>
+      <div>
         <label className={labelClass}>Sort order</label>
         <input name="sortOrder" type="number" defaultValue={initial?.sortOrder ?? 0} className={inputClass} />
       </div>

@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
+import { getTeamMembers } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "About",
@@ -21,14 +22,9 @@ const values = [
   { title: "Built to last", desc: "Brands, platforms and systems designed to scale without needing a rebuild in a year." },
 ];
 
-const team = [
-  { name: "Founding Partner", role: "Strategy & Client Partnerships" },
-  { name: "Executive Creative Director", role: "Brand & Creative" },
-  { name: "Head of Media", role: "Media & Performance" },
-  { name: "Head of Technology", role: "Digital Experiences & Automation" },
-];
+export default async function AboutPage() {
+  const team = await getTeamMembers();
 
-export default function AboutPage() {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
@@ -91,24 +87,61 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {team.map((member, idx) => (
                 <Reveal key={member.name} delay={idx * 50}>
-                  <div className="group relative overflow-hidden border border-edge p-6 min-h-[160px] flex flex-col justify-end bg-surface hover:border-signal/50 transition-colors duration-300">
-                    <span
-                      aria-hidden="true"
-                      className="absolute -top-10 -right-6 font-display text-7xl font-bold text-edge/60 group-hover:text-signal/15 transition-colors duration-500 select-none"
-                    >
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
+                  <div className="group relative overflow-hidden border border-edge bg-surface hover:border-signal/50 transition-colors duration-300">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-ink">
+                      {member.photoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={member.photoUrl}
+                          alt={member.name}
+                          referrerPolicy="no-referrer"
+                          className="absolute inset-0 w-full h-full object-cover grayscale-[40%] contrast-105 brightness-[0.92] transition-[filter,transform] duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="font-display text-5xl font-bold text-paper/20">
+                            {member.name.slice(0, 1)}
+                          </span>
+                        </div>
+                      )}
+                      <span
+                        aria-hidden="true"
+                        className="absolute top-3 right-3 font-mono text-[11px] font-bold text-paper/70 bg-ink/60 backdrop-blur-sm px-2 py-1 rounded"
+                      >
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/70 to-transparent" />
+                    </div>
                     <span
                       aria-hidden="true"
                       className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-signal transition-transform duration-500 ease-out group-hover:scale-x-100"
                     />
-                    <h3 className="relative font-display text-lg font-semibold tracking-tight group-hover:text-signal transition-colors">
-                      {member.name}
-                    </h3>
-                    <p className="relative font-mono text-[11px] uppercase tracking-wider text-fgMuted mt-2">{member.role}</p>
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-display text-lg font-semibold tracking-tight group-hover:text-signal transition-colors">
+                          {member.name}
+                        </h3>
+                        {member.linkedinUrl && (
+                          <a
+                            href={member.linkedinUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={`${member.name} on LinkedIn`}
+                            className="shrink-0 w-7 h-7 rounded-full border border-edge flex items-center justify-center font-mono text-[10px] font-bold text-fgMuted hover:border-signal hover:text-signal transition-colors"
+                          >
+                            in
+                          </a>
+                        )}
+                      </div>
+                      <p className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mt-2">{member.role}</p>
+                      {member.bio && <p className="text-sm text-fgMuted leading-relaxed mt-3">{member.bio}</p>}
+                    </div>
                   </div>
                 </Reveal>
               ))}
+              {team.length === 0 && (
+                <p className="col-span-full text-fgMuted text-sm">Team details coming soon.</p>
+              )}
             </div>
           </Container>
         </section>
@@ -135,7 +168,7 @@ export default function AboutPage() {
           </Container>
         </section>
 
-        <CTASection />
+        <CTASection ctaKey="default" />
       </main>
       <Footer />
     </div>

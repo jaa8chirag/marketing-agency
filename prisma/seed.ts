@@ -215,6 +215,16 @@ async function seedInsights() {
   console.log(`Seeded ${insights.length} insights.`);
 }
 
+// Stock portraits (Unsplash, images.unsplash.com is already allowlisted in
+// next.config.mjs's remotePatterns + CSP img-src) — placeholder faces for
+// placeholder people/companies, same convention as the rest of the seeded
+// demo content, swap for real photos once real testimonials exist.
+const testimonialPhotos = [
+  "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+];
+
 async function seedTestimonials() {
   await prisma.testimonial.deleteMany();
   await prisma.testimonial.createMany({
@@ -222,10 +232,71 @@ async function seedTestimonials() {
       quote: t.quote,
       person: t.person,
       company: t.company,
+      photoUrl: testimonialPhotos[idx % testimonialPhotos.length],
       sortOrder: idx,
     })),
   });
   console.log(`Seeded ${testimonials.length} testimonials.`);
+}
+
+const teamMembers = [
+  {
+    name: "Ananya Kapoor",
+    role: "Founding Partner, Strategy & Client Partnerships",
+    bio: "Fifteen years split between client-side brand leadership and agency strategy — joined the founders to make sure every engagement starts with a defensible reason, not just a deliverable list.",
+    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+    linkedinUrl: "https://linkedin.com",
+  },
+  {
+    name: "Rohan Mehta",
+    role: "Executive Creative Director, Brand & Creative",
+    bio: "Has led creative for brands across FMCG, fintech and hospitality. Believes the best campaigns are the ones a competitor wishes they'd made first.",
+    photoUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&auto=format&fit=crop&q=80",
+    linkedinUrl: "https://linkedin.com",
+  },
+  {
+    name: "Priya Nair",
+    role: "Head of Media, Media & Performance",
+    bio: "Ex-programmatic trading desk lead. Obsessed with the gap between reported metrics and actual business outcomes — closes it for every account she runs.",
+    photoUrl: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=80",
+    linkedinUrl: "https://linkedin.com",
+  },
+  {
+    name: "Kabir Singh",
+    role: "Head of Technology, Digital Experiences & Automation",
+    bio: "Builds the systems that make the rest of the agency's work actually scale — from headless commerce builds to the CRM automations most agencies bolt on as an afterthought.",
+    photoUrl: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=500&auto=format&fit=crop&q=80",
+    linkedinUrl: "https://linkedin.com",
+  },
+];
+
+async function seedTeamMembers() {
+  await prisma.teamMember.deleteMany();
+  await prisma.teamMember.createMany({
+    data: teamMembers.map((m, idx) => ({ ...m, sortOrder: idx })),
+  });
+  console.log(`Seeded ${teamMembers.length} team members.`);
+}
+
+async function seedCtaBlocks() {
+  // Matches exactly what was previously hardcoded as CTASection's default
+  // props — seeding this means nothing visually changes until an admin
+  // actually edits it in /admin/cta-blocks.
+  await prisma.ctaBlock.upsert({
+    where: { key: "default" },
+    create: {
+      key: "default",
+      eyebrow: "Start a Project",
+      title: "Have a brief? Let's make something worth talking about.",
+      description: "Tell us what you're building and we'll bring the right specialists into the room.",
+      primaryLabel: "Book a Call",
+      primaryHref: "/contact?intent=book-a-call",
+      secondaryLabel: "See the Work",
+      secondaryHref: "/work",
+    },
+    update: {},
+  });
+  console.log("Seeded CTA blocks.");
 }
 
 async function seedClientLogos() {
@@ -293,6 +364,8 @@ async function main() {
   await seedClientLogos();
   await seedAdminUser();
   await seedSiteSettings();
+  await seedTeamMembers();
+  await seedCtaBlocks();
 }
 
 main()

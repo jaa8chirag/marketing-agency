@@ -10,6 +10,8 @@ const navItems = [
   { href: "/admin/insights", label: "Insights" },
   { href: "/admin/testimonials", label: "Testimonials" },
   { href: "/admin/client-logos", label: "Client Logos" },
+  { href: "/admin/team", label: "Team" },
+  { href: "/admin/cta-blocks", label: "CTA Blocks" },
   { href: "/admin/leads", label: "Leads" },
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/settings", label: "Settings" },

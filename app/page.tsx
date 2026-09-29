@@ -7,17 +7,19 @@ import OperatingModel from "@/components/sections/OperatingModel";
 import FeaturedWork from "@/components/sections/FeaturedWork";
 import IndustriesTeaser from "@/components/sections/IndustriesTeaser";
 import SocialProof from "@/components/sections/SocialProof";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import EcosystemModule from "@/components/sections/EcosystemModule";
 import InsightsTeaser from "@/components/sections/InsightsTeaser";
 import CTASection from "@/components/ui/CTASection";
-import { getCapabilities, getIndustries, getInsights, getClientLogos } from "@/lib/queries";
+import { getCapabilities, getIndustries, getInsights, getClientLogos, getTestimonials } from "@/lib/queries";
 
 export default async function Home() {
-  const [capabilities, industries, insights, clientLogos] = await Promise.all([
+  const [capabilities, industries, insights, clientLogos, testimonials] = await Promise.all([
     getCapabilities(),
     getIndustries(),
     getInsights(),
     getClientLogos(),
+    getTestimonials(),
   ]);
 
   return (
@@ -31,9 +33,10 @@ export default async function Home() {
         <FeaturedWork />
         <IndustriesTeaser industries={industries} />
         <SocialProof clientLogos={clientLogos} />
+        <TestimonialsSection testimonials={testimonials} />
         <InsightsTeaser insights={insights} />
         <EcosystemModule />
-        <CTASection />
+        <CTASection ctaKey="default" />
       </main>
       <Footer />
     </div>

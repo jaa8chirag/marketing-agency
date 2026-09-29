@@ -5,7 +5,8 @@ import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import CTASection from "@/components/ui/CTASection";
 import WorkGrid from "@/components/sections/WorkGrid";
-import { getCaseStudies, getCapabilities, getIndustries } from "@/lib/queries";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import { getCaseStudies, getCapabilities, getIndustries, getTestimonials } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -14,10 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const [caseStudies, capabilities, industries] = await Promise.all([
+  const [caseStudies, capabilities, industries, testimonials] = await Promise.all([
     getCaseStudies(),
     getCapabilities(),
     getIndustries(),
+    getTestimonials(),
   ]);
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
@@ -35,6 +37,7 @@ export default async function WorkPage() {
             <WorkGrid caseStudies={caseStudies} capabilities={capabilities} industries={industries} />
           </Container>
         </section>
+        <TestimonialsSection testimonials={testimonials} />
         <CTASection eyebrow="Start a project" title="Want results like these? Let's talk about your brief." />
       </main>
       <Footer />

@@ -10,6 +10,7 @@ function fromForm(formData: FormData) {
     person: String(formData.get("person") ?? "").trim(),
     role: String(formData.get("role") ?? "").trim() || null,
     company: String(formData.get("company") ?? "").trim(),
+    photoUrl: String(formData.get("photoUrl") ?? "").trim() || null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
   };
 }
