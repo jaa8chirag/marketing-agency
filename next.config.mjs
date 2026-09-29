@@ -8,11 +8,17 @@
 // external files or get nonces.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  // https://app.cal.com: the Cal.com booking embed (components/ui/CalEmbed.tsx)
+  // injects its own <script> tag at runtime — without it here the script is
+  // silently blocked and the "Pick a date & time" step spins forever.
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://app.cal.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://picsum.photos https://lh3.googleusercontent.com",
-  "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+  "img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://picsum.photos https://lh3.googleusercontent.com https://app.cal.com",
+  "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://app.cal.com",
+  // The embed script mounts the actual booking calendar in an iframe from
+  // this origin — needs an explicit allow, same reason as script-src above.
+  "frame-src https://app.cal.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
