@@ -5,19 +5,21 @@ import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import CTASection from "@/components/ui/CTASection";
 import CapabilitiesAccordion from "@/components/sections/CapabilitiesAccordion";
-import { capabilities } from "@/lib/content";
+import { getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Capabilities",
   description:
     "Eight connected capabilities — Brand & Creative, Content & Production, Digital Experiences, Digital Marketing, Media, Performance Marketing, Automation & AI, Commerce & Growth.",
+  alternates: { canonical: "/capabilities" },
 };
 
-export default function CapabilitiesPage() {
+export default async function CapabilitiesPage() {
+  const capabilities = await getCapabilities();
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Capabilities"
           title="Eight capabilities, working as one system."

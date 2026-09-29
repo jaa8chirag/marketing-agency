@@ -8,7 +8,7 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import RevealOnScroll from "@/components/fx/RevealOnScroll";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
-import { industries } from "@/lib/content";
+import type { Industry } from "@/lib/content";
 
 // Curated high-res Unsplash photography for each industry.
 // 100% reliable on Vercel deployments, CDN cached, zero rate-limit or CORS blocks.
@@ -27,7 +27,7 @@ const industryImages: Record<string, string> = {
     "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
 };
 
-export default function IndustriesTeaser() {
+export default function IndustriesTeaser({ industries }: { industries: Industry[] }) {
   return (
     <section className="py-24 md:py-32 border-b border-edge bg-surfaceMuted">
       <Container>

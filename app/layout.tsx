@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Space_Mono } from "next/font/google";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 import "@/styles/shapes.css";
 
@@ -45,7 +46,25 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Cordinit Media",
   },
-  robots: { index: true, follow: true },
+  // Vercel sets VERCEL_ENV to "production" | "preview" | "development".
+  // Preview-deployment URLs are still publicly reachable, and without this
+  // they'd otherwise be crawlable/indexable — a duplicate-content and
+  // "unfinished work leaked to Google" risk that's easy to miss.
+  robots:
+    process.env.VERCEL_ENV === "production"
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
+  alternates: { canonical: "/" },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Cordinit Media",
+  url: "https://cordinitmedia.com",
+  description:
+    "Cordinit Media connects creative, production, digital, media and performance to help ambitious brands build, launch and grow.",
+  sameAs: ["https://linkedin.com", "https://instagram.com", "https://youtube.com", "https://x.com"],
 };
 
 export default function RootLayout({
@@ -71,8 +90,13 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
       </head>
       <body className="bg-surface font-sans text-fg antialiased selection:bg-signal selection:text-ink transition-colors duration-300" suppressHydrationWarning>
+        <GoogleAnalytics />
         <SmoothScroll />
         <CustomCursor />
         {children}

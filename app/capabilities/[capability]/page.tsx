@@ -11,40 +11,49 @@ import Button from "@/components/ui/Button";
 import CTASection from "@/components/ui/CTASection";
 import CaseStudyCard, { capabilityNamesFor } from "@/components/ui/CaseStudyCard";
 import InsightCard from "@/components/ui/InsightCard";
+import TrackView from "@/components/analytics/TrackView";
 import {
-  capabilities,
+  getCapabilities,
   getCapability,
-  industries,
+  getIndustries,
   relatedCaseStudies,
   relatedInsights,
-} from "@/lib/content";
+} from "@/lib/queries";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const capabilities = await getCapabilities();
   return capabilities.map((c) => ({ capability: c.slug }));
 }
 
-export function generateMetadata({ params }: { params: { capability: string } }): Metadata {
-  const capability = getCapability(params.capability);
+export async function generateMetadata({ params }: { params: { capability: string } }): Promise<Metadata> {
+  const capability = await getCapability(params.capability);
   if (!capability) return {};
   return {
     title: capability.name,
     description: capability.summary,
+    alternates: { canonical: `/capabilities/${capability.slug}` },
   };
 }
 
-export default function CapabilityPage({ params }: { params: { capability: string } }) {
-  const capability = getCapability(params.capability);
+export default async function CapabilityPage({ params }: { params: { capability: string } }) {
+  const capability = await getCapability(params.capability);
   if (!capability) notFound();
 
-  const relatedCaps = capabilities.filter((c) => c.slug !== capability.slug).slice(0, 3);
-  const relatedInds = industries.filter((i) => capability.industries.includes(i.slug));
-  const work = relatedCaseStudies({ capability: capability.slug });
-  const insightItems = relatedInsights({ capability: capability.slug });
+  const [allCapabilities, allIndustries, work, insightItems] = await Promise.all([
+    getCapabilities(),
+    getIndustries(),
+    relatedCaseStudies({ capability: capability.slug }),
+    relatedInsights({ capability: capability.slug }),
+  ]);
+
+  const relatedCaps = allCapabilities.filter((c) => c.slug !== capability.slug).slice(0, 3);
+  const relatedInds = allIndustries.filter((i) => capability.industries.includes(i.slug));
 
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
+      <TrackView event="capability_view" params={{ capability: capability.slug }} />
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow={`Capability ${capability.num}`}
           title={capability.name}
@@ -133,7 +142,7 @@ export default function CapabilityPage({ params }: { params: { capability: strin
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {work.map((cs, idx) => (
                   <Reveal key={cs.slug} delay={idx * 60}>
-                    <CaseStudyCard caseStudy={cs} capabilityNames={capabilityNamesFor(cs, capabilities)} />
+                    <CaseStudyCard caseStudy={cs} capabilityNames={capabilityNamesFor(cs, allCapabilities)} />
                   </Reveal>
                 ))}
               </div>

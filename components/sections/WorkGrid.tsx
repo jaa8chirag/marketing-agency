@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import CaseStudyCard from "@/components/ui/CaseStudyCard";
 import type { CaseStudy, Capability, Industry } from "@/lib/content";
 
@@ -79,20 +80,34 @@ export default function WorkGrid({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="font-mono text-sm text-fgMuted py-16 text-center border border-edge">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="font-mono text-sm text-fgMuted py-16 text-center border border-edge"
+        >
           No work matches these filters yet.
-        </p>
+        </motion.p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((cs) => (
-            <CaseStudyCard
-              key={cs.slug}
-              caseStudy={cs}
-              capabilityNames={cs.capabilities
-                .map((slug) => capabilities.find((c) => c.slug === slug)?.name)
-                .filter((n): n is string => Boolean(n))}
-            />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filtered.map((cs, idx) => (
+              <motion.div
+                key={cs.slug}
+                layout
+                initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.45, delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <CaseStudyCard
+                  caseStudy={cs}
+                  capabilityNames={cs.capabilities
+                    .map((slug) => capabilities.find((c) => c.slug === slug)?.name)
+                    .filter((n): n is string => Boolean(n))}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
     </div>

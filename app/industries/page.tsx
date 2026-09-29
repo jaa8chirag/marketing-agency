@@ -5,19 +5,22 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
+import GenerativeArt from "@/components/ui/GenerativeArt";
 import CTASection from "@/components/ui/CTASection";
-import { industries, capabilities } from "@/lib/content";
+import { getIndustries, getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Industries",
   description: "Industry context connected to relevant capabilities, services and proof of work.",
+  alternates: { canonical: "/industries" },
 };
 
-export default function IndustriesPage() {
+export default async function IndustriesPage() {
+  const [industries, capabilities] = await Promise.all([getIndustries(), getCapabilities()]);
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Industries"
           title="Context matters as much as capability."
@@ -35,9 +38,17 @@ export default function IndustriesPage() {
                   <Reveal key={ind.slug} delay={idx * 50}>
                     <Link
                       href={`/industries/${ind.slug}`}
-                      className="group block border border-edge p-8 min-h-[280px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors duration-300"
+                      className="group relative overflow-hidden border border-edge p-8 min-h-[280px] flex flex-col justify-between hover:border-signal/50 transition-colors duration-300"
                     >
-                      <div className="flex items-center justify-between">
+                      <GenerativeArt
+                        seed={ind.slug}
+                        interactive={false}
+                        width={640}
+                        height={400}
+                        className="absolute inset-0 w-full h-full opacity-0 scale-110 grayscale transition-[opacity,transform] duration-700 ease-out group-hover:opacity-100 group-hover:scale-100"
+                      />
+                      <div className="absolute inset-0 bg-surface/92 group-hover:bg-ink/80 transition-colors duration-300" />
+                      <div className="relative z-10 flex items-center justify-between">
                         <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted group-hover:text-mutedOnInk">
                           {ind.eyebrow}
                         </span>
@@ -45,18 +56,18 @@ export default function IndustriesPage() {
                           arrow_outward
                         </span>
                       </div>
-                      <div>
-                        <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+                      <div className="relative z-10">
+                        <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-4 group-hover:text-paper transition-colors">
                           {ind.name}
                         </h2>
-                        <p className="text-fgMuted group-hover:text-mutedOnInk text-sm leading-relaxed mb-6">
+                        <p className="text-fgMuted group-hover:text-mutedOnInk text-sm leading-relaxed mb-6 transition-colors">
                           {ind.summary}
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {caps.map((c) => (
                             <span
                               key={c.slug}
-                              className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-edge group-hover:border-lineOnInk"
+                              className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-edge group-hover:border-lineOnInk group-hover:text-paper transition-colors"
                             >
                               {c.shortName}
                             </span>

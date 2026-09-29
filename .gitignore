@@ -24,6 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
 
 # vercel
@@ -32,3 +33,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/generated/prisma
+
+# Prisma CLI auto-installs these AI-agent reference doc folders on `prisma
+# init` — pure documentation clutter, not project code, kept locally but
+# never committed.
+/.agents
+/.claude
+/.windsurf
+skills-lock.json

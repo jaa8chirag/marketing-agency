@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How Cordinit Media collects, uses and protects your data.",
+  alternates: { canonical: "/legal/privacy-policy" },
 };
 
 const sections = [
@@ -36,7 +37,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Legal"
           title="Privacy Policy"

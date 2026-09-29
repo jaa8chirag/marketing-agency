@@ -26,9 +26,10 @@ export default function InsightCard({
             <GenerativeArt
               seed={insight.slug}
               interactive={false}
+              groupHover
               width={640}
               height={400}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="w-full h-full object-cover"
             />
             {/* Cinematic Gradient Vignette */}
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent pointer-events-none" />

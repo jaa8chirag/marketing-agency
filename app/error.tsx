@@ -1,20 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import Header from "@/components/layout/Header";
+import HeaderClient from "@/components/layout/HeaderClient";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
 
+// error.tsx must be a Client Component (Next.js requirement for error
+// boundaries) — it can't import the DB-backed Header (a Server Component)
+// without dragging Prisma/pg into the client bundle. Uses HeaderClient
+// directly with an empty capability list instead: fine for a crash screen.
 export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
-      <Header />
-      <main className="w-full flex-1 flex items-center pt-32">
+      <HeaderClient navCapabilities={[]} />
+      <main id="main-content" className="w-full flex-1 flex items-center pt-32">
         <Container className="py-24 text-center">
           <span className="font-mono text-[11px] uppercase tracking-superwide text-signal block mb-6">
             500 &middot; Server Error
           </span>
-          <h1 className="font-display text-[18vw] sm:text-[160px] font-bold tracking-tightest leading-none mb-8">
+          <h1 className="glitch-404 font-display text-[18vw] sm:text-[160px] font-bold tracking-tightest leading-none mb-8" data-text="500">
             500
           </h1>
           <p className="text-lg text-fgMuted max-w-md mx-auto leading-relaxed mb-10">

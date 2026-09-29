@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 import Magnetic from "./Magnetic";
+import { trackEvent } from "@/lib/analytics";
 
 type Variant = "primary" | "inverse" | "outline" | "ghost";
 
@@ -27,6 +30,7 @@ export default function Button({
   onClick,
   type = "button",
   icon = true,
+  trackAs,
 }: {
   href?: string;
   children: ReactNode;
@@ -35,8 +39,15 @@ export default function Button({
   onClick?: () => void;
   type?: "button" | "submit";
   icon?: boolean;
+  /** Analytics event name to fire on click (e.g. "book_call_click"). */
+  trackAs?: string;
 }) {
   const classes = `group inline-flex items-center gap-2.5 px-6 py-3.5 font-mono text-[11px] font-bold uppercase tracking-widest transition-all duration-200 ${variants[variant]} ${className}`;
+
+  function handleClick() {
+    if (trackAs) trackEvent(trackAs, href ? { href } : {});
+    onClick?.();
+  }
 
   const content = (
     <>
@@ -52,7 +63,7 @@ export default function Button({
   if (href) {
     return (
       <Magnetic>
-        <Link href={href} className={classes}>
+        <Link href={href} className={classes} onClick={handleClick}>
           {content}
         </Link>
       </Magnetic>
@@ -61,7 +72,7 @@ export default function Button({
 
   return (
     <Magnetic>
-      <button type={type} onClick={onClick} className={classes}>
+      <button type={type} onClick={handleClick} className={classes}>
         {content}
       </button>
     </Magnetic>

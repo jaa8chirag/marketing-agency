@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
@@ -6,24 +7,37 @@ import PageHero from "@/components/ui/PageHero";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
-import { capabilities } from "@/lib/content";
+import EcosystemOrbitLoader from "@/components/three/EcosystemOrbitLoader";
+import { getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Ecosystem",
   description: "How Cordinit, Cordinit Technology and Cordinit Media relate — and how future specialist businesses join the ecosystem.",
+  alternates: { canonical: "/ecosystem" },
 };
 
-export default function EcosystemPage() {
+export default async function EcosystemPage() {
+  const capabilities = await getCapabilities();
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Ecosystem"
           title="Independent brands. One shared operating system."
           description="Cordinit Media isn't a department inside a holding company — it's a distinct business with its own identity, operating inside a group that gives it technology, infrastructure and reach it couldn't build alone."
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Ecosystem" }]}
         />
+
+        <section className="py-16 md:py-20 border-b border-edge bg-surfaceMuted">
+          <Container>
+            <Reveal>
+              <EcosystemOrbitLoader
+                capabilities={capabilities.map((c) => ({ slug: c.slug, name: c.name, shortName: c.shortName }))}
+              />
+            </Reveal>
+          </Container>
+        </section>
 
         <section className="py-20 md:py-28 border-b border-edge">
           <Container>
@@ -92,11 +106,27 @@ export default function EcosystemPage() {
               </h2>
             </Reveal>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line">
-              {capabilities.map((cap) => (
-                <div key={cap.slug} className="bg-surfaceMuted p-6 min-h-[140px] flex flex-col justify-between">
-                  <span className="font-mono text-xs font-bold text-signal">{cap.num}</span>
-                  <h3 className="font-display text-lg font-semibold tracking-tight">{cap.name}</h3>
-                </div>
+              {capabilities.map((cap, idx) => (
+                <Reveal key={cap.slug} delay={idx * 40}>
+                  <Link
+                    href={`/capabilities/${cap.slug}`}
+                    className="group relative overflow-hidden bg-surfaceMuted p-6 min-h-[140px] flex flex-col justify-between hover:bg-ink transition-colors duration-300"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-signal transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    />
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-signal">{cap.num}</span>
+                      <span className="material-symbols-outlined text-[16px] text-fgMuted opacity-0 group-hover:opacity-100 group-hover:text-paper transition-opacity">
+                        arrow_outward
+                      </span>
+                    </div>
+                    <h3 className="font-display text-lg font-semibold tracking-tight group-hover:text-paper transition-colors">
+                      {cap.name}
+                    </h3>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </Container>

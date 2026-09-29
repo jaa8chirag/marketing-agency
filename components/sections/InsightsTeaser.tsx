@@ -7,7 +7,7 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Button from "@/components/ui/Button";
 import GenerativeArt from "@/components/ui/GenerativeArt";
-import { insights } from "@/lib/content";
+import type { Insight } from "@/lib/content";
 
 const accordionMeta = [
   { label: "Think", category: "Strategy & Model" },
@@ -18,7 +18,7 @@ const accordionMeta = [
   { label: "Grow", category: "Commerce & CRO" },
 ];
 
-export default function InsightsTeaser() {
+export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Take the 6 insights to match the 6 columns in the reference image

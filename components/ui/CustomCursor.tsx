@@ -61,7 +61,7 @@ export default function CustomCursor() {
   if (!enabled) return null;
 
   return (
-    <div className={`fixed inset-0 z-[999] pointer-events-none transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}>
+    <div aria-hidden="true" className={`fixed inset-0 z-[999] pointer-events-none transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}>
       <div
         ref={dotRef}
         className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-signal"

@@ -9,41 +9,48 @@ import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
 import CaseStudyCard, { capabilityNamesFor } from "@/components/ui/CaseStudyCard";
-import { capabilities, getService, relatedCaseStudies } from "@/lib/content";
+import TrackView from "@/components/analytics/TrackView";
+import { getCapabilities, getService, relatedCaseStudies } from "@/lib/queries";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const capabilities = await getCapabilities();
   return capabilities.flatMap((c) => c.services.map((s) => ({ capability: c.slug, service: s.slug })));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { capability: string; service: string };
-}): Metadata {
-  const match = getService(params.capability, params.service);
+}): Promise<Metadata> {
+  const match = await getService(params.capability, params.service);
   if (!match) return {};
   return {
     title: `${match.service.name} — ${match.capability.name}`,
     description: match.service.definition,
+    alternates: { canonical: `/capabilities/${match.capability.slug}/${match.service.slug}` },
   };
 }
 
-export default function ServicePage({
+export default async function ServicePage({
   params,
 }: {
   params: { capability: string; service: string };
 }) {
-  const match = getService(params.capability, params.service);
+  const match = await getService(params.capability, params.service);
   if (!match) notFound();
   const { capability, service } = match;
 
   const otherServices = capability.services.filter((s) => s.slug !== service.slug);
-  const work = relatedCaseStudies({ capability: capability.slug });
+  const [work, capabilities] = await Promise.all([
+    relatedCaseStudies({ capability: capability.slug }),
+    getCapabilities(),
+  ]);
 
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
+      <TrackView event="service_view" params={{ capability: capability.slug, service: service.slug }} />
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow={capability.name}
           title={service.name}
@@ -108,10 +115,16 @@ export default function ServicePage({
             <Reveal>
               <Eyebrow index="D">Deliverables</Eyebrow>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line mt-10">
-                {service.deliverables.map((d) => (
-                  <div key={d} className="bg-surfaceMuted p-6 min-h-[100px] flex items-center font-display text-lg font-medium">
-                    {d}
-                  </div>
+                {service.deliverables.map((d, idx) => (
+                  <Reveal key={d} delay={idx * 30}>
+                    <div className="group relative overflow-hidden bg-surfaceMuted hover:bg-ink p-6 min-h-[100px] flex items-center font-display text-lg font-medium transition-colors duration-300 hover:text-paper">
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 left-0 w-0.5 bg-signal scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top"
+                      />
+                      {d}
+                    </div>
+                  </Reveal>
                 ))}
               </div>
             </Reveal>

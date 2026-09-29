@@ -8,9 +8,9 @@ import Button from "@/components/ui/Button";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import RevealOnScroll from "@/components/fx/RevealOnScroll";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
-import { capabilities } from "@/lib/content";
+import type { Capability } from "@/lib/content";
 
-export default function CapabilitiesShowcase() {
+export default function CapabilitiesShowcase({ capabilities }: { capabilities: Capability[] }) {
   return (
     <section className="py-24 md:py-32 border-b border-edge bg-surface" id="capabilities">
       <Container>

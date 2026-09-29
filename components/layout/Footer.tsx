@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { trackEvent } from "@/lib/analytics";
 
 const BRAND_LETTERS = ["C", "o", "r", "d", "i", "n", "i", "t"];
 
@@ -43,6 +44,10 @@ export default function Footer() {
     const timer = setInterval(updateClock, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  function handleOutbound(url: string) {
+    trackEvent("outbound_click", { url });
+  }
 
   return (
     /* ──────────────────────────────────────────────────────────────
@@ -113,6 +118,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="LinkedIn"
+                  onClick={() => handleOutbound("https://linkedin.com")}
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-neutral-900 border border-neutral-800 text-white flex items-center justify-center font-mono font-bold text-xs transition-all hover:bg-signal hover:text-ink hover:border-signal"
                 >
                   in
@@ -123,6 +129,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
+                  onClick={() => handleOutbound("https://instagram.com")}
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-neutral-900 border border-neutral-800 text-white flex items-center justify-center transition-all hover:bg-signal hover:text-ink hover:border-signal"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -135,6 +142,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="YouTube"
+                  onClick={() => handleOutbound("https://youtube.com")}
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-neutral-900 border border-neutral-800 text-white flex items-center justify-center transition-all hover:bg-signal hover:text-ink hover:border-signal"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -147,6 +155,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="X"
+                  onClick={() => handleOutbound("https://x.com")}
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-neutral-900 border border-neutral-800 text-white flex items-center justify-center font-mono font-bold text-xs transition-all hover:bg-signal hover:text-ink hover:border-signal"
                 >
                   f

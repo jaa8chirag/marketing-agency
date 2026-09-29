@@ -2,15 +2,19 @@ import Container from "./Container";
 import Eyebrow from "./Eyebrow";
 import Button from "./Button";
 import Reveal from "./Reveal";
+import NewsletterForm from "./NewsletterForm";
 
 export default function CTASection({
   eyebrow = "Start a Project",
   title = "Have a brief? Let's make something worth talking about.",
   description = "Tell us what you're building and we'll bring the right specialists into the room.",
+  variant = "default",
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
+  /** "newsletter" swaps the Book a Call / See the Work buttons for a real email signup form. */
+  variant?: "default" | "newsletter";
 }) {
   return (
     <section className="bg-ink text-paper py-24 md:py-32 border-t border-lineOnInk relative overflow-hidden">
@@ -24,14 +28,18 @@ export default function CTASection({
             </h2>
             <div className="flex flex-col gap-4 shrink-0">
               <p className="max-w-xs text-mutedOnInk leading-relaxed">{description}</p>
-              <div className="flex flex-wrap gap-4">
-                <Button href="/contact?intent=book-a-call" variant="inverse">
-                  Book a Call
-                </Button>
-                <Button href="/work" variant="outline" className="!border-lineOnInk !text-paper hover:!bg-paper hover:!text-ink">
-                  See the Work
-                </Button>
-              </div>
+              {variant === "newsletter" ? (
+                <NewsletterForm />
+              ) : (
+                <div className="flex flex-wrap gap-4">
+                  <Button href="/contact?intent=book-a-call" variant="inverse" trackAs="book_call_click">
+                    Book a Call
+                  </Button>
+                  <Button href="/work" variant="outline" className="!border-lineOnInk !text-paper hover:!bg-paper hover:!text-ink">
+                    See the Work
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </Reveal>

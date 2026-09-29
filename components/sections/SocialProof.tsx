@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Marquee from "@/components/ui/Marquee";
-import { clientLogos } from "@/lib/content";
 
 interface ClientVideoTestimonial {
   id: string;
@@ -73,7 +72,7 @@ const clientVideos: ClientVideoTestimonial[] = [
   },
 ];
 
-export default function SocialProof() {
+export default function SocialProof({ clientLogos }: { clientLogos: string[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeMuted, setActiveMuted] = useState<Record<string, boolean>>({
     pros: true,

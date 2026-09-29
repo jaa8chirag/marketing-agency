@@ -1,0 +1,244 @@
+// Cordinit Media — backend content model.
+// Mirrors the CMS content model in docs/Confidential_Media_Brief.md §11,
+// plus Lead/Newsletter capture and a single-admin auth table for the
+// admin panel. lib/content.ts types stay in sync with these shapes by hand
+// (see lib/queries.ts, which maps Prisma rows onto those same TS types).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Capabilities / Services ──────────────────────────────────────────────
+
+model Capability {
+  id              String   @id @default(cuid())
+  num             String
+  slug            String   @unique
+  name            String
+  shortName       String
+  clientNeed      String
+  tagline         String
+  summary         String
+  heroDescription String
+  problems        String[]
+  deliverables    String[]
+  industrySlugs   String[] // slugs of related Industry rows (reference by slug, resolved in lib/queries.ts)
+  sortOrder       Int      @default(0)
+
+  services  Service[]
+  caseStudies CaseStudyCapability[]
+  insights  Insight[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  slug         String
+  name         String
+  hook         String
+  definition   String
+  forWhen      String[]
+  deliverables String[]
+  outcomes     String[]
+  sortOrder    Int      @default(0)
+
+  capability   Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capabilityId String
+
+  approachSteps ServiceApproachStep[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([capabilityId, slug])
+}
+
+model ServiceApproachStep {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  sortOrder   Int     @default(0)
+
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String
+}
+
+// ── Industries ────────────────────────────────────────────────────────────
+
+model Industry {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String
+  eyebrow         String
+  summary         String
+  challenges      String[]
+  capabilitySlugs String[]
+  sortOrder       Int      @default(0)
+
+  caseStudies CaseStudy[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Work / Case Studies ──────────────────────────────────────────────────
+
+model CaseStudy {
+  id         String @id @default(cuid())
+  slug       String @unique
+  client     String
+  title      String
+  year       String
+  summary    String
+  challenge  String
+  objective  String
+  strategy   String
+  creative   String
+  execution  String
+  technology String
+  media      String
+  sortOrder  Int    @default(0)
+
+  industry   Industry @relation(fields: [industryId], references: [id])
+  industryId String
+
+  capabilities CaseStudyCapability[]
+  results      CaseStudyResult[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CaseStudyResult {
+  id     String @id @default(cuid())
+  metric String
+  label  String
+  sortOrder Int @default(0)
+
+  caseStudy   CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  caseStudyId String
+}
+
+// Explicit join table (case studies relate to *multiple* capabilities per the brief)
+model CaseStudyCapability {
+  caseStudy    CaseStudy  @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  caseStudyId  String
+  capability   Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capabilityId String
+
+  @@id([caseStudyId, capabilityId])
+}
+
+// ── Insights ──────────────────────────────────────────────────────────────
+
+enum InsightType {
+  Article
+  Guide
+  Report
+  Perspective
+  Video
+  Whitepaper
+}
+
+model Insight {
+  id           String      @id @default(cuid())
+  slug         String      @unique
+  title        String
+  type         InsightType
+  summary      String
+  body         String[]
+  author       String
+  date         String
+  readingTime  String
+  industrySlug String?
+  sortOrder    Int         @default(0)
+
+  capability   Capability? @relation(fields: [capabilityId], references: [id])
+  capabilityId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Social proof ──────────────────────────────────────────────────────────
+
+model Testimonial {
+  id        String  @id @default(cuid())
+  quote     String
+  person    String
+  role      String?
+  company   String
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClientLogo {
+  id        String  @id @default(cuid())
+  name      String
+  industry  String?
+  approved  Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Leads / Newsletter (brief §9.10, §14, Website Flow addendum) ─────────
+
+enum LeadMode {
+  ENQUIRY
+  BOOK_A_CALL
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  mode      LeadMode
+  firstName String
+  lastName  String
+  email     String
+  company   String
+  jobTitle  String?
+  interest  String
+  message   String
+  consent   Boolean
+
+  // Booking-specific (only set when mode = BOOK_A_CALL)
+  bookingDate String?
+  bookingTime String?
+
+  // Hidden attribution data (brief's "Hidden Lead & Attribution Data")
+  sourcePath String?
+  ctaLocation String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  referrer    String?
+
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  consent   Boolean
+  createdAt DateTime @default(now())
+}
+
+// ── Admin auth ────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

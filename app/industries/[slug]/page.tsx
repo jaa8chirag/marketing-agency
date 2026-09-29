@@ -10,30 +10,34 @@ import CTASection from "@/components/ui/CTASection";
 import CaseStudyCard, { capabilityNamesFor } from "@/components/ui/CaseStudyCard";
 import InsightCard from "@/components/ui/InsightCard";
 import Link from "next/link";
-import { industries, getIndustry, capabilities, relatedCaseStudies, relatedInsights } from "@/lib/content";
+import { getIndustries, getIndustry, getCapabilities, relatedCaseStudies, relatedInsights } from "@/lib/queries";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const industries = await getIndustries();
   return industries.map((i) => ({ slug: i.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const industry = getIndustry(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const industry = await getIndustry(params.slug);
   if (!industry) return {};
-  return { title: industry.name, description: industry.summary };
+  return { title: industry.name, description: industry.summary, alternates: { canonical: `/industries/${industry.slug}` } };
 }
 
-export default function IndustryPage({ params }: { params: { slug: string } }) {
-  const industry = getIndustry(params.slug);
+export default async function IndustryPage({ params }: { params: { slug: string } }) {
+  const industry = await getIndustry(params.slug);
   if (!industry) notFound();
 
+  const [capabilities, work, insightItems] = await Promise.all([
+    getCapabilities(),
+    relatedCaseStudies({ industry: industry.slug }),
+    relatedInsights({ industry: industry.slug }),
+  ]);
   const relatedCaps = capabilities.filter((c) => industry.capabilities.includes(c.slug));
-  const work = relatedCaseStudies({ industry: industry.slug });
-  const insightItems = relatedInsights({ industry: industry.slug });
 
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow={industry.eyebrow}
           title={industry.name}

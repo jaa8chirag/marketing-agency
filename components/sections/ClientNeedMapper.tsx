@@ -7,7 +7,7 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import GenerativeArt from "@/components/ui/GenerativeArt";
-import { capabilities } from "@/lib/content";
+import type { Capability } from "@/lib/content";
 
 // 8 distinct geometric & organic shapes for each capability
 const SHAPE_PRESETS = [
@@ -99,7 +99,7 @@ const SHAPE_PRESETS = [
   },
 ];
 
-export default function ClientNeedMapper() {
+export default function ClientNeedMapper({ capabilities }: { capabilities: Capability[] }) {
   const [active, setActive] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [liveRot, setLiveRot] = useState(0);

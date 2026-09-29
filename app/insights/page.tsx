@@ -5,18 +5,20 @@ import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import CTASection from "@/components/ui/CTASection";
 import InsightsGrid from "@/components/sections/InsightsGrid";
-import { insights, capabilities } from "@/lib/content";
+import { getInsights, getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Insights",
   description: "Articles, guides, reports, perspectives and video from Cordinit Media — filtered by capability and content type.",
+  alternates: { canonical: "/insights" },
 };
 
-export default function InsightsPage() {
+export default async function InsightsPage() {
+  const [insights, capabilities] = await Promise.all([getInsights(), getCapabilities()]);
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Insights"
           title="What we're learning, in public."
@@ -29,7 +31,12 @@ export default function InsightsPage() {
             <InsightsGrid insights={insights} capabilities={capabilities} />
           </Container>
         </section>
-        <CTASection eyebrow="Newsletter" title="Get insights like these before we publish them anywhere else." />
+        <CTASection
+          eyebrow="Newsletter"
+          title="Get insights like these before we publish them anywhere else."
+          description="One email when something's genuinely worth reading. No spam, unsubscribe anytime."
+          variant="newsletter"
+        />
       </main>
       <Footer />
     </div>

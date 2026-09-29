@@ -11,6 +11,7 @@ import CTASection from "@/components/ui/CTASection";
 export const metadata: Metadata = {
   title: "About",
   description: "Who Cordinit Media is, how we operate, and how we connect to the wider Cordinit ecosystem.",
+  alternates: { canonical: "/about" },
 };
 
 const values = [
@@ -31,7 +32,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="About"
           title="A creative, media and growth company built for how modern marketing actually works."
@@ -90,9 +91,21 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {team.map((member, idx) => (
                 <Reveal key={member.name} delay={idx * 50}>
-                  <div className="border border-edge p-6 min-h-[160px] flex flex-col justify-end bg-surface">
-                    <h3 className="font-display text-lg font-semibold tracking-tight">{member.name}</h3>
-                    <p className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mt-2">{member.role}</p>
+                  <div className="group relative overflow-hidden border border-edge p-6 min-h-[160px] flex flex-col justify-end bg-surface hover:border-signal/50 transition-colors duration-300">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-10 -right-6 font-display text-7xl font-bold text-edge/60 group-hover:text-signal/15 transition-colors duration-500 select-none"
+                    >
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-signal transition-transform duration-500 ease-out group-hover:scale-x-100"
+                    />
+                    <h3 className="relative font-display text-lg font-semibold tracking-tight group-hover:text-signal transition-colors">
+                      {member.name}
+                    </h3>
+                    <p className="relative font-mono text-[11px] uppercase tracking-wider text-fgMuted mt-2">{member.role}</p>
                   </div>
                 </Reveal>
               ))}
@@ -103,7 +116,7 @@ export default function AboutPage() {
         <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <Reveal>
-              <div className="border border-edge p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <div className="border-beam relative p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div>
                   <Eyebrow index="04">Part of Cordinit</Eyebrow>
                   <h2 className="font-display text-2xl sm:text-4xl font-bold tracking-tight max-w-xl text-balance">

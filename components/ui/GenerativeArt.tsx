@@ -8,6 +8,7 @@ export default function GenerativeArt({
   label,
   index,
   interactive = true,
+  groupHover = false,
   className = "",
   width = 640,
   height = 480,
@@ -16,6 +17,10 @@ export default function GenerativeArt({
   label?: string;
   index?: string;
   interactive?: boolean;
+  /** Use group-hover instead of self-hover, and add the grayscale-to-color
+   * reveal used across card grids (so hovering anywhere on the parent
+   * card — not just the image — triggers it). */
+  groupHover?: boolean;
   className?: string;
   width?: number;
   height?: number;
@@ -34,9 +39,16 @@ export default function GenerativeArt({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         className={`absolute inset-0 w-full h-full object-cover ${
-          interactive ? "transition-transform duration-700 ease-out hover:scale-110" : ""
+          groupHover
+            ? "grayscale-[30%] contrast-105 brightness-[0.9] saturate-[0.85] scale-105 transition-[filter,transform] duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:saturate-100 group-hover:scale-115"
+            : interactive
+              ? "transition-transform duration-700 ease-out hover:scale-110"
+              : ""
         }`}
       />
+      {groupHover && (
+        <div className="pointer-events-none absolute inset-0 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-paper/20 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+      )}
       {/* Subtle brand tinting that preserves the vivid clarity of the photograph */}
       <div
         className="absolute inset-0 pointer-events-none mix-blend-color opacity-20"

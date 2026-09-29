@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms governing use of the Cordinit Media website.",
+  alternates: { canonical: "/legal/terms-of-service" },
 };
 
 const sections = [
@@ -36,7 +37,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Legal"
           title="Terms of Service"

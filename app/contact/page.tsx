@@ -5,17 +5,20 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import ContactExperience from "@/components/sections/ContactExperience";
+import { getAreasOfInterest } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Book a call with Cordinit Media, or send a general enquiry about your project.",
+  alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const areasOfInterest = await getAreasOfInterest();
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <PageHero
           eyebrow="Start a Project"
           title="Let's talk about what you're building."
@@ -25,7 +28,7 @@ export default function ContactPage() {
         <section className="py-20 md:py-28">
           <Container>
             <Suspense fallback={null}>
-              <ContactExperience />
+              <ContactExperience areasOfInterest={areasOfInterest} />
             </Suspense>
           </Container>
         </section>

@@ -14,7 +14,7 @@ export default function CaseStudyCard({
     <TiltCard max={5}>
       <Link
         href={`/work/${caseStudy.slug}`}
-        className="group block border border-edge bg-surface hover:border-ink transition-colors duration-300"
+        className="group block border border-edge bg-surface hover:border-signal/60 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] transition-[border-color,box-shadow] duration-300"
       >
         <GenerativeArt
           seed={caseStudy.slug}
@@ -22,6 +22,7 @@ export default function CaseStudyCard({
           label={caseStudy.client}
           width={480}
           height={300}
+          groupHover
           className="h-40 w-full"
         />
         <div className="p-7 flex flex-col justify-between group-hover:bg-ink group-hover:text-paper transition-colors duration-300">

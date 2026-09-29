@@ -53,7 +53,7 @@ export default function CyclingWord({ className = "" }: { className?: string }) 
   }, [prefersReduced]);
 
   return (
-    <span className={`inline-block w-[108px] shrink-0 overflow-hidden whitespace-nowrap text-left align-bottom ${className}`}>
+    <span className={`inline-block w-[142px] shrink-0 overflow-hidden whitespace-nowrap text-left align-bottom ${className}`}>
       {display}
     </span>
   );

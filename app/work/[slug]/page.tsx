@@ -8,20 +8,23 @@ import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
 import CaseStudyCard, { capabilityNamesFor } from "@/components/ui/CaseStudyCard";
 import CaseStudyGallery from "@/components/sections/CaseStudyGallery";
+import TrackView from "@/components/analytics/TrackView";
 import Link from "next/link";
-import { caseStudies, getCaseStudy, capabilities, getIndustry, relatedCaseStudies } from "@/lib/content";
+import { getCaseStudies, getCaseStudy, getCapabilities, getIndustry, relatedCaseStudies } from "@/lib/queries";
+import type { CaseStudy } from "@/lib/content";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const caseStudies = await getCaseStudies();
   return caseStudies.map((c) => ({ slug: c.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const cs = getCaseStudy(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const cs = await getCaseStudy(params.slug);
   if (!cs) return {};
-  return { title: `${cs.client} — ${cs.title}`, description: cs.summary };
+  return { title: `${cs.client} — ${cs.title}`, description: cs.summary, alternates: { canonical: `/work/${cs.slug}` } };
 }
 
-const narrative = (cs: NonNullable<ReturnType<typeof getCaseStudy>>) => [
+const narrative = (cs: CaseStudy) => [
   { label: "Challenge", index: "01", text: cs.challenge },
   { label: "Objective", index: "02", text: cs.objective },
   { label: "Strategy", index: "03", text: cs.strategy },
@@ -31,53 +34,63 @@ const narrative = (cs: NonNullable<ReturnType<typeof getCaseStudy>>) => [
   { label: "Media", index: "07", text: cs.media },
 ];
 
-export default function CaseStudyPage({ params }: { params: { slug: string } }) {
-  const cs = getCaseStudy(params.slug);
+export default async function CaseStudyPage({ params }: { params: { slug: string } }) {
+  const cs = await getCaseStudy(params.slug);
   if (!cs) notFound();
 
+  const [capabilities, industry, related] = await Promise.all([
+    getCapabilities(),
+    getIndustry(cs.industry),
+    relatedCaseStudies({ capability: cs.capabilities[0], exclude: cs.slug }),
+  ]);
   const capNames = capabilityNamesFor(cs, capabilities);
-  const industry = getIndustry(cs.industry);
-  const related = relatedCaseStudies({ capability: cs.capabilities[0], exclude: cs.slug });
 
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
+      <TrackView event="case_study_view" params={{ slug: cs.slug, client: cs.client }} />
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <section className="bg-ink text-paper pt-40 pb-20 md:pt-48 md:pb-24 border-b border-lineOnInk">
           <Container>
-            <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-mutedOnInk">
-              <Link href="/" className="hover:text-paper transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/work" className="hover:text-paper transition-colors">Work</Link>
-              <span>/</span>
-              <span className="text-paper">{cs.client}</span>
-            </nav>
+            <Reveal>
+              <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-mutedOnInk">
+                <Link href="/" className="hover:text-paper transition-colors">Home</Link>
+                <span>/</span>
+                <Link href="/work" className="hover:text-paper transition-colors">Work</Link>
+                <span>/</span>
+                <span className="text-paper">{cs.client}</span>
+              </nav>
+            </Reveal>
 
-            <div className="flex flex-wrap gap-2 mb-6">
-              {capNames.map((name) => (
-                <span key={name} className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-lineOnInk text-mutedOnInk">
-                  {name}
-                </span>
-              ))}
-              {industry && (
-                <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-signal text-signal">
-                  {industry.name}
-                </span>
-              )}
-            </div>
+            <Reveal delay={60}>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {capNames.map((name) => (
+                  <span key={name} className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-lineOnInk text-mutedOnInk">
+                    {name}
+                  </span>
+                ))}
+                {industry && (
+                  <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-signal text-signal">
+                    {industry.name}
+                  </span>
+                )}
+              </div>
+            </Reveal>
 
-            <span className="font-mono text-sm uppercase tracking-widest text-signal block mb-4">{cs.client} &middot; {cs.year}</span>
-            <h1 className="font-display text-[38px] sm:text-[56px] md:text-[68px] font-bold tracking-tightest leading-[0.98] max-w-4xl text-balance mb-10">
-              {cs.title}
-            </h1>
-            <p className="max-w-2xl text-lg text-mutedOnInk leading-relaxed">{cs.summary}</p>
+            <Reveal delay={100}>
+              <span className="font-mono text-sm uppercase tracking-widest text-signal block mb-4">{cs.client} &middot; {cs.year}</span>
+              <h1 className="font-display text-[38px] sm:text-[56px] md:text-[68px] font-bold tracking-tightest leading-[0.98] max-w-4xl text-balance mb-10">
+                {cs.title}
+              </h1>
+              <p className="max-w-2xl text-lg text-mutedOnInk leading-relaxed">{cs.summary}</p>
+            </Reveal>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-14 pt-10 border-t border-lineOnInk">
-              {cs.results.map((r) => (
-                <div key={r.label}>
+              {cs.results.map((r, idx) => (
+                <Reveal key={r.label} delay={140 + idx * 50}>
                   <span className="font-display text-3xl sm:text-4xl font-bold text-paper block mb-1">{r.metric}</span>
                   <span className="font-mono text-[10px] uppercase tracking-wider text-mutedOnInk">{r.label}</span>
-                </div>
+                </Reveal>
               ))}
             </div>
           </Container>

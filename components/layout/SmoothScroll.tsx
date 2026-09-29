@@ -13,6 +13,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // same buttery speed.
 export default function SmoothScroll() {
   useEffect(() => {
+    // Lenis's eased scroll is itself a motion effect applied to every
+    // scroll interaction site-wide — skip it under reduced-motion and let
+    // the browser's native (instant) scroll take over. ScrollTrigger still
+    // works fine off native scroll events without Lenis driving it.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({

@@ -8,60 +8,84 @@ import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
 import InsightCard from "@/components/ui/InsightCard";
-import { insights, getInsight, getCapability, relatedInsights } from "@/lib/content";
+import TrackView from "@/components/analytics/TrackView";
+import { getInsights, getInsight, getCapability, relatedInsights } from "@/lib/queries";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const insights = await getInsights();
   return insights.map((i) => ({ slug: i.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const insight = getInsight(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const insight = await getInsight(params.slug);
   if (!insight) return {};
-  return { title: insight.title, description: insight.summary };
+  return { title: insight.title, description: insight.summary, alternates: { canonical: `/insights/${insight.slug}` } };
 }
 
-export default function InsightPage({ params }: { params: { slug: string } }) {
-  const insight = getInsight(params.slug);
+export default async function InsightPage({ params }: { params: { slug: string } }) {
+  const insight = await getInsight(params.slug);
   if (!insight) notFound();
 
-  const capability = insight.capability ? getCapability(insight.capability) : undefined;
-  const related = relatedInsights({ capability: insight.capability, exclude: insight.slug });
+  const [capability, related] = await Promise.all([
+    insight.capability ? getCapability(insight.capability) : Promise.resolve(undefined),
+    relatedInsights({ capability: insight.capability, exclude: insight.slug }),
+  ]);
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: insight.title,
+    description: insight.summary,
+    author: { "@type": "Person", name: insight.author },
+    datePublished: insight.date,
+    url: `https://cordinitmedia.com/insights/${insight.slug}`,
+    publisher: { "@type": "Organization", name: "Cordinit Media" },
+  };
 
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <TrackView event="insight_view" params={{ slug: insight.slug, type: insight.type }} />
       <Header />
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <section className="pt-40 pb-16 md:pt-48 md:pb-20 border-b border-edge">
           <Container>
-            <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-fgMuted">
-              <Link href="/" className="hover:text-fg transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/insights" className="hover:text-fg transition-colors">Insights</Link>
-              <span>/</span>
-              <span className="text-fg">{insight.type}</span>
-            </nav>
+            <Reveal>
+              <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider mb-8 flex-wrap text-fgMuted">
+                <Link href="/" className="hover:text-fg transition-colors">Home</Link>
+                <span>/</span>
+                <Link href="/insights" className="hover:text-fg transition-colors">Insights</Link>
+                <span>/</span>
+                <span className="text-fg">{insight.type}</span>
+              </nav>
+            </Reveal>
 
-            <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-signal text-signal inline-block mb-6">
-              {insight.type}
-            </span>
-            <h1 className="font-display text-[34px] sm:text-[50px] md:text-[60px] font-bold tracking-tightest leading-[1.02] max-w-4xl text-balance mb-8">
-              {insight.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-fgMuted">
-              <span>{insight.author}</span>
-              <span>&middot;</span>
-              <span>{insight.date}</span>
-              <span>&middot;</span>
-              <span>{insight.readingTime}</span>
-              {capability && (
-                <>
-                  <span>&middot;</span>
-                  <Link href={`/capabilities/${capability.slug}`} className="hover:text-signal transition-colors">
-                    {capability.name}
-                  </Link>
-                </>
-              )}
-            </div>
+            <Reveal delay={60}>
+              <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-signal text-signal inline-block mb-6">
+                {insight.type}
+              </span>
+              <h1 className="font-display text-[34px] sm:text-[50px] md:text-[60px] font-bold tracking-tightest leading-[1.02] max-w-4xl text-balance mb-8">
+                {insight.title}
+              </h1>
+            </Reveal>
+
+            <Reveal delay={110}>
+              <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-fgMuted">
+                <span>{insight.author}</span>
+                <span>&middot;</span>
+                <span>{insight.date}</span>
+                <span>&middot;</span>
+                <span>{insight.readingTime}</span>
+                {capability && (
+                  <>
+                    <span>&middot;</span>
+                    <Link href={`/capabilities/${capability.slug}`} className="hover:text-signal transition-colors">
+                      {capability.name}
+                    </Link>
+                  </>
+                )}
+              </div>
+            </Reveal>
           </Container>
         </section>
 

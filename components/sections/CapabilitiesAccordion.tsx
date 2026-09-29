@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import GenerativeArt from "@/components/ui/GenerativeArt";
+import Reveal from "@/components/ui/Reveal";
 import { duration, easing } from "@/lib/motion";
 import type { Capability } from "@/lib/content";
 
@@ -27,15 +28,21 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
           const isOpen = openSlug === cap.slug;
 
           return (
-            <div key={cap.slug} className="border-b border-lineOnInk">
+            <Reveal key={cap.slug} delay={idx * 60} className="border-b border-lineOnInk">
               <button
                 type="button"
                 onClick={() => setOpenSlug(isOpen ? null : cap.slug)}
                 aria-expanded={isOpen}
-                className="w-full flex items-center gap-4 sm:gap-8 py-6 text-left group"
+                className="relative w-full flex items-center gap-4 sm:gap-8 py-6 text-left group overflow-hidden"
               >
-                <span className="font-mono text-sm text-mutedOnInk w-8 shrink-0">{cap.num}</span>
-                <span className="font-display text-lg sm:text-xl font-bold tracking-tight w-full sm:w-64 shrink-0 group-hover:text-signal transition-colors">
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10 origin-left scale-x-0 bg-signal/[0.06] transition-transform duration-500 ease-out group-hover:scale-x-100"
+                />
+                <span className="font-mono text-sm text-mutedOnInk w-8 shrink-0 transition-colors duration-300 group-hover:text-signal">
+                  {cap.num}
+                </span>
+                <span className="font-display text-lg sm:text-xl font-bold tracking-tight w-full sm:w-64 shrink-0 transition-[color,transform] duration-300 group-hover:text-signal group-hover:translate-x-1">
                   {cap.name}
                 </span>
                 <span className="hidden sm:block flex-1 text-sm text-mutedOnInk truncate">
@@ -43,7 +50,7 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
                 </span>
                 <span
                   className={`shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition-colors duration-300 ${
-                    isOpen ? "bg-signal border-signal text-ink" : "border-lineOnInk text-paper"
+                    isOpen ? "bg-signal border-signal text-ink" : "border-lineOnInk text-paper group-hover:border-signal"
                   }`}
                 >
                   <span
@@ -70,10 +77,10 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
                         width={960}
                         height={480}
                         interactive={false}
-                        className="absolute inset-0 w-full h-full"
+                        className="absolute inset-0 w-full h-full animate-kenburns"
                       />
 
-                      <div className="absolute bottom-4 right-4 left-4 sm:left-auto sm:w-80 bg-paper text-ink rounded-xl p-5 shadow-2xl">
+                      <div className="border-beam absolute bottom-4 right-4 left-4 sm:left-auto sm:w-80 bg-paper text-ink rounded-xl p-5 shadow-2xl">
                         <span className="w-8 h-8 rounded-full bg-signal text-ink flex items-center justify-center mb-3">
                           <span className="material-symbols-outlined text-[16px]">bolt</span>
                         </span>
@@ -91,7 +98,7 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </Reveal>
           );
         })}
       </div>

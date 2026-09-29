@@ -1,9 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
-import { areasOfInterest } from "@/lib/content";
+import { AnimatePresence, motion } from "motion/react";
+import { trackEvent } from "@/lib/analytics";
+
+const stepVariants = {
+  initial: { opacity: 0, x: 16 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const } },
+  exit: { opacity: 0, x: -16, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const } },
+};
 
 type Mode = "book-a-call" | "enquiry";
 type Step = "form" | "schedule" | "success";
@@ -26,13 +33,15 @@ function nextBusinessDays(count: number) {
 const fieldClasses =
   "w-full bg-transparent border-b border-edge py-3.5 text-fg placeholder:text-fgMuted focus:outline-none focus:border-signal transition-colors";
 
-export default function ContactExperience() {
+export default function ContactExperience({ areasOfInterest }: { areasOfInterest: string[] }) {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const initialMode: Mode = searchParams.get("intent") === "book-a-call" ? "book-a-call" : "enquiry";
 
   const [mode, setMode] = useState<Mode>(initialMode);
   const [step, setStep] = useState<Step>("form");
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -41,14 +50,26 @@ export default function ContactExperience() {
     email: "",
     company: "",
     jobTitle: "",
-    interest: areasOfInterest[0],
+    interest: areasOfInterest[0] ?? "",
     message: "",
     consent: false,
+    website: "", // honeypot — left empty by real visitors
   });
 
   const days = nextBusinessDays(5);
+  const hasStarted = useRef(false);
+
+  useEffect(() => {
+    trackEvent("contact_form_view", { mode: initialMode });
+    // Fire once on mount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
+    if (!hasStarted.current) {
+      hasStarted.current = true;
+      trackEvent("contact_form_start", { mode });
+    }
     setForm((f) => ({ ...f, [key]: value }));
   }
 
@@ -59,60 +80,127 @@ export default function ContactExperience() {
     setSelectedTime(null);
   }
 
+  function attribution() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      sourcePath: pathname,
+      ctaLocation: "contact-page-form",
+      utmSource: params.get("utm_source") ?? undefined,
+      utmMedium: params.get("utm_medium") ?? undefined,
+      utmCampaign: params.get("utm_campaign") ?? undefined,
+      utmContent: params.get("utm_content") ?? undefined,
+      referrer: document.referrer || undefined,
+    };
+  }
+
+  async function submitLead(extra: { bookingDate?: string; bookingTime?: string }) {
+    setSubmitting(true);
+    setSubmitError(null);
+    trackEvent("contact_form_submit", { mode });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: mode === "book-a-call" ? "BOOK_A_CALL" : "ENQUIRY",
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          company: form.company,
+          jobTitle: form.jobTitle,
+          interest: form.interest,
+          message: form.message,
+          consent: form.consent,
+          website: form.website,
+          ...extra,
+          ...attribution(),
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error || "Something went wrong. Please try again.");
+      }
+      trackEvent("contact_form_success", { mode });
+      setStep("success");
+    } catch (err) {
+      trackEvent("contact_form_error", { mode });
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   function handleSubmitDetails(e: React.FormEvent) {
     e.preventDefault();
     if (mode === "book-a-call") {
       setStep("schedule");
     } else {
-      setSubmitting(true);
-      setTimeout(() => {
-        setSubmitting(false);
-        setStep("success");
-      }, 900);
+      submitLead({});
     }
   }
 
   function handleConfirmBooking() {
     if (selectedDay === null || !selectedTime) return;
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setStep("success");
-    }, 900);
+    submitLead({
+      bookingDate: days[selectedDay]?.toISOString(),
+      bookingTime: selectedTime,
+    });
   }
 
   const chosenDate = selectedDay !== null ? days[selectedDay] : null;
 
   return (
     <div>
-      <div className="flex border border-edge mb-14 max-w-md">
+      <div className="relative flex border border-edge mb-14 max-w-md">
         <button
           type="button"
           onClick={() => switchMode("book-a-call")}
-          className={`flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors ${
-            mode === "book-a-call" ? "bg-ink text-paper" : "text-fgMuted hover:text-fg"
+          className={`relative flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors ${
+            mode === "book-a-call" ? "text-paper" : "text-fgMuted hover:text-fg"
           }`}
         >
+          {mode === "book-a-call" && (
+            <motion.span
+              layoutId="contact-mode-pill"
+              transition={{ type: "spring", stiffness: 500, damping: 40 }}
+              className="absolute inset-0 bg-ink -z-10"
+            />
+          )}
           Book a Call
         </button>
         <button
           type="button"
           onClick={() => switchMode("enquiry")}
-          className={`flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors border-l border-edge ${
-            mode === "enquiry" ? "bg-ink text-paper" : "text-fgMuted hover:text-fg"
+          className={`relative flex-1 px-5 py-4 font-mono text-[11px] uppercase tracking-widest font-bold transition-colors border-l border-edge ${
+            mode === "enquiry" ? "text-paper" : "text-fgMuted hover:text-fg"
           }`}
         >
+          {mode === "enquiry" && (
+            <motion.span
+              layoutId="contact-mode-pill"
+              transition={{ type: "spring", stiffness: 500, damping: 40 }}
+              className="absolute inset-0 bg-ink -z-10"
+            />
+          )}
           General Enquiry
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16">
         <div>
+        <AnimatePresence mode="wait">
           {step === "success" ? (
-            <div className="border border-edge p-10 md:p-14">
+            <motion.div key="success" variants={stepVariants} initial="initial" animate="animate" exit="exit" className="border-beam p-10 md:p-14">
               {mode === "book-a-call" && chosenDate && selectedTime ? (
                 <>
-                  <span className="material-symbols-outlined text-signal text-4xl mb-6 block">event_available</span>
+                  <motion.span
+                    initial={{ scale: 0, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.1 }}
+                    className="material-symbols-outlined text-signal text-4xl mb-6 block"
+                  >
+                    event_available
+                  </motion.span>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">You&apos;re booked.</h2>
                   <p className="text-lg text-fgMuted leading-relaxed mb-8">
                     {chosenDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} at {selectedTime}. A calendar
@@ -144,9 +232,9 @@ export default function ContactExperience() {
                   </div>
                 </>
               )}
-            </div>
+            </motion.div>
           ) : step === "schedule" ? (
-            <div>
+            <motion.div key="schedule" variants={stepVariants} initial="initial" animate="animate" exit="exit">
               <button
                 type="button"
                 onClick={() => setStep("form")}
@@ -195,9 +283,10 @@ export default function ContactExperience() {
               >
                 {submitting ? "Confirming…" : "Confirm Booking"}
               </button>
-            </div>
+              {submitError && <p className="mt-4 text-sm text-red-500">{submitError}</p>}
+            </motion.div>
           ) : (
-            <form onSubmit={handleSubmitDetails} className="flex flex-col gap-7">
+            <motion.form key="form" variants={stepVariants} initial="initial" animate="animate" exit="exit" onSubmit={handleSubmitDetails} className="flex flex-col gap-7">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                 <div>
                   <label className="font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-2">First Name *</label>
@@ -267,6 +356,18 @@ export default function ContactExperience() {
                 </span>
               </label>
 
+              {/* Honeypot — hidden from real visitors via CSS, not display:none (which some bots skip). */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={(e) => updateField("website", e.target.value)}
+                className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                aria-hidden="true"
+              />
+
               <button
                 type="submit"
                 disabled={submitting}
@@ -274,8 +375,10 @@ export default function ContactExperience() {
               >
                 {submitting ? "Sending…" : mode === "book-a-call" ? "Continue to Scheduling" : "Send Enquiry"}
               </button>
-            </form>
+              {submitError && <p className="text-sm text-red-500">{submitError}</p>}
+            </motion.form>
           )}
+        </AnimatePresence>
         </div>
 
         <div className="border border-edge p-8 md:p-10 h-fit">
