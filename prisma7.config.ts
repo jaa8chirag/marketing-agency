@@ -3,19 +3,30 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-// Resolves the connection string regardless of which provider set it.
-// Local dev (docker-compose) sets plain DATABASE_URL. Vercel's native
-// Postgres integration (Storage tab, Neon-backed) instead auto-injects
-// POSTGRES_PRISMA_URL/POSTGRES_URL — this falls back through both naming
-// schemes so no manual env var renaming is needed either way.
+// This file's `datasource.url` is only ever read by the Prisma CLI (generate/
+// migrate/db seed orchestration) — the running app resolves its own
+// connection separately in lib/db.ts. That split matters here: migrations
+// need a DIRECT (non-pooled) connection because `prisma migrate deploy`
+// takes a postgres advisory lock, which is session-scoped and can time out
+// or misbehave through PgBouncer/transaction-pooled connections (Neon's
+// pooled "-pooler" endpoint, or Vercel Postgres's POSTGRES_PRISMA_URL) — hit
+// this exact failure once (P1002, "Timed out trying to acquire a postgres
+// advisory lock") against a pooled Neon URL during a Vercel build.
+//
+// DIRECT_URL / POSTGRES_URL_NON_POOLING take priority for that reason. Local
+// dev (docker-compose) has no pooler at all, so its plain DATABASE_URL is
+// fine either way and is kept as the final fallback.
 //
 // Note: the installed Prisma version (7.10.0) does not yet support a
-// separate `directUrl` in this config file (checked against the actual
-// shipped types, not just docs — the field isn't in the Datasource type).
-// If `prisma migrate deploy` ever fails against a pooled connection citing
-// advisory locks/prepared statements, temporarily point DATABASE_URL at the
-// non-pooled connection string for that one deploy, then switch back.
-const pooledUrl = process.env.DATABASE_URL || process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL;
+// separate `directUrl` field in this config file (checked against the
+// actual shipped types, not just docs) — hence resolving one single `url`
+// here with direct-connection env vars given priority, instead.
+const migrateUrl =
+  process.env.DIRECT_URL ||
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.POSTGRES_URL;
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -24,6 +35,6 @@ export default defineConfig({
     seed: "npx tsx prisma/seed.ts",
   },
   datasource: {
-    url: pooledUrl,
+    url: migrateUrl,
   },
 });

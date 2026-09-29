@@ -44,8 +44,11 @@ The database connection is already handled (step 2). Project → Settings → En
 | `RESEND_API_KEY` | From resend.com, free tier (optional — email sending is skipped with a log warning, not an error, until this is set) |
 | `RESEND_FROM_EMAIL` | e.g. `Cordinit Media <hello@yourdomain.com>` — needs a domain verified in Resend. Falls back to Resend's shared `onboarding@resend.dev` if unset |
 | `NOTIFICATION_EMAIL` | Where "new lead" internal alerts go. Falls back to `ADMIN_EMAIL` if unset |
+| `DIRECT_URL` | Same Neon database, but the **direct/non-pooled** connection string — same as `DATABASE_URL` with `-pooler` removed from the hostname. Required — see note below. |
 
 See `docs/CLIENT_HANDOFF.md` for what exactly to get from the client for the Cal.com/Resend accounts — as of this write-up these were set up with the developer's own accounts as temporary placeholders.
+
+> **Why `DIRECT_URL` too, on top of the pooled `DATABASE_URL`:** hit this in production on 2026-09-29 — `prisma migrate deploy` (part of the build, see step 4) failed with `P1002: Timed out trying to acquire a postgres advisory lock`. Migrations take a session-scoped advisory lock, which doesn't play reliably with a pooled/PgBouncer connection (Neon's `-pooler` hostname, same issue applies to Vercel's own `POSTGRES_PRISMA_URL` if that's what you're using instead of a manually-set `DATABASE_URL`). `prisma7.config.ts` now prefers `DIRECT_URL` for CLI/migration commands specifically — `lib/db.ts` (the running app) is untouched and still uses the pooled connection, which is correct for serverless request traffic. If `DIRECT_URL` isn't set, it silently falls back to the same pooled URL as before (no crash, just the same risk of this timeout recurring).
 
 ## 4. Deploy 🧑
 
