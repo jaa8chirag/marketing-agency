@@ -5,6 +5,8 @@ import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import CTASection from "@/components/ui/CTASection";
 import InsightsGrid from "@/components/sections/InsightsGrid";
+import InsightsTeaser from "@/components/sections/InsightsTeaser";
+import Eyebrow from "@/components/ui/Eyebrow";
 import { getInsights, getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -26,8 +28,14 @@ export default async function InsightsPage() {
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Insights" }]}
           visualSeed="insights-hub"
         />
+        <InsightsTeaser insights={insights} hideHeader />
+
         <section className="py-20 md:py-28">
           <Container>
+            <Eyebrow index="08">Browse everything</Eyebrow>
+            <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tightest max-w-2xl text-balance mb-14">
+              Every article, guide and report — filter by type or capability.
+            </h2>
             <InsightsGrid insights={insights} capabilities={capabilities} />
           </Container>
         </section>

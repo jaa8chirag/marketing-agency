@@ -9,16 +9,16 @@ import Button from "@/components/ui/Button";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import type { Insight } from "@/lib/content";
 
-const accordionMeta = [
-  { label: "Think", category: "Strategy & Model" },
-  { label: "Create", category: "Automation & AI" },
-  { label: "Launch", category: "Media Benchmarks" },
-  { label: "Build", category: "Film & Content" },
-  { label: "Scale", category: "Search & Systems" },
-  { label: "Grow", category: "Commerce & CRO" },
-];
-
-export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
+export default function InsightsTeaser({
+  insights,
+  hideHeader = false,
+}: {
+  insights: Insight[];
+  /** Skip the eyebrow/heading/"visit the insights hub" button — used when
+   * this is embedded on the Insights hub page itself, which already has its
+   * own page header and doesn't need a link back to where it already is. */
+  hideHeader?: boolean;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Take the 6 insights to match the 6 columns in the reference image
@@ -28,17 +28,19 @@ export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
     <section className="py-24 md:py-32 border-b border-edge bg-[#0d0d0d] text-paper overflow-hidden" id="insights">
       <Container>
         {/* Section Header: Matching project design system */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14 md:mb-16">
-          <div>
-            <Eyebrow index="07">Insights</Eyebrow>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tightest text-balance max-w-2xl">
-              Perspective from the people doing the work.
-            </h2>
+        {!hideHeader && (
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14 md:mb-16">
+            <div>
+              <Eyebrow index="07">Insights</Eyebrow>
+              <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tightest text-balance max-w-2xl">
+                Perspective from the people doing the work.
+              </h2>
+            </div>
+            <Button href="/insights" variant="outline">
+              Visit the insights hub
+            </Button>
           </div>
-          <Button href="/insights" variant="outline">
-            Visit the insights hub
-          </Button>
-        </div>
+        )}
 
         {/* ──────────────────────────────────────────────────────────────
             DESKTOP VIEW: 6-Column Interactive Expanding Accordion
@@ -46,7 +48,6 @@ export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
         <div className="hidden md:flex w-full h-[620px] rounded-3xl overflow-hidden bg-[#121212] border border-neutral-800 shadow-2xl">
           {items.map((item, idx) => {
             const isActive = activeIndex === idx;
-            const meta = accordionMeta[idx] ?? { label: "Insight", category: "Editorial" };
             const numStr = `0${idx + 1}`;
 
             return (
@@ -69,7 +70,7 @@ export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
                         {numStr}
                       </span>
                       <span className="font-mono text-xs uppercase tracking-wider text-neutral-400 bg-neutral-900 border border-neutral-700/80 px-3 py-1 rounded-full">
-                        {meta.category} &bull; {item.readingTime}
+                        {item.type} &bull; {item.readingTime}
                       </span>
                     </div>
 
@@ -144,7 +145,6 @@ export default function InsightsTeaser({ insights }: { insights: Insight[] }) {
         <div className="flex flex-col gap-3 md:hidden">
           {items.map((item, idx) => {
             const isActive = activeIndex === idx;
-            const meta = accordionMeta[idx] ?? { label: "Insight", category: "Editorial" };
             const numStr = `0${idx + 1}`;
 
             return (
