@@ -7,7 +7,10 @@ export default async function SiteSettingsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold tracking-tight mb-2">Site Settings</h1>
+      <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight mb-2">
+        <span className="material-symbols-outlined text-signal text-[22px]">settings</span>
+        Site Settings
+      </h1>
       <p className="text-sm text-fgMuted mb-8">
         Global navigation, footer, social links, contact details and analytics — the Header and Footer on the live
         site read from here instead of hardcoded values.

@@ -352,6 +352,7 @@ export default function ClientNeedMapper({ capabilities }: { capabilities: Capab
                   <div className="w-full h-full rounded-lg overflow-hidden relative border border-lineOnInk">
                     <GenerativeArt
                       seed={current.slug}
+                      imageUrl={current.imageUrl}
                       label={current.shortName}
                       index={current.num}
                       interactive={false}

@@ -5,6 +5,7 @@ import { seedToHue, seedToImageUrl } from "@/lib/seed";
 // server component and never triggers a React re-render on mouse move.
 export default function GenerativeArt({
   seed,
+  imageUrl,
   label,
   index,
   interactive = true,
@@ -14,6 +15,9 @@ export default function GenerativeArt({
   height = 480,
 }: {
   seed: string;
+  /** Admin-chosen image (Capability.imageUrl / CaseStudy.imageUrl) — takes
+   * priority over the deterministic seed-based pick below when set. */
+  imageUrl?: string | null;
   label?: string;
   index?: string;
   interactive?: boolean;
@@ -26,7 +30,7 @@ export default function GenerativeArt({
   height?: number;
 }) {
   const hue = seedToHue(seed);
-  const src = seedToImageUrl(seed, width, height);
+  const src = imageUrl || seedToImageUrl(seed, width, height);
 
   return (
     <div className={`relative overflow-hidden bg-ink ${className}`}>

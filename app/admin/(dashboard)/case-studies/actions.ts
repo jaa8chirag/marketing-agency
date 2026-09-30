@@ -11,6 +11,7 @@ function scalarFields(formData: FormData) {
     title: String(formData.get("title") ?? "").trim(),
     year: String(formData.get("year") ?? "").trim(),
     summary: String(formData.get("summary") ?? "").trim(),
+    imageUrl: String(formData.get("imageUrl") ?? "").trim() || null,
     challenge: String(formData.get("challenge") ?? "").trim(),
     objective: String(formData.get("objective") ?? "").trim(),
     strategy: String(formData.get("strategy") ?? "").trim(),

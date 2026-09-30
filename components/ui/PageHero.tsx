@@ -24,6 +24,7 @@ export default function PageHero({
   tone = "paper",
   visualSeed,
   visualIndex,
+  visualImageUrl,
 }: {
   eyebrow: string;
   title: string;
@@ -32,6 +33,8 @@ export default function PageHero({
   tone?: "paper" | "ink";
   visualSeed?: string;
   visualIndex?: string;
+  /** Admin-chosen image (e.g. Capability.imageUrl) — overrides the automatic seed-based photo. */
+  visualImageUrl?: string;
 }) {
   const isInk = tone === "ink";
   const shouldReduceMotion = useReducedMotion();
@@ -119,7 +122,7 @@ export default function PageHero({
               transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="border-beam hidden lg:block aspect-[4/3] w-full"
             >
-              <GenerativeArt seed={visualSeed} index={visualIndex} className="w-full h-full" />
+              <GenerativeArt seed={visualSeed} imageUrl={visualImageUrl} index={visualIndex} className="w-full h-full" />
             </motion.div>
           </div>
         ) : (

@@ -153,8 +153,8 @@ Mostly structural/strategic — tracked implicitly via other sections (SEO, CMS,
 ### 9.2–9.4 Capabilities Hub / Overview / Service templates
 - [x] Templates exist and render from `lib/content.ts`.
 - [x] **Capabilities Hub animation pass (2026-09-29):** `CapabilitiesAccordion.tsx` — rows now stagger-in via `<Reveal>` on scroll, hover gets a signal-tint fill sweep + name slide, open panel image has a slow Ken Burns zoom (`animate-kenburns`), and the floating summary card now uses the `.border-beam` rotating-light border for brand consistency with the header mega menu.
-- [ ] Capability Overview Template (`/capabilities/[capability]`) and Service Detail Template (`/capabilities/[capability]/[service]`) — not yet given the same animation pass, next up.
-- [~] CMS-driven/reusable — no, static.
+- [x] **Capability Overview Template — long-form content added (2026-09-30):** each of the 8 capabilities now has a real `overview` field (`Capability.overview String[]`, admin-editable at `/admin/capabilities`) — 4-6 substantive paragraphs (roughly 600-950 words) covering the actual reasoning behind that capability, not just bullet lists. Rendered in a new "Overview" section right after the page hero, before the existing "Business problems"/"What you get" sections. Content is DB-backed and CMS-editable, not static.
+- [x] **Reveal-from-above (2026-09-30):** the sitewide `.reveal` scroll-in animation (`app/globals.css`, used by the `<Reveal>` component everywhere, including this template) now enters from above (`translateY(-24px)` → `0`) instead of rising up from below — you flagged the old bottom-up direction and asked for content to come from the top instead.
 
 ### 9.5 Industries
 - [x] Grid + detail template exist, 6 industries seeded.
@@ -206,8 +206,10 @@ Mostly structural/strategic — tracked implicitly via other sections (SEO, CMS,
 
 ## 11. CMS / Content Model
 
-- [x] **Built 2026-09-29** — not a third-party headless CMS as the brief suggested, but a custom PostgreSQL + Prisma schema (`prisma/schema.prisma`) with an admin panel, covering every entity the brief's content model table lists except **Team Member** and **CTA** (About page's team list and reusable CTA blocks are still hardcoded in components — smaller, lower-priority pieces of this section, not yet migrated).
-- [x] **Site Settings — built 2026-09-29** — `SiteSettings` singleton model (`prisma/schema.prisma`), editable at `/admin/settings`. Header/Footer (`components/layout/Header.tsx` + `HeaderClient.tsx`, `Footer.tsx` + `FooterClient.tsx`) now read primary/footer nav links, the primary CTA label/href, the announcement bar, social links, contact email/phone, and footer copyright from this row instead of hardcoded values — an admin can change any of these without a code change or redeploy. `app/layout.tsx`'s Organization JSON-LD `sameAs` and the GA4 measurement ID (`GoogleAnalytics` component) also now read from this row (GA ID in Settings overrides the `NEXT_PUBLIC_GA_MEASUREMENT_ID` env var when set). Falls back to the previous hardcoded values if the singleton row is ever missing (`lib/queries.ts`'s `getSiteSettings()`), so this can never hard-fail a page. **Not yet done**: per-entity SEO fields (see §13 below) are a separate, still-open piece — Site Settings does not cover per-page title/description/OG.
+- [x] **Built 2026-09-29** — not a third-party headless CMS as the brief suggested, but a custom PostgreSQL + Prisma schema (`prisma/schema.prisma`) with an admin panel, now covering **every** entity the brief's content model table lists (Team Member and CTA, the two that were still hardcoded as of the first pass, were completed later the same day — see below).
+- [x] **Site Settings — built 2026-09-29** — `SiteSettings` singleton model (`prisma/schema.prisma`), editable at `/admin/settings`. Header/Footer (`components/layout/Header.tsx` + `HeaderClient.tsx`, `Footer.tsx` + `FooterClient.tsx`) now read primary/footer nav links, the primary CTA label/href, the announcement bar, social links, contact email/phone, and footer copyright from this row instead of hardcoded values — an admin can change any of these without a code change or redeploy. `app/layout.tsx`'s Organization JSON-LD `sameAs` and the GA4 measurement ID (`GoogleAnalytics` component) also now read from this row (GA ID in Settings overrides the `NEXT_PUBLIC_GA_MEASUREMENT_ID` env var when set). Falls back to the previous hardcoded values if the singleton row is ever missing (`lib/queries.ts`'s `getSiteSettings()`), so this can never hard-fail a page. Seeded and verified on both local and production. **Not yet done**: per-entity SEO fields (see §13 below) are a separate, still-open piece — Site Settings does not cover per-page title/description/OG.
+- [x] **Team Member, CTA Block, Testimonial display — built 2026-09-29** — `TeamMember` and `CtaBlock` models added, both with full admin CRUD (`/admin/team`, `/admin/cta-blocks`). About page's Leadership section now shows real seeded people (photo, name, role, bio, LinkedIn) instead of a hardcoded role-only array. `CTASection` takes an optional `ctaKey` prop that looks up copy/buttons from `CtaBlock` (wired into Home and About's generic default CTA; other pages keep page-specific interpolated titles in code on purpose). `Testimonial` data existed since the original backend build but nothing rendered it — new `TestimonialsSection` component (quote cards with photo/name/role/company) now shows it on Home and Work. All seeded and verified on both local and production, except see the SSG-timing note in `DEFERRED_WORK.md` about `/about` needing one more redeploy to pick up the team data.
+- [x] **Image fields audit — built 2026-09-30** — you asked for an admin image option everywhere the site shows a real photo. Audited every image on the site: `Industry.imageUrl` added (homepage industries teaser was a hardcoded URL map in the component; now admin-editable at `/admin/industries`, same URLs seeded so zero visual change) and `ClientLogo.logoUrl` added (previously no real logo at all — `Marquee.tsx` showed a generated pattern + text; now shows a real `<img>` when a logo URL is set). Deliberately left untouched: `GenerativeArt`-based visuals on capability/case-study cards (a consistent design choice, not a missing image) and two bespoke one-off homepage compositions (`SocialProof.tsx`'s video-testimonial carousel, `FeaturedWork.tsx`'s hand-designed project cards) that aren't tied to a real CMS entity. `Team Member`/`Testimonial` photos were already covered above. **Still open:** real file uploads (a picker, e.g. via Vercel Blob) instead of pasting a URL — every image field on the whole project is currently a plain URL string.
 
 ## 12. Design & UX Requirements
 
@@ -235,8 +237,11 @@ Mostly structural/strategic — tracked implicitly via other sections (SEO, CMS,
 
 ## 14. Analytics & Conversion Tracking
 
-- [ ] None of the 11 required events implemented: `start_project_click`, `contact_form_start`, `contact_form_submit`, `newsletter_signup`, `case_study_view`, `service_view`, `capability_view`, `insight_view`, `resource_download`, `video_start`/`video_complete`, `outbound_click`.
-- [ ] No GA4/GTM script loaded at all.
+- [x] **GA4 wiring — resolved 2026-09-29.** `components/analytics/GoogleAnalytics.tsx` loads `gtag.js` whenever a measurement ID is set (env var, or `SiteSettings.gaMeasurementId` from `/admin/settings`, which overrides it). `lib/analytics.ts`'s `trackEvent()` pushes onto `window.dataLayer` regardless — safe to call even with analytics off.
+- [x] Implemented: `book_call_click`, full `contact_form_view/start/submit/success/error` lifecycle, full `newsletter_view/start/submit/success` lifecycle, `capability_view`, `service_view`, `case_study_view`, `insight_view`, `outbound_click`.
+- [x] **`solution_explore`, `industry_explore`, `insight_read` — added 2026-09-30.** These three were the last ones missing from the brief's §14/addendum event list (`accelerator_explore` excluded — "accelerator" isn't a concept in this project). `solution_explore` fires on capability card clicks (homepage `CapabilitiesShowcase`, `/capabilities`'s `CapabilitiesAccordion`) — distinct from `capability_view`, which fires on landing on the detail page rather than the click that got you there. `industry_explore` fires the same way on industry card clicks (homepage `IndustriesTeaser`, `/industries` listing — via a new small `TrackedLink` wrapper for the two Server Component pages). `insight_read` fires via a new `ReadTracker` component (IntersectionObserver on a marker dropped at the end of the article body) — only once the reader has actually scrolled to the end, not merely landed on the page like `insight_view` does.
+- [ ] Still not implemented: `resource_download`, `video_start`/`video_complete` — no feature exists yet to hang these off (no gated downloads, no video player with programmatic control).
+- [ ] Consent-aware tracking — still not found.
 
 ## 15. Non-Functional Requirements
 
@@ -255,13 +260,13 @@ Mostly structural/strategic — tracked implicitly via other sections (SEO, CMS,
 **Responsive** — `(unverified)`, Tailwind responsive classes used throughout per earlier work, but no real-device test log exists.
 
 **Security**
-- `(unverified)` HTTPS (host-level, N/A locally).
-- [ ] Input sanitization/validation — no server layer exists to sanitize.
-- [ ] Rate limiting — absent.
-- [ ] CSP headers — not found in `next.config.mjs`.
-- [x] No secrets in client code (nothing to leak yet — no API keys used).
-- [ ] Env vars / secrets manager — no `.env.example` even as a template.
-- `(unverified)` CMS/admin auth — N/A, no CMS yet.
+- `(unverified)` HTTPS (Vercel handles this at the host level in production; N/A locally).
+- [x] ~~Input sanitization/validation~~ **Resolved** — `zod` validation on `/api/contact` and `/api/newsletter`, on top of client-side HTML5 validation.
+- [x] ~~Rate limiting~~ **Resolved** — honeypot field + in-memory rate limiter on both API routes.
+- [x] **CSP headers — added 2026-09-29** (`next.config.mjs`), covering script/style/font/img/connect/frame-src for what the site actually loads (Google Fonts, GA4, Cal.com, Unsplash). **Bug found and fixed 2026-09-30:** the CSP had no `'unsafe-eval'`, which Next.js dev mode's Fast Refresh runtime needs internally — every page was throwing `Uncaught EvalError` in `next dev`, silently breaking all client-side JS (never affected production, since `next build` doesn't use eval-based HMR). Fixed by adding `'unsafe-eval'` only when `NODE_ENV === "development"`.
+- [x] No secrets in client code — verified via `git ls-files` that `.env` is never tracked; real credentials only ever referenced by name/location in docs, never their actual values.
+- [x] ~~Env vars / secrets manager~~ **Resolved** — `.env.example` documents every variable the app uses.
+- [x] CMS/admin auth — JWT session cookie (`jose`), bcrypt password hashing, middleware-gated `/admin/*` routes.
 
 ## 16. Recommended Repository Structure
 
@@ -294,7 +299,7 @@ Mostly structural/strategic — tracked implicitly via other sections (SEO, CMS,
 
 - [x] **2026-09-29 — `PageHero.tsx` global upgrade.** This component renders the top hero on nearly every inner page (`/capabilities`, `/capabilities/[capability]`, `/capabilities/[capability]/[service]`, `/industries`, `/industries/[slug]`, `/work`, `/work/[slug]`, `/insights`, `/insights/[slug]`, `/about`, `/contact`, `/careers`, legal pages). Converted to a client component with a staggered blur/rise-in entrance (breadcrumb → eyebrow → title → description, via `motion/react`), a clip-path wipe-reveal on the hero visual, and the hero image now sits inside the `.border-beam` rotating-light border instead of a flat line. Respects `useReducedMotion`. **This one change upgrades the hero on essentially every route at once.**
 - [x] **2026-09-29 — Capabilities Hub (`CapabilitiesAccordion.tsx`).** Rows stagger in via `<Reveal>` on scroll, hover gets a signal-tint fill sweep, open panel image has a slow Ken Burns zoom (new `.animate-kenburns` utility in `globals.css`), floating summary card uses `.border-beam`.
-- [ ] Capability Overview Template body sections — already use `<Reveal>` for scroll stagger (pre-existing, confirmed working), not yet touched further.
+- [x] **2026-09-30 — Capability Overview Template.** Added a new long-form "Overview" section (see §9.2–9.4 above) using the same `<Reveal>` scroll stagger as the rest of the page. Also: the sitewide `.reveal` animation itself changed direction — content now enters from above instead of rising from below, at your request (`app/globals.css`, `translateY(-24px)` instead of `translateY(24px)`), which affects every `<Reveal>` usage across the whole site, not just this template.
 - [ ] Service Detail Template — not yet audited.
 - [x] **2026-09-29 — `GenerativeArt.tsx` upgraded with reusable `groupHover` prop**: grayscale→color reveal + diagonal light sweep, opt-in so existing usages (PageHero, CapabilitiesAccordion) are unaffected. This is now the site's one shared "signature" image-hover language.
 - [x] **2026-09-29 — `CaseStudyCard.tsx`** (used on Work hub + capability pages' "Featured work"): now uses `groupHover` on its thumbnail, border tints signal-green + soft shadow on hover instead of a flat `hover:border-ink`.

@@ -10,15 +10,18 @@ export default async function AdminTeamPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">Team</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">groups</span>
+          Team
+        </h1>
         <Link href="/admin/team/new" className={buttonClass}>
           + New Team Member
         </Link>
       </div>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {members.map((m) => (
-          <div key={m.id} className="flex items-center justify-between px-5 py-4 gap-4">
+          <div key={m.id} className="flex items-center justify-between px-5 py-4 gap-4 hover:bg-surfaceMuted/50 transition-colors">
             <div className="min-w-0">
               <p className="text-sm font-medium truncate max-w-md">{m.name}</p>
               <span className="text-xs text-fgMuted">{m.role}</span>

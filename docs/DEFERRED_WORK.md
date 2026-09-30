@@ -10,7 +10,7 @@ Legend: 🔵 = waiting on a later phase (planned) · 🟡 = waiting on a decisio
 
 You decided to build the backend immediately rather than wait for the admin phase, and to go further than the brief's own suggestion: instead of a third-party headless CMS (Sanity/Strapi/Payload, as brief §5/§11 recommends), we built a **custom PostgreSQL + Prisma backend with our own admin panel** (login + CRUD UI), covering capabilities/services/industries/case studies/insights/testimonials/client logos, plus real Lead and Newsletter capture tables and API routes. This is now **fully built and verified**, not just in progress — see `REQUIREMENTS_TRACKER.md`'s "Backend build" and "Admin panel" sections for the complete rundown (Prisma schema, seed from `lib/content.ts`, every page rewired off static data, admin auth + all 8 entities' CRUD, `/api/contact` and `/api/newsletter` with validation/spam protection, all routes verified 200).
 
-**Still genuinely open from this area** (not resolved, tracked properly below): two smaller CMS content types (Team Member, CTA) that stayed hardcoded. (Real Calendly/Cal.com booking, the newsletter signup UI, GA4/analytics events, and Site Settings/Header/Footer have since all been resolved — see their own entries below/in `REQUIREMENTS_TRACKER.md`.)
+**Still genuinely open from this area:** nothing — Team Member and CTA (the two smaller content types that stayed hardcoded here) are now also resolved, see the entry below. (Real Calendly/Cal.com booking, the newsletter signup UI, GA4/analytics events, and Site Settings/Header/Footer have since all been resolved too — see their own entries below/in `REQUIREMENTS_TRACKER.md`.)
 
 The two entries below are kept for historical context (why they were *originally* deferred) but are no longer waiting.
 
@@ -24,9 +24,54 @@ The two entries below are kept for historical context (why they were *originally
 
 **Why now:** you audited the brief's §11 CMS Content Model table yourself and flagged that Header/Footer/nav/social/copyright were still hardcoded, not CMS-driven like the brief's content model implies — this was the piece you picked to fix first (of Site Settings / per-entity SEO / Team Member / Testimonial display / CTA blocks / image uploads / missing tracking events, all flagged in the same audit).
 
-**Seed status:** local Docker Postgres seeded and verified live via the dev server (Header/Footer render identically to the old hardcoded values — zero visual regression, confirmed by curl-diffing the rendered HTML). **Production (Neon) has the `SiteSettings` table migrated but has NOT been seeded with this row yet** — until it is, production will fall back to `getSiteSettings()`'s hardcoded defaults, which happen to match, so there's no visible breakage, but the `/admin/settings` form will show an empty form (no `initial` row) until someone saves it once in production (submitting the form there creates the row via `upsert`, so this can also just be fixed by using the admin UI once after the next deploy — no manual seed run required).
+**Seed status:** resolved — production (Neon) has since been migrated and seeded with this row too (2026-09-29, same day). Header/Footer/GA/JSON-LD are all live off real DB data in production now, not just locally.
 
-**Still open from the same audit, not yet prioritized:** per-entity SEO fields, Team Member entity, Testimonial display on the live site (data exists, never rendered), CTA reusable block entity, real image uploads, and the missing `insight_read`/`solution_explore`/`industry_explore` tracking events.
+**Still open from the same audit:** per-entity SEO fields and real image uploads. (Team Member, Testimonial display, CTA reusable block, and the missing tracking events are now also resolved — see the entries below.)
+
+---
+
+## ✅ DONE (2026-09-29): Team Member, CTA Block, and real Testimonial display
+
+**Where:** `prisma/schema.prisma` (`TeamMember`, `CtaBlock` models, `photoUrl` added to `Testimonial`), `lib/queries.ts` (`getTeamMembers()`, `getCtaBlock(key)`, `getTestimonials()` extended), `app/admin/(dashboard)/team/` + `app/admin/(dashboard)/cta-blocks/` (full CRUD, same pattern as every other entity), `components/admin/TeamMemberForm.tsx` + `CtaBlockForm.tsx`, `components/ui/CTASection.tsx` (now an async Server Component, takes an optional `ctaKey` prop), `components/sections/TestimonialsSection.tsx` (new), `app/about/page.tsx`, `app/page.tsx`, `app/work/page.tsx`.
+
+**What was built:**
+- **Team Member:** real entity + admin CRUD, replacing About page's hardcoded role-only array (`{ name: "Founding Partner", role: "..." }`, no actual person). Seeded 4 real-feeling people (name, role, short bio, LinkedIn, Unsplash stock photo). About page's Leadership grid now shows a photo (grayscale-to-color hover, matches the capability mega-menu card treatment), name, role, bio, and a LinkedIn link when set.
+- **CtaBlock:** a small reusable-CTA library looked up by `key` in code. Most `<CTASection>` call sites interpolate page-specific copy into the title (e.g. a capability or industry name) and were deliberately left code-driven — only the two call sites using the fully generic default copy (Home, About) were wired to `ctaKey="default"`. `CTASection` falls back to its existing hardcoded props if the key has no row, so nothing breaks if a block is ever deleted.
+- **Testimonial display:** the `Testimonial` table existed since the original backend build but nothing ever rendered it — a genuinely dead CMS entity. Built `TestimonialsSection` (quote-card grid with photo/name/role/company) and added it to the Home and Work pages. Added an optional `photoUrl` column since the existing rows only had quote/person/role/company.
+
+**Seed status:** seeded and verified on both local Docker Postgres and production (Neon) the same session. **One thing to know:** `/about` is statically generated (SSG) — the very first production deploy after this migration ran its build *before* the production seed command finished, so that build's static HTML baked in the "Team details coming soon" empty-state fallback. Needs one more redeploy (no code change, just a fresh build) to pick up the now-seeded team rows; this isn't a bug, just SSG timing on that one deploy.
+
+**Still open from the same audit:** per-entity SEO fields and real image uploads. (`insight_read`/`solution_explore`/`industry_explore` tracking events are now also resolved — see the entry below.)
+
+---
+
+## ✅ DONE (2026-09-30): Missing tracking events, capability long-form content, reveal-from-above
+
+**Where:** `lib/analytics.ts`, `components/analytics/TrackedLink.tsx` (new), `components/analytics/ReadTracker.tsx` (new), `components/sections/IndustriesTeaser.tsx`, `components/sections/CapabilitiesShowcase.tsx`, `components/sections/CapabilitiesAccordion.tsx`, `app/industries/page.tsx`, `app/insights/[slug]/page.tsx`, `app/globals.css`, `prisma/schema.prisma` (`Capability.overview`), `lib/content.ts`, `lib/queries.ts`, `prisma/seed.ts`, `components/admin/CapabilityForm.tsx`, `app/capabilities/[capability]/page.tsx`.
+
+**What was built:**
+- **Tracking events:** the last three missing from the brief's addendum event list. `solution_explore` fires when a capability card is clicked (homepage showcase, `/capabilities` accordion) — distinct from `capability_view`, which fires on landing on the detail page. `industry_explore` fires the same way for industry cards (homepage teaser, `/industries` listing) via a new `TrackedLink` component (a thin client wrapper around `next/link` that fires a tracked click event — needed because the `/industries` listing page is a Server Component and can't attach an inline `onClick` itself). `insight_read` fires via a new `ReadTracker` component (`IntersectionObserver` on a marker at the end of the article body) once a reader has actually scrolled to the end — not just landed on the page like `insight_view` does. `accelerator_explore` from the same brief list is still intentionally skipped (no "accelerator" concept in this project).
+- **Capability long-form content:** you asked for each capability page to carry real, substantial content (your words: "1000 words tak ka kuch data") instead of just the existing bullet lists. Added a new `overview: String[]` field to the `Capability` model — 4-6 real paragraphs per capability (roughly 600-950 words each, written specifically for that capability's actual services, not generic filler), admin-editable at `/admin/capabilities`, rendered in a new "Overview" section right after the page hero on `/capabilities/[capability]`.
+- **Reveal-from-above:** you flagged that scroll-triggered content was rising up from below and asked for it to come from above instead. Changed the sitewide `.reveal` CSS animation (`app/globals.css`) from `translateY(24px) → 0` to `translateY(-24px) → 0` — a one-line change that affects every `<Reveal>` usage across the entire site at once, not just capability pages.
+
+**Seed status:** seeded and verified on local Docker Postgres. **Not yet applied to production** — migration not yet run against Neon, seed not yet run against production. This entire batch of work was done locally only, per your instruction not to push/deploy yet.
+
+**Still open from the original audit:** per-entity SEO fields and real image uploads (see below — real image *fields* for existing entities are now resolved; real image *uploads*, i.e. a file picker instead of pasting a URL, is still open).
+
+---
+
+## ✅ DONE (2026-09-30): CSP dev-mode bug fix + image fields for Industry and Client Logo
+
+**Where:** `next.config.mjs`, `prisma/schema.prisma` (`Industry.imageUrl`, `ClientLogo.logoUrl`), `lib/content.ts`, `lib/queries.ts`, `prisma/seed.ts`, `components/admin/IndustryForm.tsx`, `components/admin/ClientLogoForm.tsx`, `app/admin/(dashboard)/industries/actions.ts`, `app/admin/(dashboard)/client-logos/actions.ts`, `components/sections/IndustriesTeaser.tsx`, `components/ui/Marquee.tsx`, `components/sections/SocialProof.tsx`.
+
+**CSP dev-mode bug (found and fixed):** the CSP added earlier for Cal.com (`script-src ... https://app.cal.com`) didn't include `'unsafe-eval'`, which Next.js's dev-mode Fast Refresh/HMR runtime needs internally. Every page in `next dev` was throwing `Uncaught EvalError` on load, silently killing all client-side JS — `<Reveal>` sections never got their visible class added (so most of the site looked empty), while plain HTML elements like a background `<video>` kept working since they don't depend on JS. **Never affected production** (`next build` doesn't use eval-based HMR), which is why the live Vercel site was fine the whole time this was broken locally. Fixed by adding `'unsafe-eval'` to `script-src` only when `NODE_ENV === "development"`.
+
+**Image fields audit:** you asked for an admin image option everywhere the live site actually shows a real photograph (not the procedural `GenerativeArt` pattern used deliberately for capability/case-study cards — that's a design choice, not a missing image). Two real gaps found and fixed:
+- **Industry image** (homepage industries teaser, `IndustriesTeaser.tsx`) — was a hardcoded `Record<slug, url>` map in the component itself. Added `Industry.imageUrl`, admin-editable at `/admin/industries`, seeded with the same 6 URLs that were already hardcoded (zero visual change), with the old hardcoded map kept only as a fallback if a row's image is ever unset.
+- **Client Logo** — genuinely had no image at all: `Marquee.tsx` rendered client names as text next to a `GenerativeArt` pattern, not a real logo. Added `ClientLogo.logoUrl`, admin-editable at `/admin/client-logos`. Left unseeded/empty for the current 6 fictional demo clients (Solace Wellness, Northbound Bank, etc.) since there's no real logo to fetch for a company that doesn't exist — `Marquee` shows the real `<img>` when a logo URL is set, falls back to the same generated-pattern treatment otherwise.
+- **Explicitly not touched:** `SocialProof.tsx`'s video-testimonial carousel (`clientVideos`) and `FeaturedWork.tsx`'s three bespoke project cards (phone fan-out, car stunt, sticker graphics) — these are one-off, hand-designed creative compositions built around specific images as raw material, not generic CMS content tied to a real entity, so a generic "image field" doesn't fit them the way it does Industry/Client Logo. `TeamMember.photoUrl` and `Testimonial.photoUrl` were already covered in the entry above.
+
+**Still open:** real image *uploads* (a file picker with something like Vercel Blob storage, instead of pasting a URL) — every image field across the whole project (Team, Testimonial, Industry, Client Logo, Site Settings) currently takes a plain URL string, which is fine for now but needs a real client's own account/decision before it's the actual intended workflow. Per-entity SEO fields are also still open.
 
 ---
 

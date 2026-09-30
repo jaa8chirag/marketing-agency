@@ -27,6 +27,8 @@ async function seedCapabilities() {
         tagline: cap.tagline,
         summary: cap.summary,
         heroDescription: cap.heroDescription,
+        imageUrl: cap.imageUrl,
+        overview: cap.overview,
         problems: cap.problems,
         deliverables: cap.deliverables,
         industrySlugs: cap.industries,
@@ -40,6 +42,11 @@ async function seedCapabilities() {
         tagline: cap.tagline,
         summary: cap.summary,
         heroDescription: cap.heroDescription,
+        // Deliberately omitted: imageUrl. `cap.imageUrl` is always undefined
+        // here (not set in lib/content.ts) — Prisma treats an `undefined`
+        // update value as "leave this field alone", so re-running the seed
+        // never wipes out an image an admin set manually in /admin/capabilities.
+        overview: cap.overview,
         problems: cap.problems,
         deliverables: cap.deliverables,
         industrySlugs: cap.industries,
@@ -96,6 +103,7 @@ async function seedIndustries() {
         name: ind.name,
         eyebrow: ind.eyebrow,
         summary: ind.summary,
+        imageUrl: ind.imageUrl,
         challenges: ind.challenges,
         capabilitySlugs: ind.capabilities,
         sortOrder: idx,
@@ -104,6 +112,7 @@ async function seedIndustries() {
         name: ind.name,
         eyebrow: ind.eyebrow,
         summary: ind.summary,
+        imageUrl: ind.imageUrl,
         challenges: ind.challenges,
         capabilitySlugs: ind.capabilities,
         sortOrder: idx,
@@ -129,6 +138,7 @@ async function seedCaseStudies() {
         title: cs.title,
         year: cs.year,
         summary: cs.summary,
+        imageUrl: cs.imageUrl,
         challenge: cs.challenge,
         objective: cs.objective,
         strategy: cs.strategy,
@@ -144,6 +154,7 @@ async function seedCaseStudies() {
         title: cs.title,
         year: cs.year,
         summary: cs.summary,
+        // Deliberately omitted: imageUrl — see the same note in seedCapabilities above.
         challenge: cs.challenge,
         objective: cs.objective,
         strategy: cs.strategy,

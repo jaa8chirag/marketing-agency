@@ -27,6 +27,10 @@ export default function IndustryForm({
         <textarea name="summary" required rows={3} defaultValue={initial?.summary} className={inputClass} />
       </div>
       <div>
+        <label className={labelClass}>Image URL (shown on the homepage industries teaser)</label>
+        <input name="imageUrl" defaultValue={initial?.imageUrl ?? ""} className={inputClass} placeholder="https://..." />
+      </div>
+      <div>
         <label className={labelClass}>Challenges (one per line)</label>
         <textarea
           name="challenges"

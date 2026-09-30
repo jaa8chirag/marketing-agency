@@ -18,6 +18,7 @@ export default function CaseStudyCard({
       >
         <GenerativeArt
           seed={caseStudy.slug}
+          imageUrl={caseStudy.imageUrl}
           index={caseStudy.year}
           label={caseStudy.client}
           width={480}

@@ -10,15 +10,18 @@ export default async function AdminTestimonialsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">Testimonials</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">format_quote</span>
+          Testimonials
+        </h1>
         <Link href="/admin/testimonials/new" className={buttonClass}>
           + New Testimonial
         </Link>
       </div>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {testimonials.map((t) => (
-          <div key={t.id} className="flex items-center justify-between px-5 py-4 gap-4">
+          <div key={t.id} className="flex items-center justify-between px-5 py-4 gap-4 hover:bg-surfaceMuted/50 transition-colors">
             <div className="min-w-0">
               <p className="text-sm truncate max-w-md">&ldquo;{t.quote}&rdquo;</p>
               <span className="text-xs text-fgMuted">

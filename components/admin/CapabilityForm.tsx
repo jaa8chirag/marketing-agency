@@ -45,6 +45,19 @@ export default function CapabilityForm({
         <textarea name="heroDescription" required rows={3} defaultValue={initial?.heroDescription} className={inputClass} />
       </div>
       <div>
+        <label className={labelClass}>Image URL (optional — overrides the automatic photo used in cards/mega menu/hero)</label>
+        <input name="imageUrl" defaultValue={initial?.imageUrl ?? ""} className={inputClass} placeholder="https://..." />
+      </div>
+      <div>
+        <label className={labelClass}>Overview paragraphs (one per line — long-form content shown on the capability page)</label>
+        <textarea
+          name="overview"
+          rows={8}
+          defaultValue={initial ? arrayToLines(initial.overview) : ""}
+          className={inputClass}
+        />
+      </div>
+      <div>
         <label className={labelClass}>Business problems solved (one per line)</label>
         <textarea
           name="problems"

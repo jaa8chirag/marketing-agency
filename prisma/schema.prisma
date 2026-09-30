@@ -25,6 +25,8 @@ model Capability {
   tagline         String
   summary         String
   heroDescription String
+  imageUrl        String? // overrides the deterministic seed-based photo pick in GenerativeArt when set
+  overview        String[] // long-form paragraphs rendered on the capability detail page, same convention as Insight.body
   problems        String[]
   deliverables    String[]
   industrySlugs   String[] // slugs of related Industry rows (reference by slug, resolved in lib/queries.ts)
@@ -78,6 +80,7 @@ model Industry {
   name            String
   eyebrow         String
   summary         String
+  imageUrl        String? // shown on the homepage industries teaser
   challenges      String[]
   capabilitySlugs String[]
   sortOrder       Int      @default(0)
@@ -97,6 +100,7 @@ model CaseStudy {
   title      String
   year       String
   summary    String
+  imageUrl   String? // overrides the deterministic seed-based photo pick in GenerativeArt when set — distinct from `media` below, which is the media/paid-media narrative text, not a photo
   challenge  String
   objective  String
   strategy   String
@@ -185,6 +189,7 @@ model Testimonial {
 model ClientLogo {
   id        String  @id @default(cuid())
   name      String
+  logoUrl   String? // falls back to a generated pattern + text when unset
   industry  String?
   approved  Boolean @default(true)
   sortOrder Int     @default(0)

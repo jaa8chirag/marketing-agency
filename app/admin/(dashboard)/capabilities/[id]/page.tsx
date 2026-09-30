@@ -26,7 +26,7 @@ export default async function EditCapabilityPage({ params }: { params: { id: str
             + New Service
           </Link>
         </div>
-        <div className="border border-edge divide-y divide-edge">
+        <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
           {capability.services.map((svc) => (
             <div key={svc.id} className="flex items-center justify-between px-5 py-4">
               <span>{svc.name}</span>

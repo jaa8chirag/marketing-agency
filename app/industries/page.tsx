@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
@@ -7,6 +6,7 @@ import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import CTASection from "@/components/ui/CTASection";
+import TrackedLink from "@/components/analytics/TrackedLink";
 import { getIndustries, getCapabilities } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -36,12 +36,15 @@ export default async function IndustriesPage() {
                 const caps = capabilities.filter((c) => ind.capabilities.includes(c.slug));
                 return (
                   <Reveal key={ind.slug} delay={idx * 50}>
-                    <Link
+                    <TrackedLink
                       href={`/industries/${ind.slug}`}
+                      event="industry_explore"
+                      params={{ industry: ind.slug, location: "industries-listing" }}
                       className="group relative overflow-hidden border border-edge p-8 min-h-[280px] flex flex-col justify-between hover:border-signal/50 transition-colors duration-300"
                     >
                       <GenerativeArt
                         seed={ind.slug}
+                        imageUrl={ind.imageUrl}
                         interactive={false}
                         width={640}
                         height={400}
@@ -74,7 +77,7 @@ export default async function IndustriesPage() {
                           ))}
                         </div>
                       </div>
-                    </Link>
+                    </TrackedLink>
                   </Reveal>
                 );
               })}

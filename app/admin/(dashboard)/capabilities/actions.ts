@@ -15,6 +15,8 @@ function fromForm(formData: FormData) {
     tagline: String(formData.get("tagline") ?? "").trim(),
     summary: String(formData.get("summary") ?? "").trim(),
     heroDescription: String(formData.get("heroDescription") ?? "").trim(),
+    imageUrl: String(formData.get("imageUrl") ?? "").trim() || null,
+    overview: linesToArray(formData.get("overview")),
     problems: linesToArray(formData.get("problems")),
     deliverables: linesToArray(formData.get("deliverables")),
     industrySlugs: linesToArray(formData.get("industrySlugs")),

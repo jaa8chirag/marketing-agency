@@ -8,10 +8,11 @@ import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import RevealOnScroll from "@/components/fx/RevealOnScroll";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
+import { trackEvent } from "@/lib/analytics";
 import type { Industry } from "@/lib/content";
 
-// Curated high-res Unsplash photography for each industry.
-// 100% reliable on Vercel deployments, CDN cached, zero rate-limit or CORS blocks.
+// Fallback only — real value now comes from Industry.imageUrl (admin-editable
+// at /admin/industries). Kept so this never breaks if a row's image is unset.
 const industryImages: Record<string, string> = {
   "ecommerce-retail":
     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80",
@@ -46,6 +47,7 @@ export default function IndustriesTeaser({ industries }: { industries: Industry[
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {industries.map((ind, idx) => {
             const imgSrc =
+              ind.imageUrl ||
               industryImages[ind.slug] ||
               "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&auto=format&fit=crop&q=80";
 
@@ -67,6 +69,7 @@ export default function IndustriesTeaser({ industries }: { industries: Industry[
                 >
                   <Link
                     href={`/industries/${ind.slug}`}
+                    onClick={() => trackEvent("industry_explore", { industry: ind.slug, location: "homepage-teaser" })}
                     className="block w-full h-full flex flex-col justify-between"
                     style={{ transformStyle: "preserve-3d" }}
                   >

@@ -10,13 +10,16 @@ export default async function AdminClientLogosPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">Client Logos</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">workspace_premium</span>
+          Client Logos
+        </h1>
         <Link href="/admin/client-logos/new" className={buttonClass}>
           + New Client Logo
         </Link>
       </div>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {logos.map((logo) => (
           <div key={logo.id} className="flex items-center justify-between px-5 py-4">
             <div>

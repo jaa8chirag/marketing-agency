@@ -10,7 +10,9 @@
 // Customer Journey" addendum): start_project_click, book_call_click,
 // contact_form_view/start/submit/success/error, newsletter_view/start/
 // submit/success, capability_view, service_view, case_study_view,
-// insight_view, outbound_click.
+// insight_view, outbound_click, solution_explore, industry_explore,
+// insight_read. (`accelerator_explore` from the same addendum has no
+// equivalent — "accelerator" isn't a concept that exists in this project.)
 declare global {
   interface Window {
     dataLayer?: unknown[];

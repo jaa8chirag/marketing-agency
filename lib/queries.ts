@@ -38,6 +38,8 @@ function mapCapability(row: {
   tagline: string;
   summary: string;
   heroDescription: string;
+  imageUrl: string | null;
+  overview: string[];
   problems: string[];
   deliverables: string[];
   industrySlugs: string[];
@@ -52,6 +54,8 @@ function mapCapability(row: {
     tagline: row.tagline,
     summary: row.summary,
     heroDescription: row.heroDescription,
+    imageUrl: row.imageUrl ?? undefined,
+    overview: row.overview,
     problems: row.problems,
     deliverables: row.deliverables,
     industries: row.industrySlugs,
@@ -64,6 +68,7 @@ function mapIndustry(row: {
   name: string;
   eyebrow: string;
   summary: string;
+  imageUrl: string | null;
   challenges: string[];
   capabilitySlugs: string[];
 }): Industry {
@@ -72,6 +77,7 @@ function mapIndustry(row: {
     name: row.name,
     eyebrow: row.eyebrow,
     summary: row.summary,
+    imageUrl: row.imageUrl ?? undefined,
     challenges: row.challenges,
     capabilities: row.capabilitySlugs,
   };
@@ -83,6 +89,7 @@ function mapCaseStudy(row: {
   title: string;
   year: string;
   summary: string;
+  imageUrl: string | null;
   challenge: string;
   objective: string;
   strategy: string;
@@ -100,6 +107,7 @@ function mapCaseStudy(row: {
     title: row.title,
     year: row.year,
     summary: row.summary,
+    imageUrl: row.imageUrl ?? undefined,
     capabilities: row.capabilities.map((c) => c.capability.slug),
     industry: row.industry.slug,
     challenge: row.challenge,
@@ -289,15 +297,18 @@ export async function getCtaBlock(key: string): Promise<CtaBlock | null> {
   };
 }
 
-export async function getClientLogos(): Promise<string[]> {
+export type ClientLogoItem = { name: string; logoUrl?: string };
+
+export async function getClientLogos(): Promise<ClientLogoItem[]> {
   const rows = await prisma.clientLogo.findMany({ where: { approved: true }, orderBy: { sortOrder: "asc" } });
-  return rows.map((r) => r.name);
+  return rows.map((r) => ({ name: r.name, logoUrl: r.logoUrl ?? undefined }));
 }
 
 export type NavCapability = {
   slug: string;
   name: string;
   num: string;
+  imageUrl?: string;
   services: { slug: string; name: string }[];
 };
 
@@ -307,6 +318,7 @@ export async function getNavCapabilities(): Promise<NavCapability[]> {
     slug: c.slug,
     name: c.name,
     num: c.num,
+    imageUrl: c.imageUrl,
     services: c.services.map((s) => ({ slug: s.slug, name: s.name })),
   }));
 }

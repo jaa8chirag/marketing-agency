@@ -6,12 +6,20 @@
 // (that needs per-request nonces threaded through every inline script,
 // a bigger change) — tighten script-src further if/when those move to
 // external files or get nonces.
+// Next.js dev mode's Fast Refresh/HMR runtime uses eval() internally — a CSP
+// without 'unsafe-eval' throws "Uncaught EvalError" the instant the client
+// bundle loads in dev, silently killing all client-side JS on every page
+// (Reveal animations never fire, so the whole site looks empty except plain
+// HTML elements like a <video>). Never shipped to production: `next build`
+// doesn't use eval-based HMR, so this only ever applies in `next dev`.
+const isDev = process.env.NODE_ENV === "development";
+
 const csp = [
   "default-src 'self'",
   // https://app.cal.com: the Cal.com booking embed (components/ui/CalEmbed.tsx)
   // injects its own <script> tag at runtime — without it here the script is
   // silently blocked and the "Pick a date & time" step spins forever.
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://app.cal.com",
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ""}https://www.googletagmanager.com https://app.cal.com`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com https://picsum.photos https://lh3.googleusercontent.com https://app.cal.com",

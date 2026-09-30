@@ -7,6 +7,7 @@ type InitialCaseStudy = {
   title: string;
   year: string;
   summary: string;
+  imageUrl: string | null;
   challenge: string;
   objective: string;
   strategy: string;
@@ -57,6 +58,10 @@ export default function CaseStudyForm({
       <div>
         <label className={labelClass}>Summary</label>
         <textarea name="summary" required rows={2} defaultValue={initial?.summary} className={inputClass} />
+      </div>
+      <div>
+        <label className={labelClass}>Image URL (optional — overrides the automatic photo used on cards/gallery)</label>
+        <input name="imageUrl" defaultValue={initial?.imageUrl ?? ""} className={inputClass} placeholder="https://..." />
       </div>
 
       {(["challenge", "objective", "strategy", "creative", "execution", "technology", "media"] as const).map((field) => (

@@ -13,13 +13,16 @@ export default async function AdminCapabilitiesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">Capabilities</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">bolt</span>
+          Capabilities
+        </h1>
         <Link href="/admin/capabilities/new" className={buttonClass}>
           + New Capability
         </Link>
       </div>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {capabilities.map((cap) => (
           <div key={cap.id} className="flex items-center justify-between px-5 py-4">
             <div>

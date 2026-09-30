@@ -11,6 +11,7 @@ function fromForm(formData: FormData) {
     name: String(formData.get("name") ?? "").trim(),
     eyebrow: String(formData.get("eyebrow") ?? "").trim(),
     summary: String(formData.get("summary") ?? "").trim(),
+    imageUrl: String(formData.get("imageUrl") ?? "").trim() || null,
     challenges: linesToArray(formData.get("challenges")),
     capabilitySlugs: linesToArray(formData.get("capabilitySlugs")),
     sortOrder: Number(formData.get("sortOrder") ?? 0),

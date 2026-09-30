@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import RevealOnScroll from "@/components/fx/RevealOnScroll";
 import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
+import { trackEvent } from "@/lib/analytics";
 import type { Capability } from "@/lib/content";
 
 export default function CapabilitiesShowcase({ capabilities }: { capabilities: Capability[] }) {
@@ -44,6 +45,7 @@ export default function CapabilitiesShowcase({ capabilities }: { capabilities: C
               >
                 <Link
                   href={`/capabilities/${cap.slug}`}
+                  onClick={() => trackEvent("solution_explore", { capability: cap.slug, location: "homepage-showcase" })}
                   className="block h-full flex flex-col justify-between"
                   style={{ transformStyle: "preserve-3d" }}
                 >
@@ -52,6 +54,7 @@ export default function CapabilitiesShowcase({ capabilities }: { capabilities: C
                     <TiltCardItem depth={24} className="relative h-44 w-full overflow-hidden rounded-xl border border-lineOnInk/60 mb-5">
                       <GenerativeArt
                         seed={cap.slug}
+                        imageUrl={cap.imageUrl}
                         interactive={false}
                         width={480}
                         height={360}

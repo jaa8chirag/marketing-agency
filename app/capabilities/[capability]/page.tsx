@@ -64,8 +64,33 @@ export default async function CapabilityPage({ params }: { params: { capability:
             { label: capability.name },
           ]}
           visualSeed={capability.slug}
+          visualImageUrl={capability.imageUrl}
           visualIndex={capability.num}
         />
+
+        {capability.overview.length > 0 && (
+          <section className="py-20 md:py-28 border-b border-edge">
+            <Container>
+              <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-14">
+                <Reveal>
+                  <Eyebrow index="00">Overview</Eyebrow>
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight max-w-xs text-balance">
+                    {capability.tagline}
+                  </h2>
+                </Reveal>
+                <Reveal delay={80} className="max-w-2xl">
+                  <div className="flex flex-col gap-6">
+                    {capability.overview.map((para, idx) => (
+                      <p key={idx} className="text-lg leading-relaxed text-fgMuted">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                </Reveal>
+              </div>
+            </Container>
+          </section>
+        )}
 
         <section className="py-20 md:py-28 border-b border-edge">
           <Container>

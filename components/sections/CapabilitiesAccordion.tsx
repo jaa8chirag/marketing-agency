@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import GenerativeArt from "@/components/ui/GenerativeArt";
 import Reveal from "@/components/ui/Reveal";
 import { duration, easing } from "@/lib/motion";
+import { trackEvent } from "@/lib/analytics";
 import type { Capability } from "@/lib/content";
 
 export default function CapabilitiesAccordion({ capabilities }: { capabilities: Capability[] }) {
@@ -74,6 +75,7 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
                     <div className="relative mb-8 aspect-[16/8] sm:aspect-[21/9] rounded-xl overflow-hidden">
                       <GenerativeArt
                         seed={cap.slug}
+                        imageUrl={cap.imageUrl}
                         width={960}
                         height={480}
                         interactive={false}
@@ -88,6 +90,7 @@ export default function CapabilitiesAccordion({ capabilities }: { capabilities: 
                         <p className="text-xs text-muted leading-relaxed mb-4">{cap.summary}</p>
                         <Link
                           href={`/capabilities/${cap.slug}`}
+                          onClick={() => trackEvent("solution_explore", { capability: cap.slug, location: "capabilities-accordion" })}
                           className="inline-flex items-center gap-1.5 text-signal font-mono text-xs font-bold uppercase tracking-wider hover:text-ink transition-colors"
                         >
                           Explore

@@ -22,6 +22,8 @@ export type Capability = {
   tagline: string;
   summary: string;
   heroDescription: string;
+  imageUrl?: string;
+  overview: string[];
   problems: string[];
   deliverables: string[];
   industries: string[];
@@ -33,6 +35,7 @@ export type Industry = {
   name: string;
   eyebrow: string;
   summary: string;
+  imageUrl?: string;
   challenges: string[];
   capabilities: string[];
 };
@@ -43,6 +46,7 @@ export type CaseStudy = {
   title: string;
   year: string;
   summary: string;
+  imageUrl?: string;
   capabilities: string[];
   industry: string;
   challenge: string;
@@ -80,6 +84,13 @@ export const capabilities: Capability[] = [
       "Strategy, positioning and creative direction that give a business a distinct, ownable point of view before a single asset gets made.",
     heroDescription:
       "We build brands the way we build campaigns — with a strategic spine underneath. Positioning, naming, identity and creative direction that hold up across every channel, market and format a growing business will need.",
+    overview: [
+      "Most brands don't actually have a differentiation problem. They have a decision problem. Ask five people inside almost any mid-sized company what the brand stands for and you'll get five different answers — a tagline from three rebrands ago, a value from a mission statement nobody rereads, a vague gesture at \"quality\" or \"innovation\" that could describe any competitor in the category just as easily. The visual identity might be polished. The problem is nobody actually agreed on what it's supposed to be saying, so every new piece of creative re-litigates the same argument from scratch.",
+      "We start where every brand engagement starts — stakeholder interviews, a category audit, audience research — but we don't stop there, because that's where a lot of brand work quietly turns into an expensive design project instead of a strategic one. The point of the strategy phase is to produce exactly one thing: a position specific enough that agreeing to it also means ruling out several other directions the business could have taken. If a positioning statement could describe three competitors just as comfortably as it describes you, it isn't a position. It's a placeholder wearing the shape of one.",
+      "Everything downstream — naming, verbal identity, the visual system, the campaign platform that eventually reaches media and content — gets built against that one decision, not around it. A logo redesign without a settled position is an expensive coat of paint; the identity drifts again within eighteen months because nothing underneath it actually changed. So we build the architecture before the aesthetics: how a master brand, any sub-brands, and future product or service lines relate to one another as the business grows, because most rebrands don't fail on launch day, they fail the day a new offering doesn't fit anywhere in the system.",
+      "None of it ships as a PDF. Brand guidelines that live in a shared drive and get opened twice a year aren't a system — they're documentation of one nobody's using. Brand work here is built to be picked up daily by whoever's actually making things: a designer building a paid social ad at 4pm on a Friday, a salesperson writing a cold email, a developer choosing which UI component matches the tone the business is going for. That means the voice, tone and visual rules have to survive contact with a deadline, not just sound convincing in a strategy deck.",
+      "This is also the capability almost everything else here quietly depends on. A creative campaign built on a weak platform spends real media budget proving a point nobody agreed on in the first place. A website built ahead of a settled identity needs a redesign the moment the brand work finally lands. Getting this right first costs a few extra weeks up front and saves every project that comes after it — which is really the whole argument for doing brand strategy properly instead of skipping straight to the part that feels like visible progress.",
+    ],
     problems: [
       "The brand looks like everyone else in the category.",
       "Positioning changes depending on who in the company you ask.",
@@ -166,6 +177,13 @@ export const capabilities: Capability[] = [
       "Video, photography, UGC and post-production built for how content actually gets consumed — fast, social-first, and at the volume modern marketing demands.",
     heroDescription:
       "From brand films to the ten pieces of social content shot in a single afternoon — our production model is built for both the flagship moment and the relentless weekly output modern channels need.",
+    overview: [
+      "Content demand and production capacity have been quietly diverging for years. A brand that needed a handful of polished assets a quarter now needs a steady stream of native, platform-specific content every week — and the instinct to solve that by simply shooting more, faster, on a smaller budget usually produces exactly the disconnected, off-brand output everyone was trying to avoid. The actual fix isn't more volume. It's a production model designed around two different jobs at once, run by the same team so neither one drifts from the other.",
+      "The first job is the flagship moment: brand films, hero campaign content, the kind of production that needs a proper crew, a real edit, and enough craft that it holds up as the anchor for everything built around it. The second is the relentless, unglamorous weekly output — the ten pieces of native social content shot in an afternoon, the UGC-style content that has to feel unpolished on purpose, the product photography that needs to exist for a hundred SKUs, not five. Treating these as one undifferentiated \"content\" bucket is how hero films end up over budget and social content ends up looking like a hero film nobody wanted to watch.",
+      "So we build two workflows on the same foundation instead. Flagship production runs like a proper shoot: pre-production, a scripted or storyboarded plan, a crew sized to the ambition of the piece, and a post-production process built to produce not just the final cut but a library of cutdowns, verticals and stills that other channels can actually use — because the most expensive mistake in production isn't a bad shoot, it's a great shoot that only ever produces one usable asset. High-volume content runs lighter: smaller crews or creator-shot footage, faster turnarounds, and a review process calibrated to \"does this look native and on-brand\" rather than \"does this meet feature-film standards,\" because holding volume content to hero-film scrutiny is how teams end up unable to keep up with their own channels.",
+      "Creator and UGC content gets the same discipline applied differently. The value of creator content is that it doesn't look like an ad — which means the brief has to protect that authenticity while still keeping the work identifiably on-brand, a genuinely different skill from directing a traditional shoot. We brief for tone and message, not shot lists, and review for brand fit rather than trying to make creator content look like it came from an agency, because the moment it does, it stops working the way UGC is supposed to work.",
+      "Post-production is where both tracks actually meet. The same team that edits the flagship film is cutting it down into fifteen social-ready variants; the same colour and sound standards apply whether the source footage came from a cinema camera or a creator's phone. That consistency is what lets a brand run a big, expensive hero moment and a constant drip of lightweight content side by side without the two ever looking like they came from different companies — which, without a deliberate system behind it, is exactly what tends to happen.",
+    ],
     problems: [
       "Production is too slow or expensive to keep up with content demand.",
       "Hero campaign films don't translate into usable social content.",
@@ -272,6 +290,13 @@ export const capabilities: Capability[] = [
       "Marketing websites, e-commerce platforms and digital products built on modern, API-first architecture — designed to convert and engineered to scale.",
     heroDescription:
       "We design and build websites and digital products with the same rigour we bring to campaigns: research-led UX, a real design system, and an engineering approach that won't need a rebuild in eighteen months.",
+    overview: [
+      "A website is the one piece of marketing infrastructure almost every other capability eventually points at. The campaign's landing page, the SEO content's home, the paid media's conversion point, the place a prospect goes to actually check if the brand promise holds up under scrutiny — and yet it's frequently the asset treated as a one-off project instead of a product. Built once, launched, then left to slowly drift out of date until the business decides it's time for another expensive full rebuild, usually three or four years after the drift became obvious to everyone except whoever was supposed to be maintaining it.",
+      "We design and build it as a product instead, which starts with research most \"just build the site\" projects skip entirely: who's actually arriving, what they're trying to accomplish, what's currently stopping them from doing it. That research feeds a UX structure built around the visitor's actual decision path rather than the org chart's idea of how the company should be described, because those two things are almost never the same, and a site organised around internal departments instead of visitor intent is one of the most common, least visible reasons a well-designed site still underperforms.",
+      "The visual layer runs on a real design system, not a one-off Figma file that only makes sense to the person who built it. Components, spacing, states and content patterns are documented and reusable, which matters for a reason that has nothing to do with aesthetics: it's what lets marketing update a page, launch a campaign landing page, or add a new service without opening a developer ticket and waiting two sprints for a change that should have taken an afternoon. A design system is the difference between a site that evolves weekly and one that only changes during the next expensive redesign.",
+      "Underneath that sits an API-first, headless architecture — content, commerce and custom functionality decoupled from the presentation layer, so the front end can be rebuilt or restyled without re-platforming the entire business, and new integrations (a CRM, a booking system, a product feed) can be added without a ground-up rewrite. This is the part of the work that's invisible when it's done right and catastrophically expensive when it isn't: the difference between a platform that absorbs three years of growth and one that needs replacing the moment the business actually succeeds at something.",
+      "For commerce specifically, that architecture also has to support the parts of the business that aren't about the storefront looking nice — inventory logic, checkout performance under real traffic, the integrations a growing operations team will eventually need. And for digital products, it means building with the same product discipline a software company would use: a roadmap, not just a launch date, and a plan for iteration that assumes the first version is a starting point, not a finished thing to be revisited only when it visibly breaks.",
+    ],
     problems: [
       "The website doesn't reflect the brand or convert visitors into leads.",
       "Marketing can't update content without waiting on developers.",
@@ -378,6 +403,13 @@ export const capabilities: Capability[] = [
       "Social, SEO, content and influencer marketing that build durable organic visibility instead of chasing algorithm changes.",
     heroDescription:
       "Visibility that compounds. We combine organic search, content, social and creator marketing into one connected system — built on the same content and brand foundation as everything else we make.",
+    overview: [
+      "Paid visibility disappears the moment the budget stops. Organic visibility — a page that ranks, a following that trusts what a brand posts, a piece of content still getting shared two years after it published — keeps working long after the team that made it has moved on to the next project. That's the entire case for treating digital marketing as a compounding system rather than a monthly content quota: every piece either adds to something durable or it's activity that happens to look like marketing.",
+      "The reason most organic efforts don't compound has less to do with effort and more to do with fragmentation. Social lives in one plan, SEO in another, content marketing in a third, each measured against its own metrics with no shared thesis about what the business is actually trying to be known for. Posting consistently across four disconnected channels produces four small, unrelated audiences instead of one growing one — which is why \"we post regularly and nothing's changing\" is one of the most common complaints in this part of marketing, and rarely a content-quality problem underneath it.",
+      "We run these as one system instead, anchored to the same brand platform and content pillars everything else here is built on. Content marketing sets the editorial thesis — the handful of topics a brand has genuine authority to own. SEO makes sure that content is structurally discoverable: technical health, on-page optimisation, and keyword strategy mapped deliberately to capability, service and industry pages rather than treated as a separate workstream bolted on after the content already exists. Social takes the same ideas and translates them into platform-native formats instead of repurposing a blog post into a caption and calling it a strategy.",
+      "Influencer and creator marketing sits on top of that as a trust accelerant, not a separate campaign category. A brand's own channel says what it wants people to believe; a credible third-party voice says it's actually true, which is a different kind of proof and one paid media structurally can't produce on its own. We source and brief creators against audience fit rather than follower count, because a smaller, precisely-matched audience consistently outperforms a bigger, generic one on every metric that actually predicts a sale.",
+      "None of this is exempt from proof. Every channel here reports back to the same set of questions — is this compounding, is it reaching the audience the business actually needs, is it translating into pipeline — rather than a vanity number specific to whichever platform happens to be reporting it. Organic growth is slower to show up than a paid campaign's first-week numbers. It's also still there in year three, which paid rarely is.",
+    ],
     problems: [
       "Organic visibility isn't growing despite consistent content output.",
       "Social channels are active but disconnected from business goals.",
@@ -484,6 +516,13 @@ export const capabilities: Capability[] = [
       "Media strategy, planning and buying across paid search, paid social, programmatic and video — built on audience data, not guesswork.",
     heroDescription:
       "Media that's planned, not just bought. We connect audience strategy, channel planning and buying discipline so every media dollar is working toward a measurable outcome.",
+    overview: [
+      "\"Media\" and \"buying ads\" get treated as the same thing more often than they should be. Buying is the execution — bidding on placements, managing budgets, optimising toward a target. Media strategy is the decision that has to happen before any of that: which audience, on which channel, at which stage of their decision, is this specific budget actually meant to reach? Skip that step and buying still happens — it just happens against whatever channel mix felt intuitive rather than whatever the audience data actually supports, which is how budgets end up scattered across four platforms with nobody able to explain why those four and not three others.",
+      "We start with the audience, not the channel list. Who the buyer actually is, where they spend attention at each stage from first awareness to active comparison, and what a media dollar is realistically capable of achieving at each of those stages — because a budget spent trying to close a sale with someone who's never heard of the brand is being asked to do a job media can't do alone. That audience map becomes the channel plan: paid search where intent is already explicit, paid social and programmatic where the job is building awareness and consideration, video where the goal is attention and story rather than an immediate click.",
+      "Buying, once the plan exists, is a discipline of its own — bid strategy, audience targeting, placement quality, pacing a budget so it doesn't front-load spend into a week that happened to have less competition and then run dry before the campaign's real push. Programmatic specifically rewards teams who treat it as an ongoing optimisation practice rather than a set-and-forget budget line; the platforms are sophisticated, but they're only as good as the audience and creative inputs someone's actively managing.",
+      "The bigger failure mode in media isn't a badly bought campaign. It's a well-bought campaign running creative that was never briefed with the channel in mind — a :30 broadcast-style spot dropped into a 6-second social placement, or search copy written by someone who never saw the landing page it points to. Media planning and creative production happening in separate silos is one of the most common, most expensive disconnects in marketing, which is why media here sits inside the same operating model as brand and content instead of being handed a finished asset and told to go place it.",
+      "Reporting follows the same logic: efficiency measured across the whole media mix, not channel-by-channel in isolation, because a platform that looks expensive on its own metric can still be the most efficient dollar in the plan once its actual contribution to the funnel is accounted for. The question we're answering every month isn't \"how did each channel perform against itself\" — it's \"where should the next dollar go to move the number that actually matters,\" which is a genuinely different, more useful question.",
+    ],
     problems: [
       "Media spend is scattered across channels without a unifying strategy.",
       "Performance is reported per-channel with no view of overall efficiency.",
@@ -590,6 +629,13 @@ export const capabilities: Capability[] = [
       "Lead generation, conversion optimisation and funnel analytics built to turn traffic into pipeline — with every result tied back to a number.",
     heroDescription:
       "Performance marketing without the guesswork. We build full-funnel systems — from acquisition through conversion — and report on the metrics that actually connect to revenue.",
+    overview: [
+      "Traffic growing while revenue stays flat is one of the most common and most misdiagnosed problems in marketing. The instinct is almost always to spend more on acquisition — more search, more social, more of whatever channel produced the traffic in the first place — when the actual leak is usually further down the funnel: a landing page nobody's tested since it launched, a form with too much friction, a lead-gen flow that captures an email address but nothing about whether that lead is worth calling. More traffic into a leaky funnel just produces more leaks, faster.",
+      "So performance work here starts at the point of conversion and works backward, not the other way round. Landing pages, forms and checkout flows get audited and tested against a hypothesis, not redesigned on instinct — a genuine CRO practice, not an occasional A/B test run when someone remembers to. Small, unglamorous changes (a form field removed, a value proposition moved above the fold, a CTA rewritten to match actual buyer intent instead of generic \"learn more\" language) routinely move conversion rate more than the acquisition spend increase that would have been the default response.",
+      "Lead generation and customer acquisition then get built to feed a funnel that's actually capable of converting what arrives, with acquisition channels evaluated against qualified pipeline rather than raw lead volume — a genuinely different optimisation target, and one that regularly changes which channel looks like the winner. A channel producing fewer, better-fit leads at a higher cost-per-lead can be the more efficient channel once it's measured against what actually closes, which is a distinction pure volume-based reporting hides completely.",
+      "Analytics is the discipline that makes any of this possible to say with confidence rather than guess at. Attribution set up properly, dashboards built around the metrics that connect to revenue instead of the ones that are easiest to pull, and reporting that survives being questioned by someone in finance — because \"performance marketing\" without defensible measurement underneath it is just marketing with extra dashboards. We'd rather report a smaller number we can prove than a bigger one that doesn't hold up.",
+      "The full-funnel framing matters because these pieces genuinely compound. Better analytics reveals which acquisition channels are actually worth defending. Better conversion data tells acquisition which audiences to target more of. Lead quality feedback from sales improves how the next campaign gets targeted in the first place. Run any one of these in isolation and it's a local optimisation; run them as one connected system and each improvement makes the next one easier to find.",
+    ],
     problems: [
       "Traffic is growing but leads and revenue aren't following.",
       "There's no clear view of which channels are driving qualified pipeline.",
@@ -696,6 +742,13 @@ export const capabilities: Capability[] = [
       "Marketing automation, CRM and AI-enabled workflows that nurture leads, personalise experiences and free the team from manual, repetitive work.",
     heroDescription:
       "We connect strategy to systems. Marketing automation, CRM architecture and applied AI that turn a good marketing plan into something that runs itself — consistently, at scale.",
+    overview: [
+      "A lead that goes cold rarely goes cold because the offer was wrong. It goes cold because follow-up depended on a specific person remembering to send a specific email at a specific moment, and that moment came during a busy week. This is the quiet failure mode behind most \"we're losing leads somewhere\" problems — not a strategy gap, a systems gap, where the plan was sound but nothing was actually built to execute it consistently once the initial enthusiasm of a new campaign wore off.",
+      "CRM architecture is where this gets fixed structurally, not just patched with reminders. Clean, consistent lead and lifecycle data — the same fields, the same stages, the same definition of what \"qualified\" actually means — turns a CRM from a place leads go to be forgotten into the backbone lifecycle marketing actually runs on. Without that consistency, automation has nothing reliable to trigger from, and every workflow built on top of messy data eventually breaks in a way that's expensive to trace back to its source.",
+      "Marketing automation built on top of that foundation is what actually closes the follow-up gap: nurture sequences triggered by real behaviour instead of a calendar reminder, lead scoring that routes a genuinely sales-ready contact to a human immediately instead of leaving them in a generic queue, lifecycle campaigns that adjust based on what a contact actually does rather than running the same sequence for everyone regardless of engagement. None of this replaces a sales team's judgment — it makes sure the right lead reaches that judgment at the right moment instead of three weeks late.",
+      "Applied AI sits on top of that same foundation, not as a replacement for it. Personalisation, predictive scoring, AI-assisted content and campaign optimisation are only as good as the data feeding them — an AI layer bolted onto messy CRM data just personalises the wrong thing faster and with more confidence. We treat AI as an accelerant for a system that's already working, with a governance model around where it's used and how outputs get reviewed, rather than a scattering of disconnected tools adopted ad hoc because each one seemed useful in isolation.",
+      "The outcome that actually matters isn't \"we use automation\" or \"we use AI\" as a checkbox — it's a marketing operation that keeps doing the repeatable, high-value work (timely follow-up, consistent nurture, personalisation at a scale no team could do by hand) without needing someone to manually remember to do it every single time. That's what frees a team to spend its time on the work a system genuinely can't do: strategy, creative judgment, and the relationships automation was never going to replace.",
+    ],
     problems: [
       "Leads go cold because follow-up depends on manual effort.",
       "CRM data is inconsistent, so lifecycle marketing isn't possible.",
@@ -802,6 +855,13 @@ export const capabilities: Capability[] = [
       "E-commerce growth strategy, conversion optimisation and retention programmes built to grow order value and customer lifetime value together.",
     heroDescription:
       "Commerce growth is a system, not a single campaign. We work across acquisition, conversion and retention so every part of the funnel compounds rather than competing for the same budget.",
+    overview: [
+      "An e-commerce business that grows only by spending more on acquisition is a business with a ceiling built into its own model — rising ad costs eventually catch up with any strategy that treats new-customer spend as the only lever worth pulling. The businesses that keep compounding are the ones that also fix what happens after the click: whether the product page actually converts, whether checkout survives real traffic instead of just a demo, and whether a customer who bought once has any real reason to come back a second time.",
+      "So we treat acquisition, conversion and retention as one connected system rather than three separate budget lines competing for the same attention. Acquisition brings people in — but if conversion is weak, that spend is subsidising a leaky funnel, and every acquisition channel will look progressively worse in the reporting even though the actual problem is downstream. Fix conversion first and the same acquisition spend produces measurably more orders without a single additional dollar going to media.",
+      "Conversion optimisation here means product pages, category structure and checkout audited and tested against real behaviour, not assumption — page speed, mobile checkout friction, the product information a buyer actually needs before they'll commit, the point in the flow where people quietly abandon and why. These are rarely dramatic redesigns; more often they're a dozen specific, testable frictions, each worth a percentage point or two, that nobody had gotten around to fixing because there was always a new campaign competing for the same week's attention.",
+      "Retention is the piece that gets treated as an afterthought most consistently, and it's usually the highest-leverage one available. A returning customer costs a fraction of what a new one costs to acquire and tends to spend more per order once they trust the brand — which makes retention programmes (lifecycle email and SMS, loyalty mechanics, post-purchase experience) one of the more reliably profitable investments in commerce, even though they rarely get the strategic attention a new acquisition campaign does.",
+      "Run these three together and they compound instead of competing: better retention lowers the blended cost of growth, which makes acquisition spend go further, which brings in more customers for conversion work to actually convert, which produces more repeat customers for retention to work with. Run them in isolation, funded from the same limited budget, and each one is quietly working against the others for the same pool of money — usually with acquisition winning that argument by default, whether or not it's actually the highest-leverage place to spend next.",
+    ],
     problems: [
       "Growth depends entirely on discounting and paid acquisition.",
       "Product pages and checkout haven't been optimised in years.",
@@ -906,6 +966,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Brands competing on both product and experience — where conversion, retention and brand consistency all have to work together.",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Rising acquisition costs squeezing margin",
       "Inconsistent brand experience across storefront, social and marketplaces",
@@ -919,6 +980,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Regulated, trust-driven categories where brand credibility and conversion clarity matter as much as compliance.",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Building trust and credibility in a low-trust category",
       "Complex products that are hard to explain simply",
@@ -932,6 +994,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Brands balancing regulatory sensitivity with the need for warm, human, high-trust communication.",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Communicating credibly without overpromising outcomes",
       "Content and creative constrained by compliance requirements",
@@ -945,6 +1008,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Fast-moving product companies that need marketing to keep pace with product velocity and technical buyers.",
+    imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Explaining technical products to both technical and business buyers",
       "Long, multi-stakeholder B2B sales cycles",
@@ -958,6 +1022,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Experience-led categories where visual storytelling and local, high-intent demand generation both matter.",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Communicating an experience through content, not just specification",
       "Seasonal and location-based demand generation",
@@ -971,6 +1036,7 @@ export const industries: Industry[] = [
     eyebrow: "Industry",
     summary:
       "Culture-driven brands where creative distinctiveness is the primary competitive advantage.",
+    imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
     challenges: [
       "Standing out in a crowded, aesthetically similar category",
       "Producing enough content to sustain always-on social presence",

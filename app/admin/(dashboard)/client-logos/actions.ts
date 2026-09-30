@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 function fromForm(formData: FormData) {
   return {
     name: String(formData.get("name") ?? "").trim(),
+    logoUrl: String(formData.get("logoUrl") ?? "").trim() || null,
     industry: String(formData.get("industry") ?? "").trim() || null,
     approved: formData.get("approved") === "on",
     sortOrder: Number(formData.get("sortOrder") ?? 0),

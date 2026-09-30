@@ -9,6 +9,7 @@ import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/ui/CTASection";
 import InsightCard from "@/components/ui/InsightCard";
 import TrackView from "@/components/analytics/TrackView";
+import ReadTracker from "@/components/analytics/ReadTracker";
 import { getInsights, getInsight, getCapability, relatedInsights } from "@/lib/queries";
 
 export async function generateStaticParams() {
@@ -100,6 +101,7 @@ export default async function InsightPage({ params }: { params: { slug: string }
                       {para}
                     </p>
                   ))}
+                  <ReadTracker event="insight_read" params={{ slug: insight.slug, type: insight.type }} />
                 </div>
               </Reveal>
 

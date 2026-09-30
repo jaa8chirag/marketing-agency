@@ -2,12 +2,12 @@
 // panel is deliberately plain/functional — it doesn't need the marketing
 // site's animation/brand treatment, just to be fast to build and use.
 export const inputClass =
-  "w-full bg-transparent border border-edge rounded px-3 py-2.5 text-fg focus:outline-none focus:border-signal transition-colors";
+  "w-full bg-surface border border-edge rounded-lg px-3.5 py-2.5 text-fg focus:outline-none focus:border-signal focus:ring-2 focus:ring-signal/15 transition-colors";
 export const labelClass = "font-mono text-[11px] uppercase tracking-wider text-fgMuted block mb-1.5";
 export const buttonClass =
-  "px-5 py-2.5 bg-ink text-paper font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-signal transition-colors disabled:opacity-40";
+  "inline-flex items-center gap-2 px-5 py-2.5 bg-ink text-paper font-mono text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-signal transition-colors disabled:opacity-40";
 export const dangerButtonClass =
-  "px-5 py-2.5 border border-red-500 text-red-500 font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-red-500 hover:text-white transition-colors";
+  "inline-flex items-center gap-2 px-5 py-2.5 border border-red-500 text-red-500 font-mono text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-red-500 hover:text-white transition-colors";
 
 // Browsers render a native <select>'s open dropdown with their own popup
 // chrome (often a plain white background) regardless of the page's dark

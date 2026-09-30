@@ -5,9 +5,12 @@ export default async function AdminLeadsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold tracking-tight mb-8">Leads ({leads.length})</h1>
+      <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight mb-8">
+        <span className="material-symbols-outlined text-signal text-[22px]">inbox</span>
+        Leads ({leads.length})
+      </h1>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {leads.map((lead) => (
           <div key={lead.id} className="px-5 py-4">
             <div className="flex items-center justify-between mb-2">

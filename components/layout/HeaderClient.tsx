@@ -280,6 +280,7 @@ export default function HeaderClient({
                       <div className="absolute inset-y-0 right-0 w-[58%] overflow-hidden">
                         <GenerativeArt
                           seed={cap.slug}
+                          imageUrl={cap.imageUrl}
                           interactive={false}
                           width={320}
                           height={300}

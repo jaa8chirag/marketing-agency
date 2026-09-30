@@ -13,13 +13,16 @@ export default async function AdminInsightsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">Insights</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">lightbulb</span>
+          Insights
+        </h1>
         <Link href="/admin/insights/new" className={buttonClass}>
           + New Insight
         </Link>
       </div>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {insights.map((i) => (
           <div key={i.id} className="flex items-center justify-between px-5 py-4">
             <div>

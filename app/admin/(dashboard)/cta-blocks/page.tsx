@@ -10,7 +10,10 @@ export default async function AdminCtaBlocksPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl font-bold tracking-tight">CTA Blocks</h1>
+        <h1 className="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight">
+          <span className="material-symbols-outlined text-signal text-[22px]">campaign</span>
+          CTA Blocks
+        </h1>
         <Link href="/admin/cta-blocks/new" className={buttonClass}>
           + New CTA Block
         </Link>
@@ -21,9 +24,9 @@ export default async function AdminCtaBlocksPage() {
         this only covers the generic, reusable ones.
       </p>
 
-      <div className="border border-edge divide-y divide-edge">
+      <div className="border border-edge divide-y divide-edge rounded-xl overflow-hidden">
         {blocks.map((b) => (
-          <div key={b.id} className="flex items-center justify-between px-5 py-4 gap-4">
+          <div key={b.id} className="flex items-center justify-between px-5 py-4 gap-4 hover:bg-surfaceMuted/50 transition-colors">
             <div className="min-w-0">
               <p className="text-sm font-medium truncate max-w-md">
                 <code className="font-mono text-signal">{b.key}</code> — {b.title}

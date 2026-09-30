@@ -1,52 +1,36 @@
-import Link from "next/link";
 import { logout } from "../auth-actions";
 import { getSession } from "@/lib/session";
-
-const navItems = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/capabilities", label: "Capabilities" },
-  { href: "/admin/industries", label: "Industries" },
-  { href: "/admin/case-studies", label: "Case Studies" },
-  { href: "/admin/insights", label: "Insights" },
-  { href: "/admin/testimonials", label: "Testimonials" },
-  { href: "/admin/client-logos", label: "Client Logos" },
-  { href: "/admin/team", label: "Team" },
-  { href: "/admin/cta-blocks", label: "CTA Blocks" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/newsletter", label: "Newsletter" },
-  { href: "/admin/settings", label: "Settings" },
-];
+import AdminNav from "@/components/admin/AdminNav";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
 
   return (
     <div className="min-h-screen bg-surface text-fg flex">
-      <aside className="w-60 shrink-0 border-r border-edge p-6 flex flex-col">
-        <span className="font-mono text-[11px] uppercase tracking-superwide text-signal block mb-1">
-          Cordinit Media
-        </span>
-        <span className="font-display text-lg font-bold tracking-tight block mb-8">Admin</span>
+      <aside className="w-64 shrink-0 border-r border-edge p-5 flex flex-col bg-surfaceMuted/40">
+        <div className="flex items-center gap-2.5 mb-8 px-1">
+          <div className="w-8 h-8 bg-signal shrink-0 flex items-center justify-center text-ink font-mono font-bold text-sm rounded">
+            C
+          </div>
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-sm font-bold tracking-tight">Cordinit Media</span>
+            <span className="font-mono text-[10px] uppercase tracking-superwide text-fgMuted">Admin</span>
+          </div>
+        </div>
 
-        <nav className="flex flex-col gap-1 flex-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="px-3 py-2.5 text-sm font-medium rounded hover:bg-surfaceMuted transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <AdminNav />
 
-        <div className="pt-6 border-t border-edge mt-6">
-          <p className="text-xs text-fgMuted mb-3 truncate">{session?.email}</p>
+        <div className="pt-4 border-t border-edge mt-4">
+          <div className="flex items-center gap-2.5 px-3 py-2 mb-1">
+            <span className="material-symbols-outlined text-[18px] text-fgMuted shrink-0">account_circle</span>
+            <p className="text-xs text-fgMuted truncate">{session?.email}</p>
+          </div>
           <form action={logout}>
             <button
               type="submit"
-              className="w-full px-3 py-2.5 text-sm font-medium border border-edge rounded hover:bg-surfaceMuted transition-colors text-left"
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium rounded-lg hover:bg-surfaceMuted transition-colors text-left"
             >
+              <span className="material-symbols-outlined text-[18px] text-fgMuted">logout</span>
               Sign out
             </button>
           </form>

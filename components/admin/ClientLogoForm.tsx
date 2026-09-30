@@ -15,6 +15,10 @@ export default function ClientLogoForm({
         <input name="name" required defaultValue={initial?.name} className={inputClass} />
       </div>
       <div>
+        <label className={labelClass}>Logo URL (optional — falls back to a generated pattern when unset)</label>
+        <input name="logoUrl" defaultValue={initial?.logoUrl ?? ""} className={inputClass} placeholder="https://..." />
+      </div>
+      <div>
         <label className={labelClass}>Industry (optional)</label>
         <input name="industry" defaultValue={initial?.industry ?? ""} className={inputClass} />
       </div>
