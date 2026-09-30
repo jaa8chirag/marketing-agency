@@ -11,6 +11,8 @@ import Button from "@/components/ui/Button";
 import CTASection from "@/components/ui/CTASection";
 import CaseStudyCard, { capabilityNamesFor } from "@/components/ui/CaseStudyCard";
 import InsightCard from "@/components/ui/InsightCard";
+import GenerativeArt from "@/components/ui/GenerativeArt";
+import { TiltCard, TiltCardItem } from "@/components/spectrumui/tilt-card";
 import TrackView from "@/components/analytics/TrackView";
 import {
   getCapabilities,
@@ -71,23 +73,21 @@ export default async function CapabilityPage({ params }: { params: { capability:
         {capability.overview.length > 0 && (
           <section className="py-20 md:py-28 border-b border-edge">
             <Container>
-              <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-14">
-                <Reveal>
-                  <Eyebrow index="00">Overview</Eyebrow>
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight max-w-xs text-balance">
-                    {capability.tagline}
-                  </h2>
-                </Reveal>
-                <Reveal delay={80} className="max-w-2xl">
-                  <div className="flex flex-col gap-6">
-                    {capability.overview.map((para, idx) => (
-                      <p key={idx} className="text-lg leading-relaxed text-fgMuted">
-                        {para}
-                      </p>
-                    ))}
-                  </div>
-                </Reveal>
-              </div>
+              <Reveal>
+                <Eyebrow index="00">Overview</Eyebrow>
+                <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tightest max-w-3xl text-balance mb-12">
+                  {capability.tagline}
+                </h2>
+              </Reveal>
+              <Reveal delay={80} className="max-w-4xl">
+                <div className="flex flex-col gap-6">
+                  {capability.overview.map((para, idx) => (
+                    <p key={idx} className="text-lg leading-relaxed text-fgMuted">
+                      {para}
+                    </p>
+                  ))}
+                </div>
+              </Reveal>
             </Container>
           </section>
         )}
@@ -129,21 +129,42 @@ export default async function CapabilityPage({ params }: { params: { capability:
                 Specialist services inside {capability.shortName}.
               </h2>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-l border-edge">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {capability.services.map((s, idx) => (
                 <Reveal key={s.slug} delay={idx * 40}>
-                  <Link
-                    href={`/capabilities/${capability.slug}/${s.slug}`}
-                    className="group h-full border-r border-b border-edge p-7 min-h-[180px] flex flex-col justify-between hover:bg-ink hover:text-paper transition-colors duration-300"
+                  <TiltCard
+                    maxTilt={12}
+                    scale={1.03}
+                    perspective={850}
+                    glare
+                    glareColor="rgba(38, 214, 46, 0.14)"
+                    containerClassName="h-full"
+                    className="group h-full min-h-[220px] rounded-2xl overflow-hidden border border-edge hover:border-signal/50 transition-colors duration-300"
                   >
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-display text-xl font-semibold tracking-tight">{s.name}</h3>
-                      <span className="material-symbols-outlined text-fgMuted group-hover:text-paper opacity-0 group-hover:opacity-100 transition-opacity">
-                        arrow_outward
-                      </span>
-                    </div>
-                    <p className="text-sm text-fgMuted group-hover:text-mutedOnInk leading-relaxed mt-4">{s.hook}</p>
-                  </Link>
+                    <Link
+                      href={`/capabilities/${capability.slug}/${s.slug}`}
+                      className="relative flex h-full w-full flex-col justify-end p-7"
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      <GenerativeArt
+                        seed={`${capability.slug}-${s.slug}`}
+                        groupHover
+                        width={640}
+                        height={480}
+                        className="absolute inset-0 h-full w-full"
+                      />
+                      <TiltCardItem depth={40} className="relative z-10">
+                        <h3 className="font-display text-xl font-semibold tracking-tight text-paper">{s.name}</h3>
+                        <p className="text-sm text-paper/80 leading-relaxed mt-2 max-w-[85%]">{s.hook}</p>
+                      </TiltCardItem>
+                      <TiltCardItem depth={20} className="relative z-10">
+                        <span className="inline-flex items-center gap-1.5 mt-4 font-mono text-[11px] font-bold uppercase tracking-wider text-signal opacity-0 group-hover:opacity-100 transition-opacity">
+                          Explore
+                          <span className="material-symbols-outlined text-[15px]">arrow_outward</span>
+                        </span>
+                      </TiltCardItem>
+                    </Link>
+                  </TiltCard>
                 </Reveal>
               ))}
             </div>
