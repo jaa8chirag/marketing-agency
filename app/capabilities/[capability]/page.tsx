@@ -95,28 +95,40 @@ export default async function CapabilityPage({ params }: { params: { capability:
         <section className="py-20 md:py-28 border-b border-edge">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
-              <Reveal>
-                <Eyebrow index="A">Business problems we solve</Eyebrow>
-                <ul className="flex flex-col gap-4">
-                  {capability.problems.map((p) => (
-                    <li key={p} className="flex gap-4 text-lg text-fg leading-relaxed border-b border-edge pb-4">
-                      <span className="material-symbols-outlined text-signal shrink-0">priority_high</span>
-                      {p}
-                    </li>
+              <div>
+                <Reveal>
+                  <Eyebrow index="A">Business problems we solve</Eyebrow>
+                </Reveal>
+                <div className="flex flex-col gap-3 mt-4">
+                  {capability.problems.map((p, idx) => (
+                    <Reveal key={p} delay={idx * 50}>
+                      <div className="group flex items-start gap-4 p-5 rounded-xl border border-edge bg-surface hover:border-signal/50 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] transition-all duration-300">
+                        <span className="shrink-0 w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-[20px] text-red-500">priority_high</span>
+                        </span>
+                        <p className="text-base text-fg leading-relaxed pt-1.5">{p}</p>
+                      </div>
+                    </Reveal>
                   ))}
-                </ul>
-              </Reveal>
-              <Reveal delay={80}>
-                <Eyebrow index="B">What you get</Eyebrow>
-                <ul className="flex flex-col gap-4">
-                  {capability.deliverables.map((d) => (
-                    <li key={d} className="flex gap-4 text-lg text-fg leading-relaxed border-b border-edge pb-4">
-                      <span className="material-symbols-outlined text-signal shrink-0">check_circle</span>
-                      {d}
-                    </li>
+                </div>
+              </div>
+              <div>
+                <Reveal delay={80}>
+                  <Eyebrow index="B">What you get</Eyebrow>
+                </Reveal>
+                <div className="flex flex-col gap-3 mt-4">
+                  {capability.deliverables.map((d, idx) => (
+                    <Reveal key={d} delay={80 + idx * 50}>
+                      <div className="group flex items-start gap-4 p-5 rounded-xl border border-edge bg-surface hover:border-signal/50 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] transition-all duration-300">
+                        <span className="shrink-0 w-10 h-10 rounded-lg bg-signal/10 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-[20px] text-signal">check_circle</span>
+                        </span>
+                        <p className="text-base text-fg leading-relaxed pt-1.5">{d}</p>
+                      </div>
+                    </Reveal>
                   ))}
-                </ul>
-              </Reveal>
+                </div>
+              </div>
             </div>
           </Container>
         </section>
