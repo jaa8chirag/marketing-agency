@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
-import { linesToArray } from "@/components/admin/fields";
+import { linesToArray, seoFromForm } from "@/components/admin/fields";
 
 function scalarFields(formData: FormData) {
   return {
@@ -15,6 +15,7 @@ function scalarFields(formData: FormData) {
     deliverables: linesToArray(formData.get("deliverables")),
     outcomes: linesToArray(formData.get("outcomes")),
     sortOrder: Number(formData.get("sortOrder") ?? 0),
+    ...seoFromForm(formData),
   };
 }
 

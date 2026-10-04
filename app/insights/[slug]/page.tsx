@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { entityMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
@@ -20,7 +21,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const insight = await getInsight(params.slug);
   if (!insight) return {};
-  return { title: insight.title, description: insight.summary, alternates: { canonical: `/insights/${insight.slug}` } };
+  return entityMetadata(insight, { title: insight.title, description: insight.summary, path: `/insights/${insight.slug}` });
 }
 
 export default async function InsightPage({ params }: { params: { slug: string } }) {

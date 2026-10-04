@@ -8,6 +8,9 @@ import { prisma } from "@/lib/db";
 import type { Capability, Service, Industry, CaseStudy, Insight } from "@/lib/content";
 
 function mapService(row: {
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImageUrl: string | null;
   slug: string;
   name: string;
   hook: string;
@@ -18,6 +21,9 @@ function mapService(row: {
   approachSteps: { title: string; description: string }[];
 }): Service {
   return {
+    seoTitle: row.seoTitle ?? undefined,
+    seoDescription: row.seoDescription ?? undefined,
+    ogImageUrl: row.ogImageUrl ?? undefined,
     slug: row.slug,
     name: row.name,
     hook: row.hook,
@@ -30,6 +36,9 @@ function mapService(row: {
 }
 
 function mapCapability(row: {
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImageUrl: string | null;
   num: string;
   slug: string;
   name: string;
@@ -46,6 +55,9 @@ function mapCapability(row: {
   services: Parameters<typeof mapService>[0][];
 }): Capability {
   return {
+    seoTitle: row.seoTitle ?? undefined,
+    seoDescription: row.seoDescription ?? undefined,
+    ogImageUrl: row.ogImageUrl ?? undefined,
     num: row.num,
     slug: row.slug,
     name: row.name,
@@ -64,6 +76,9 @@ function mapCapability(row: {
 }
 
 function mapIndustry(row: {
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImageUrl: string | null;
   slug: string;
   name: string;
   eyebrow: string;
@@ -73,6 +88,9 @@ function mapIndustry(row: {
   capabilitySlugs: string[];
 }): Industry {
   return {
+    seoTitle: row.seoTitle ?? undefined,
+    seoDescription: row.seoDescription ?? undefined,
+    ogImageUrl: row.ogImageUrl ?? undefined,
     slug: row.slug,
     name: row.name,
     eyebrow: row.eyebrow,
@@ -84,6 +102,10 @@ function mapIndustry(row: {
 }
 
 function mapCaseStudy(row: {
+  serviceSlugs: string[];
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImageUrl: string | null;
   slug: string;
   client: string;
   title: string;
@@ -102,6 +124,9 @@ function mapCaseStudy(row: {
   capabilities: { capability: { slug: string } }[];
 }): CaseStudy {
   return {
+    seoTitle: row.seoTitle ?? undefined,
+    seoDescription: row.seoDescription ?? undefined,
+    ogImageUrl: row.ogImageUrl ?? undefined,
     slug: row.slug,
     client: row.client,
     title: row.title,
@@ -109,6 +134,7 @@ function mapCaseStudy(row: {
     summary: row.summary,
     imageUrl: row.imageUrl ?? undefined,
     capabilities: row.capabilities.map((c) => c.capability.slug),
+    services: row.serviceSlugs,
     industry: row.industry.slug,
     challenge: row.challenge,
     objective: row.objective,
@@ -122,6 +148,9 @@ function mapCaseStudy(row: {
 }
 
 function mapInsight(row: {
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImageUrl: string | null;
   slug: string;
   title: string;
   type: Insight["type"];
@@ -134,6 +163,9 @@ function mapInsight(row: {
   capability: { slug: string } | null;
 }): Insight {
   return {
+    seoTitle: row.seoTitle ?? undefined,
+    seoDescription: row.seoDescription ?? undefined,
+    ogImageUrl: row.ogImageUrl ?? undefined,
     slug: row.slug,
     title: row.title,
     type: row.type,

@@ -2,27 +2,31 @@
 
 import { useMemo, useState } from "react";
 import InsightCard from "@/components/ui/InsightCard";
-import type { Insight, Capability } from "@/lib/content";
+import type { Insight, Capability, Industry } from "@/lib/content";
 
 const types: Insight["type"][] = ["Article", "Guide", "Report", "Perspective", "Video", "Whitepaper"];
 
 export default function InsightsGrid({
   insights,
   capabilities,
+  industries = [],
 }: {
   insights: Insight[];
   capabilities: Capability[];
+  industries?: Industry[];
 }) {
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [capFilter, setCapFilter] = useState<string | null>(null);
+  const [indFilter, setIndFilter] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return insights.filter((i) => {
       const typeMatch = typeFilter ? i.type === typeFilter : true;
       const capMatch = capFilter ? i.capability === capFilter : true;
-      return typeMatch && capMatch;
+      const indMatch = indFilter ? i.industry === indFilter : true;
+      return typeMatch && capMatch && indMatch;
     });
-  }, [insights, typeFilter, capFilter]);
+  }, [insights, typeFilter, capFilter, indFilter]);
 
   return (
     <div>
@@ -76,6 +80,33 @@ export default function InsightsGrid({
             </button>
           ))}
         </div>
+
+        {industries.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mr-2">Industry</span>
+            <button
+              type="button"
+              onClick={() => setIndFilter(null)}
+              className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
+                !indFilter ? "bg-ink text-paper border-ink" : "border-edge text-fgMuted hover:text-fg"
+              }`}
+            >
+              All
+            </button>
+            {industries.map((ind) => (
+              <button
+                key={ind.slug}
+                type="button"
+                onClick={() => setIndFilter(ind.slug === indFilter ? null : ind.slug)}
+                className={`px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider font-bold border transition-colors ${
+                  indFilter === ind.slug ? "bg-signal text-paper border-signal" : "border-edge text-fgMuted hover:text-fg"
+                }`}
+              >
+                {ind.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {filtered.length === 0 ? (

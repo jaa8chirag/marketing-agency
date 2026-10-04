@@ -32,6 +32,8 @@ const csp = [
   "form-action 'self'",
 ].join("; ");
 
+import { redirects } from "./lib/redirects.mjs";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -53,6 +55,9 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
     ],
+  },
+  async redirects() {
+    return redirects.map((r) => ({ ...r, permanent: r.permanent ?? true }));
   },
   async headers() {
     return [

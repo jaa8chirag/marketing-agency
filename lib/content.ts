@@ -3,6 +3,9 @@
 // (Sanity / Strapi / Payload) without changing any page templates.
 
 export type Service = {
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
   slug: string;
   name: string;
   hook: string;
@@ -14,6 +17,9 @@ export type Service = {
 };
 
 export type Capability = {
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
   num: string;
   slug: string;
   name: string;
@@ -31,6 +37,9 @@ export type Capability = {
 };
 
 export type Industry = {
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
   slug: string;
   name: string;
   eyebrow: string;
@@ -41,6 +50,9 @@ export type Industry = {
 };
 
 export type CaseStudy = {
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
   slug: string;
   client: string;
   title: string;
@@ -48,6 +60,8 @@ export type CaseStudy = {
   summary: string;
   imageUrl?: string;
   capabilities: string[];
+  /** "capabilitySlug/serviceSlug" pairs. */
+  services?: string[];
   industry: string;
   challenge: string;
   objective: string;
@@ -60,6 +74,9 @@ export type CaseStudy = {
 };
 
 export type Insight = {
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
   slug: string;
   title: string;
   type: "Article" | "Guide" | "Report" | "Perspective" | "Video" | "Whitepaper";

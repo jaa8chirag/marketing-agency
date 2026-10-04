@@ -76,6 +76,8 @@ DATABASE_URL="<value of POSTGRES_PRISMA_URL from Vercel>" ADMIN_EMAIL="<real ema
 
 This is safe to re-run later too — every seed operation is an `upsert` keyed on slug/email, so re-running just refreshes existing rows rather than duplicating them. 🤖 `package.json` also now has an `npm run db:seed` shortcut for this.
 
+**Caution once real content is being edited in `/admin`:** re-running `db:seed` overwrites the seeded rows with the values in `lib/content.ts`, discarding admin edits to them. After the first seed, use the create-only top-up instead — `DATABASE_URL="<production url>" npm run db:seed-services` — which adds the remaining services (`prisma/services-extra.ts`) and links demo case studies to services without touching existing rows. Run it once after deploying the 2026-10-04 migrations.
+
 ## 6. Change the admin password after first login 🧑
 
 The seed script sets whatever `ADMIN_PASSWORD` you passed it. Log into `/admin` once and treat that as the real password going forward — there's currently no in-app "change password" flow, so if you need to rotate it later, re-run the seed with a new `ADMIN_PASSWORD` (it'll update the existing user via upsert).

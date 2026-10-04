@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "db:seed-services": "tsx prisma/seed-services.ts"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

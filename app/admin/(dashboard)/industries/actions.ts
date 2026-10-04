@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
-import { linesToArray } from "@/components/admin/fields";
+import { linesToArray, seoFromForm } from "@/components/admin/fields";
 
 function fromForm(formData: FormData) {
   return {
@@ -15,6 +15,7 @@ function fromForm(formData: FormData) {
     challenges: linesToArray(formData.get("challenges")),
     capabilitySlugs: linesToArray(formData.get("capabilitySlugs")),
     sortOrder: Number(formData.get("sortOrder") ?? 0),
+    ...seoFromForm(formData),
   };
 }
 

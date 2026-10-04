@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
+import { linesToArray, seoFromForm } from "@/components/admin/fields";
 
 function scalarFields(formData: FormData) {
   return {
@@ -20,7 +21,9 @@ function scalarFields(formData: FormData) {
     technology: String(formData.get("technology") ?? "").trim(),
     media: String(formData.get("media") ?? "").trim(),
     industryId: String(formData.get("industryId") ?? ""),
+    serviceSlugs: linesToArray(formData.get("serviceSlugs")),
     sortOrder: Number(formData.get("sortOrder") ?? 0),
+    ...seoFromForm(formData),
   };
 }
 

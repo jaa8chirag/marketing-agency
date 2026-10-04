@@ -6,6 +6,21 @@ Legend: 🔵 = waiting on a later phase (planned) · 🟡 = waiting on a decisio
 
 ---
 
+## ✅ DONE (2026-10-04): Brief/workbook completion pass
+
+Full detail is in `REQUIREMENTS_TRACKER.md` (top section). Resolved from the lists below: per-entity SEO fields, README, CI (type-check only), redirect management, `/insights/category/[category]`, industry filter on Insights, service filter on Work, site search, the "Brand & Creative has only 3 services" fix, the ecosystem placeholder name, and the full ~102-service taxonomy.
+
+**Production not updated yet.** Two new migrations (`add_entity_seo_fields`, `add_case_study_services`) are applied locally only. Deploying runs them via `npm run build` (`prisma migrate deploy`); then run `npm run db:seed-services` once against production (create-only, safe).
+
+**Still open (deliberately):**
+- 🟡 Gated downloads + `resource_download` — needs real files and a storage decision.
+- 🟡 Real image uploads — still URL fields.
+- 🟡 `Solutions` link in the CMS-driven mega-menu (one line in `/admin/settings`).
+- ⚪ Copy review of the 70 template-framed services before launch.
+- ⚪ ESLint setup, automated tests, Lighthouse/axe + real-device pass.
+
+---
+
 ## ✅ DONE (2026-09-29): CMS integration + Contact form backend — built, not deferred anymore
 
 You decided to build the backend immediately rather than wait for the admin phase, and to go further than the brief's own suggestion: instead of a third-party headless CMS (Sanity/Strapi/Payload, as brief §5/§11 recommends), we built a **custom PostgreSQL + Prisma backend with our own admin panel** (login + CRUD UI), covering capabilities/services/industries/case studies/insights/testimonials/client logos, plus real Lead and Newsletter capture tables and API routes. This is now **fully built and verified**, not just in progress — see `REQUIREMENTS_TRACKER.md`'s "Backend build" and "Admin panel" sections for the complete rundown (Prisma schema, seed from `lib/content.ts`, every page rewired off static data, admin auth + all 8 entities' CRUD, `/api/contact` and `/api/newsletter` with validation/spam protection, all routes verified 200).

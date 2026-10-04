@@ -26,3 +26,12 @@ export function linesToArray(value: FormDataEntryValue | null): string[] {
 export function arrayToLines(value: string[]): string {
   return value.join("\n");
 }
+
+/** Shared per-entity SEO columns (seoTitle / seoDescription / ogImageUrl). */
+export function seoFromForm(formData: FormData) {
+  return {
+    seoTitle: String(formData.get("seoTitle") ?? "").trim() || null,
+    seoDescription: String(formData.get("seoDescription") ?? "").trim() || null,
+    ogImageUrl: String(formData.get("ogImageUrl") ?? "").trim() || null,
+  };
+}

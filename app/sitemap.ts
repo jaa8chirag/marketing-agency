@@ -16,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/capabilities`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/industries`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/solutions`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/work`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/insights`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
@@ -57,5 +58,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...capabilityRoutes, ...industryRoutes, ...workRoutes, ...insightRoutes];
+  const categoryRoutes: MetadataRoute.Sitemap = [
+    ...["article", "guide", "report", "perspective", "video", "whitepaper"],
+    ...capabilities.map((c) => c.slug),
+    ...industries.map((i) => i.slug),
+  ].map((category) => ({
+    url: `${BASE_URL}/insights/category/${category}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.4,
+  }));
+
+  return [...staticRoutes, ...categoryRoutes, ...capabilityRoutes, ...industryRoutes, ...workRoutes, ...insightRoutes];
 }

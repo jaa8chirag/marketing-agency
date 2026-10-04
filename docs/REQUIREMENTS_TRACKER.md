@@ -6,6 +6,24 @@ Legend: `[x]` Done · `[~]` Partial / needs work · `[ ]` Not started · `(unver
 
 ---
 
+## ✅ Brief + navigation-workbook completion pass (2026-10-04) — supersedes the stale items below
+
+Source documents: `Confidential Media_Brief.pdf` and `Cordinit_Media_Advanced_Navigation_and_User_Flows.xlsx.pdf`. Verified locally: typecheck clean, all new routes return 200 against local Postgres.
+
+- [x] **Full service taxonomy.** 70 services added (`prisma/services-extra.ts`) so every route in the workbook's route directory exists — ~102 services across the 8 capabilities (was 32). Brand & Creative now has 13 (the "only 3 services" gap is closed). Added by the create-only script `npm run db:seed-services`; existing hand-written services and admin edits untouched. Older slugs (`branding`, `creative-campaigns`, `websites`, `ecommerce`, `digital-products`, `social-media`, `paid-media`, `media-planning-buying`, `crm`, `analytics`, `acquisition`) were kept so no existing link breaks; they overlap conceptually with some workbook slugs (e.g. `branding` vs `naming-identity`).
+- [x] **Content for the new services is template-framed** (own definition + deliverables, capability-level approach/outcomes, no invented metrics). Worth a copy pass by marketing before launch; editable in `/admin/capabilities`.
+- [x] **`/insights/category/[category]`** — category = content type, capability slug or industry slug; in the sitemap.
+- [x] **Insights filter by industry** (brief §9.7) — added alongside type + capability.
+- [x] **Work filter by service** (brief §9.6) — new `CaseStudy.serviceSlugs` (`capability/service` pairs), admin-editable; demo case studies linked to services.
+- [x] **Site search** — `/search` across capabilities, services, industries, work and insights; search icon in the header. (Simple substring match; fine at this content size, swap for full-text search if the corpus grows large.)
+- [x] **`/solutions` hub** (workbook's Build / Grow / Transform / Connect layer) linking outcomes to capabilities. *Not yet in the mega-menu* — the nav is CMS-driven (`/admin/settings`); add a "Solutions | /solutions" link there.
+- [x] **Per-entity SEO fields** — `seoTitle`, `seoDescription`, `ogImageUrl` on Capability, Service, Industry, Case Study, Insight (admin form + `generateMetadata` via `lib/seo.ts`; OG/Twitter images when set). Static pages still use hardcoded metadata.
+- [x] **Ecosystem fixes** — homepage ecosystem module's parent node now reads "CORDINIT" (placeholder gone). The `/ecosystem` page already had the "Future specialist & acquired businesses" slot — the older tracker line saying it was missing was stale.
+- [x] **README.md**, **GitHub Actions CI** (`.github/workflows/ci.yml`: install, `prisma generate`, `tsc --noEmit`), **redirect management** (`lib/redirects.mjs` → `next.config.mjs`).
+- [ ] **Still open:** gated downloads / `resource_download` event (needs real assets + a decision on where files live); `video_start`/`video_complete`; `accelerator_explore` (no such concept); real image upload (URL fields only); Lighthouse/axe audit and real-device testing (not possible from this environment); ESLint is not configured (`next lint` prompts for setup) so CI runs the type-check only; automated tests (`/tests`); mega-menu "Solutions" link; Book a Call "Area of interest" intentionally uses the capability taxonomy (brief §9.10) — the Cybersecurity/Salesforce list in the brief's addendum is a leftover from another project and was not copied.
+
+---
+
 ## ✅ Backend build (2026-09-29) — supersedes several items below
 
 Built a full PostgreSQL + Prisma backend per your decision, replacing the brief's suggested third-party CMS with a custom one:

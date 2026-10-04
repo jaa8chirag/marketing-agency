@@ -1,0 +1,1 @@
+ALTER TABLE "CaseStudy" ADD COLUMN "serviceSlugs" TEXT[] DEFAULT ARRAY[]::TEXT[];

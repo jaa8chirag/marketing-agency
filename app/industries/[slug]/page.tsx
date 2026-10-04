@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { entityMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -20,7 +21,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const industry = await getIndustry(params.slug);
   if (!industry) return {};
-  return { title: industry.name, description: industry.summary, alternates: { canonical: `/industries/${industry.slug}` } };
+  return entityMetadata(industry, { title: industry.name, description: industry.summary, path: `/industries/${industry.slug}` });
 }
 
 export default async function IndustryPage({ params }: { params: { slug: string } }) {

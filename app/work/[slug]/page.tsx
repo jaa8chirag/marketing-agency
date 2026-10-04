@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { entityMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -21,7 +22,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const cs = await getCaseStudy(params.slug);
   if (!cs) return {};
-  return { title: `${cs.client} — ${cs.title}`, description: cs.summary, alternates: { canonical: `/work/${cs.slug}` } };
+  return entityMetadata(cs, { title: `${cs.client} — ${cs.title}`, description: cs.summary, path: `/work/${cs.slug}` });
 }
 
 const narrative = (cs: CaseStudy) => [

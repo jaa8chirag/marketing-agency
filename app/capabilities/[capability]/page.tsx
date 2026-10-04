@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { entityMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
@@ -30,11 +31,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { capability: string } }): Promise<Metadata> {
   const capability = await getCapability(params.capability);
   if (!capability) return {};
-  return {
+  return entityMetadata(capability, {
     title: capability.name,
     description: capability.summary,
-    alternates: { canonical: `/capabilities/${capability.slug}` },
-  };
+    path: `/capabilities/${capability.slug}`,
+  });
 }
 
 export default async function CapabilityPage({ params }: { params: { capability: string } }) {

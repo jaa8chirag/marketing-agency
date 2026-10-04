@@ -1,3 +1,4 @@
+import SeoFields from "@/components/admin/SeoFields";
 import { inputClass, labelClass, buttonClass, optionStyle } from "@/components/admin/fields";
 import type { Capability, Industry } from "@/lib/generated/prisma/client";
 
@@ -16,7 +17,11 @@ type InitialCaseStudy = {
   technology: string;
   media: string;
   industryId: string;
+  serviceSlugs?: string[];
   sortOrder: number;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  ogImageUrl?: string | null;
   results: { metric: string; label: string }[];
   capabilities: { capabilityId: string }[];
 };
@@ -119,6 +124,17 @@ export default function CaseStudyForm({
         <input name="sortOrder" type="number" defaultValue={initial?.sortOrder ?? 0} className={inputClass} />
       </div>
 
+      <div>
+        <label className={labelClass}>Services (one per line, as capability-slug/service-slug)</label>
+        <textarea
+          name="serviceSlugs"
+          rows={3}
+          defaultValue={(initial?.serviceSlugs ?? []).join("\n")}
+          className={inputClass}
+          placeholder="digital-experiences/websites"
+        />
+      </div>
+      <SeoFields initial={initial} />
       <button type="submit" className={`${buttonClass} self-start`}>
         {initial ? "Save changes" : "Create case study"}
       </button>

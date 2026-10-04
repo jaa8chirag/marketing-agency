@@ -18,7 +18,7 @@ export default function EcosystemModule() {
             <span className="text-signal block">Connected Expertise.</span>
           </h2>
           <p className="font-sans text-sm sm:text-base text-neutral-400 leading-relaxed max-w-2xl mx-auto">
-            Cordinit Media is part of the broader Confidential ecosystem, bringing together
+            Cordinit Media is part of the broader Cordinit ecosystem, bringing together
             creative thinking, media, technology and digital capabilities to help businesses
             build, innovate and grow.
           </p>
@@ -28,7 +28,7 @@ export default function EcosystemModule() {
             HIERARCHICAL ECOSYSTEM TREE / NODE GRAPH
            ────────────────────────────────────────────────────────────── */}
         <div className="max-w-5xl mx-auto relative flex flex-col items-center">
-          {/* ── TOP PARENT NODE: CONFIDENTIAL ── */}
+          {/* ── TOP PARENT NODE: CORDINIT ── */}
           <div className="relative w-full max-w-2xl rounded-[24px] border border-signal/70 bg-[#0e0e0e] p-8 sm:p-10 text-center shadow-[0_0_50px_rgba(38,214,46,0.14)] z-20">
             {/* Crosshair / Radar Center Icon */}
             <div className="w-11 h-11 rounded-full bg-signal/15 border border-signal/40 text-signal flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(38,214,46,0.3)]">
@@ -44,7 +44,7 @@ export default function EcosystemModule() {
 
             {/* Parent Title */}
             <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-              CONFIDENTIAL
+              CORDINIT
             </h3>
 
             {/* Quote */}

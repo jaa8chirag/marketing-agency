@@ -1,3 +1,4 @@
+import SeoFields from "@/components/admin/SeoFields";
 import { inputClass, labelClass, buttonClass, arrayToLines } from "@/components/admin/fields";
 import type { Capability } from "@/lib/generated/prisma/client";
 
@@ -88,6 +89,7 @@ export default function CapabilityForm({
         <label className={labelClass}>Sort order</label>
         <input name="sortOrder" type="number" defaultValue={initial?.sortOrder ?? 0} className={inputClass} />
       </div>
+      <SeoFields initial={initial} />
       <button type="submit" className={`${buttonClass} self-start`}>
         {initial ? "Save changes" : "Create capability"}
       </button>

@@ -178,6 +178,15 @@ export default function HeaderClient({
             }
           />
           <Link
+            href="/search"
+            aria-label="Search the site"
+            className={`flex items-center justify-center w-9 h-9 transition-colors ${
+              transparent ? "text-paper/70 hover:text-paper" : "text-fgMuted hover:text-fg"
+            }`}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">search</span>
+          </Link>
+          <Link
             href="/careers"
             className={`font-mono text-[11px] uppercase tracking-widest font-bold transition-colors px-3 ${
               transparent ? "text-paper/70 hover:text-paper" : "text-fgMuted hover:text-fg"

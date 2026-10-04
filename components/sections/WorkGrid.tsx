@@ -16,14 +16,26 @@ export default function WorkGrid({
 }) {
   const [capFilter, setCapFilter] = useState<string | null>(null);
   const [indFilter, setIndFilter] = useState<string | null>(null);
+  const [svcFilter, setSvcFilter] = useState<string>("");
+
+  // Only offer services that at least one case study actually uses.
+  const serviceOptions = useMemo(() => {
+    const used = new Set(caseStudies.flatMap((cs) => cs.services ?? []));
+    return capabilities.flatMap((cap) =>
+      cap.services
+        .filter((s) => used.has(`${cap.slug}/${s.slug}`))
+        .map((s) => ({ value: `${cap.slug}/${s.slug}`, label: `${cap.shortName} · ${s.name}` })),
+    );
+  }, [caseStudies, capabilities]);
 
   const filtered = useMemo(() => {
     return caseStudies.filter((cs) => {
       const capMatch = capFilter ? cs.capabilities.includes(capFilter) : true;
       const indMatch = indFilter ? cs.industry === indFilter : true;
-      return capMatch && indMatch;
+      const svcMatch = svcFilter ? (cs.services ?? []).includes(svcFilter) : true;
+      return capMatch && indMatch && svcMatch;
     });
-  }, [caseStudies, capFilter, indFilter]);
+  }, [caseStudies, capFilter, indFilter, svcFilter]);
 
   return (
     <div>
@@ -77,6 +89,23 @@ export default function WorkGrid({
             </button>
           ))}
         </div>
+
+        {serviceOptions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <label htmlFor="work-service-filter" className="font-mono text-[11px] uppercase tracking-wider text-fgMuted mr-2">Service</label>
+            <select
+              id="work-service-filter"
+              value={svcFilter}
+              onChange={(e) => setSvcFilter(e.target.value)}
+              className="bg-surface border border-edge px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider text-fg focus:outline-none focus:border-signal"
+            >
+              <option value="">All services</option>
+              {serviceOptions.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {filtered.length === 0 ? (

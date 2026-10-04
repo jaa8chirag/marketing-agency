@@ -13,6 +13,7 @@ import {
   testimonials,
   clientLogos,
 } from "../lib/content";
+import { extraServicesByCapability } from "./services-extra";
 
 async function seedCapabilities() {
   for (const [capIdx, cap] of capabilities.entries()) {
@@ -54,7 +55,12 @@ async function seedCapabilities() {
       },
     });
 
-    for (const [svcIdx, svc] of cap.services.entries()) {
+    const existingSlugs = new Set(cap.services.map((s) => s.slug));
+    const allServices = [
+      ...cap.services,
+      ...(extraServicesByCapability[cap.slug] ?? []).filter((s) => !existingSlugs.has(s.slug)),
+    ];
+    for (const [svcIdx, svc] of allServices.entries()) {
       const service = await prisma.service.upsert({
         where: { capabilityId_slug: { capabilityId: capability.id, slug: svc.slug } },
         create: {

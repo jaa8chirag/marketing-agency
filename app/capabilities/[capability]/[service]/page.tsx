@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { entityMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
@@ -24,11 +25,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const match = await getService(params.capability, params.service);
   if (!match) return {};
-  return {
+  return entityMetadata(match.service, {
     title: `${match.service.name} — ${match.capability.name}`,
     description: match.service.definition,
-    alternates: { canonical: `/capabilities/${match.capability.slug}/${match.service.slug}` },
-  };
+    path: `/capabilities/${match.capability.slug}/${match.service.slug}`,
+  });
 }
 
 export default async function ServicePage({

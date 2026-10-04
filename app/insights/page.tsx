@@ -7,7 +7,7 @@ import CTASection from "@/components/ui/CTASection";
 import InsightsGrid from "@/components/sections/InsightsGrid";
 import InsightsTeaser from "@/components/sections/InsightsTeaser";
 import Eyebrow from "@/components/ui/Eyebrow";
-import { getInsights, getCapabilities } from "@/lib/queries";
+import { getInsights, getCapabilities, getIndustries } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function InsightsPage() {
-  const [insights, capabilities] = await Promise.all([getInsights(), getCapabilities()]);
+  const [insights, capabilities, industries] = await Promise.all([getInsights(), getCapabilities(), getIndustries()]);
   return (
     <div className="min-h-screen bg-surface text-fg flex flex-col">
       <Header />
@@ -36,7 +36,7 @@ export default async function InsightsPage() {
             <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tightest max-w-2xl text-balance mb-14">
               Every article, guide and report — filter by type or capability.
             </h2>
-            <InsightsGrid insights={insights} capabilities={capabilities} />
+            <InsightsGrid insights={insights} capabilities={capabilities} industries={industries} />
           </Container>
         </section>
         <CTASection
