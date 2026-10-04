@@ -69,3 +69,8 @@ export function seedToImageUrl(seed: string, _width = 640, _height = 480): strin
   const hash = hashString(seed);
   return CURATED_SEED_IMAGES[hash % CURATED_SEED_IMAGES.length];
 }
+
+/** Picks a curated photo by position so neighbouring cards in one grid never repeat (up to 15). */
+export function curatedImageAt(groupSeed: string, index: number): string {
+  return CURATED_SEED_IMAGES[(hashString(groupSeed) + index) % CURATED_SEED_IMAGES.length];
+}

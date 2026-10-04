@@ -7,6 +7,8 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/ui/Container";
 import PageHero from "@/components/ui/PageHero";
 import Eyebrow from "@/components/ui/Eyebrow";
+import ServiceCard from "@/components/ui/ServiceCard";
+import { curatedImageAt } from "@/lib/seed";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import CTASection from "@/components/ui/CTASection";
@@ -142,43 +144,20 @@ export default async function CapabilityPage({ params }: { params: { capability:
                 Specialist services inside {capability.shortName}.
               </h2>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-5">
               {capability.services.map((s, idx) => (
-                <Reveal key={s.slug} delay={idx * 40}>
-                  <TiltCard
-                    maxTilt={12}
-                    scale={1.03}
-                    perspective={850}
-                    glare
-                    glareColor="rgba(38, 214, 46, 0.14)"
-                    containerClassName="h-full"
-                    className="group h-full min-h-[220px] rounded-2xl overflow-hidden border border-edge hover:border-signal/50 transition-colors duration-300"
-                  >
-                    <Link
+                <div key={s.slug} className="mb-5 break-inside-avoid">
+                  <Reveal delay={(idx % 3) * 60}>
+                    <ServiceCard
                       href={`/capabilities/${capability.slug}/${s.slug}`}
-                      className="relative flex h-full w-full flex-col justify-end p-7"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      <GenerativeArt
-                        seed={`${capability.slug}-${s.slug}`}
-                        groupHover
-                        width={640}
-                        height={480}
-                        className="absolute inset-0 h-full w-full"
-                      />
-                      <TiltCardItem depth={40} className="relative z-10">
-                        <h3 className="font-display text-xl font-semibold tracking-tight text-paper">{s.name}</h3>
-                        <p className="text-sm text-paper/80 leading-relaxed mt-2 max-w-[85%]">{s.hook}</p>
-                      </TiltCardItem>
-                      <TiltCardItem depth={20} className="relative z-10">
-                        <span className="inline-flex items-center gap-1.5 mt-4 font-mono text-[11px] font-bold uppercase tracking-wider text-signal opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore
-                          <span className="material-symbols-outlined text-[15px]">arrow_outward</span>
-                        </span>
-                      </TiltCardItem>
-                    </Link>
-                  </TiltCard>
-                </Reveal>
+                      seed={`${capability.slug}-${s.slug}`}
+                      imageUrl={curatedImageAt(capability.slug, idx)}
+                      index={idx}
+                      capabilityName={capability.shortName}
+                      service={s}
+                    />
+                  </Reveal>
+                </div>
               ))}
             </div>
           </Container>
